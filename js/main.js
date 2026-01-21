@@ -54,6 +54,7 @@ function ProcesarPedido(combos){
 function MostrarPedido(combos,importe,id){
     let mensaje =""
     if( importe != 0){
+
         let direccion = prompt("Ingrese su dirección")
         mensaje += "Numero de pedido : "+id+"\n\n"
         mensaje +="Combos seleccionados\n\n"
