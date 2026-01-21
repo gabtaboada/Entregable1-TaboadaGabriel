@@ -18,6 +18,7 @@ function CrearPedido(){
             default : 
                 alert("Selección incorrecta")    
         }
+        console.log(combos)
         if(combos.length)
             {
                 seleccion = parseInt(prompt("¿Desea agregar otro combo a su pedido?\n::: Seleccione el combo :::\n\n1 => CheeseBurger :: $18000\n2 => BlueBurger :: $19500\n3 => VeganBurger :: $18750 \n\n4 => Finalizar pedido"))
@@ -27,6 +28,8 @@ function CrearPedido(){
             }
 
     }
+    console.log("return funcion crear pedido")
+    console.log(combos)
     return combos
 }
 function ProcesarPedido(combos){
@@ -45,6 +48,7 @@ function ProcesarPedido(combos){
                 break 
         }
     }
+    console.log("return funcion procesar pedido , importe : "+importe)
     return importe
 }
 function MostrarPedido(combos,importe,id){
