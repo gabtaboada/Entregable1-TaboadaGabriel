@@ -1,55 +1,56 @@
+// correcion nombres variables camelCase. Poner mayusculas primer letra
 function CrearPedido(){
-    let combos = []
-    let seleccion = parseInt(prompt("::: Seleccione el combo :::\n\n1 => CheeseBurger :: $18000\n2 => BlueBurger :: $19500\n3 => VeganBurger :: $18750 \n\n4 => Finalizar pedido "))
-    while(seleccion !== 4){
-        switch(seleccion){
+    let Combos = []
+    let Seleccion = parseInt(prompt("::: Seleccione el combo :::\n\n1 => CheeseBurger :: $18000\n2 => BlueBurger :: $19500\n3 => VeganBurger :: $18750 \n\n4 => Finalizar pedido "))
+    while(Seleccion !== 4){
+        switch(Seleccion){
             case 1 :
-                combos.push("CheeseBurger") 
+                Combos.push("CheeseBurger") 
                 alert("combo agregado")
                 break
             case 2 :
-                combos.push("BlueBurger")
+                Combos.push("BlueBurger")
                 alert("combo agregado")
                 break
             case 3 :
-                combos.push("VeganBurger")
+                Combos.push("VeganBurger")
                 alert("combo agregado")
                 break
             default : 
                 alert("Selección incorrecta")    
         }
-        console.log(combos)
-        if(combos.length)
+        console.log(Combos)
+        if(Combos.length)
             {
-                seleccion = parseInt(prompt("¿Desea agregar otro combo a su pedido?\n::: Seleccione el combo :::\n\n1 => CheeseBurger :: $18000\n2 => BlueBurger :: $19500\n3 => VeganBurger :: $18750 \n\n4 => Finalizar pedido"))
+                Seleccion = parseInt(prompt("¿Desea agregar otro combo a su pedido?\n::: Seleccione el combo :::\n\n1 => CheeseBurger :: $18000\n2 => BlueBurger :: $19500\n3 => VeganBurger :: $18750 \n\n4 => Finalizar pedido"))
             }
             else{
-                seleccion = parseInt(prompt("::: Seleccione el combo :::\n\n1 => CheeseBurger :: $18000\n2 => BlueBurger :: $19500\n3 => VeganBurger :: $18750 \n\n4 => Finalizar pedido"))
+                Seleccion = parseInt(prompt("::: Seleccione el combo :::\n\n1 => CheeseBurger :: $18000\n2 => BlueBurger :: $19500\n3 => VeganBurger :: $18750 \n\n4 => Finalizar pedido"))
             }
 
     }
     console.log("return funcion crear pedido")
-    console.log(combos)
-    return combos
+    console.log(Combos)
+    return Combos
 }
-function ProcesarPedido(combos){
-    let importe = 0
+function ProcesarPedido(Combos){
+    let Importe = 0
 
-    for (combo of combos){
-        switch(combo){
+    for (const Combo of Combos){/// correcion del profe, agregar el const. for (const combo of combos) {}
+        switch(Combo){
             case "CheeseBurger" :
-                importe = importe + 18000
+                Importe = Importe + 18000
                 break
             case "BlueBurger" :
-                importe = importe + 19500
+                Importe = Importe + 19500
                 break
             case "VeganBurger" :
-                importe = importe + 18750
+                Importe = Importe + 18750
                 break 
         }
     }
-    console.log("return funcion procesar pedido , importe : "+importe)
-    return importe
+    console.log("return funcion procesar pedido , importe : "+Importe)
+    return Importe
 }
 function MostrarPedido(combos,importe,id){
     let mensaje =""
@@ -69,17 +70,17 @@ function MostrarPedido(combos,importe,id){
     alert(mensaje)
 }
 
-let combos = []
-let menu = parseInt(prompt("Ingrese 1 para hacer un nuevo pedido \nIngrese 2 para ver su pedido \nIngrese 3 para salir"))
-let importe = 0
+let Combos = []
+let Menu = parseInt(prompt("Ingrese 1 para hacer un nuevo pedido \nIngrese 2 para ver su pedido \nIngrese 3 para salir"))
+let Importe = 0
 let Id = 1
-while ( menu !== 3 ){
-    switch (menu){
+while ( Menu !== 3 ){
+    switch (Menu){
         case 1 :
-            combos = CrearPedido()
-            importe = ProcesarPedido(combos)
-            MostrarPedido(combos,importe,Id)
-            if (importe != 0)
+            Combos = CrearPedido()
+            Importe = ProcesarPedido(Combos)
+            MostrarPedido(Combos,Importe,Id)
+            if (Importe != 0)
                 Id = Id + 1
             break
         case 2 :
@@ -90,5 +91,5 @@ while ( menu !== 3 ){
             alert("Opción incorrecta")
     }
 
-    menu = parseInt(prompt("Ingrese 1 para hacer un nuevo pedido \nIngrese 2 para ver su pedido \nIngrese 3 para salir"))
+    Menu = parseInt(prompt("Ingrese 1 para hacer un nuevo pedido \nIngrese 2 para ver su pedido \nIngrese 3 para salir"))
 }
