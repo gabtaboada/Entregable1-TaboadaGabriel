@@ -159,7 +159,7 @@ function RenderCarrito(){
             const cardprecio = document.createElement("div")
             cardprecio.className = "d-flex justify-content-between align-items-center"
             cardprecio.innerHTML = `<p class="tituloPrecio"> Precio del combo </p>
-                                    <p class ="precio">$ ${ComboPedido.precio}</p>`
+                                    <p class ="precio">$ ${pedido.precio}</p>`
             filaCarrito.appendChild(cardprecio)
 
             ContenedorCarrito.appendChild(filaCarrito)
