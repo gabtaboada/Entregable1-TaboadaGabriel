@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "nombre": "Cebolla caramelizada",
+        "imagen":"./assets/img/cebolla-caramelizada.webp",
+        "precio": 600
+    },
+    {
+        "id": 2,
+        "nombre": "Huevo frito",
+        "imagen":"./assets/img/huevo-frito.webp",
+        "precio": 600
+    },
+    {
+        "id": 3,
+        "nombre": "Panceta",
+        "imagen":"./assets/img/bacon.webp",
+        "precio": 600
+    },
+    {
+        "id": 4,
+        "nombre": "Queso cheddar",
+        "imagen":"./assets/img/cebolla-caramelizada.webp",
+        "precio": 600
+    },
+    {
+        "id": 5,
+        "nombre": "Queso azul",
+        "imagen":"./assets/img/huevo-frito.webp",
+        "precio": 600
+    },
+    {
+        "id": 6,
+        "nombre": "Champiñones salteados",
+        "imagen":"./assets/img/bacon.webp",
+        "precio": 600
+    }          
+]

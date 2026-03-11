@@ -1,0 +1,142 @@
+/* CARDS DE SELECCIÓN - VERDURAS Y TOPPINGS */
+
+// Contenedores principales
+#contenedorVerduras,
+#contenedorToppings {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+
+// Items individuales (verduras y toppings)
+.verdura-item,
+.Topping-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: #fffbea;
+        border-color: #FCBF02;
+        box-shadow: 0 4px 8px rgba(252, 191, 2, 0.2);
+        transform: translateX(4px);
+    }
+}
+
+// Estado seleccionado
+.verdura-seleccionada,
+.Topping-seleccionada {
+    background-color: #fffbea;
+    border-color: #FCBF02;
+    box-shadow: 0 4px 12px rgba(252, 191, 2, 0.3);
+}
+
+// Fotos de verduras/toppings
+.verdura-foto,
+.Topping-foto {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.verdura-item:hover .verdura-foto,
+.Topping-item:hover .Topping-foto {
+    border-color: #FCBF02;
+    transform: scale(1.1);
+}
+
+// Nombres
+.verdura-nombre,
+.Topping-nombre {
+    font-size: 0.85rem;
+    color: #364153;
+    flex: 1;
+    font-weight: 600;
+}
+
+// Contenedor derecho (precio + check)
+.verdura-derecha,
+.Topping-derecha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+// Precios
+.verdura-precio,
+.Topping-precio {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1e2939;
+    background-color: #f3f4f6;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+// Checkboxes personalizados
+.verdura-check,
+.Topping-check {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #d1d5dc;
+    border-radius: 6px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    flex-shrink: 0;
+
+    &:hover {
+        border-color: #FCBF02;
+        box-shadow: 0 0 0 3px rgba(252, 191, 2, 0.1);
+    }
+
+    &:checked {
+        background-color: #FCBF02;
+        border-color: #FCBF02;
+        box-shadow: 0 0 0 3px rgba(252, 191, 2, 0.2);
+    }
+
+    // Tilde cuando está marcado
+    &:checked::after {
+        content: "";
+        position: absolute;
+        display: block;
+        left: 6px;
+        top: 2px;
+        width: 6px;
+        height: 12px;
+        border: solid #1e2939;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .verdura-item,
+    .Topping-item {
+        padding: 10px 12px;
+    }
+
+    .verdura-foto,
+    .Topping-foto {
+        width: 36px;
+        height: 36px;
+    }
+}

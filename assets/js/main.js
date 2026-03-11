@@ -1,5 +1,6 @@
 /* ////////////////////////////////////  */
-const Menu = [1, 2, 3]
+const menu = [1, 2, 3]
+/*
 const CombosArmados = [
     {
         id: 1,
@@ -23,14 +24,48 @@ const CombosArmados = [
     },
 
 ]
-
+*/
+const UrlCombos= "./assets/db/combos.json"
+const UrlVerduras= "./assets/db/verduras.json"
+const UrlToppings= "./assets/db/toppings.json"
 const ValorVerdura = 1000
 const ValorTopping = 600
 const Pedidos = []
 const PedidosId = []//declaro array que almacena cada ID de los pedidos
-// Hardcodeo arrays verduras y toppings
-const OpcionesVerduras = ["Lechuga", "Tomate", "Cebolla", "Rúcula", "Pepino", "Morron"]
-const OpcionesToppings = ["Cebolla caramelizada", "Huevo frito", "Panceta"]
+function obtenerCombos(){
+    fetch(UrlCombos)
+    .then(response => response.json())
+    .then(data=> {
+        RenderMenu(menu, data)
+        console.log(data)
+    })
+    .catch(err => console.log("Error detectado: ",err))
+    .finally(() => console.log("Peticion finalizada"))
+}
+function obtenerVerduras(){
+    fetch(UrlVerduras)
+    .then(response => response.json())
+    .then(data=> {
+        //renderProductos(data)
+        RenderMenu(Menu, data)
+        console.log(data)
+    })
+    .catch(err => console.log("Error detectado: ",err))
+    .finally(() => console.log("Peticion finalizada"))
+}
+function obtenerToppings(){
+    fetch(UrlToppings)
+    .then(response => response.json())
+    .then(data=> {
+        //renderProductos(data)
+        RenderMenu(Menu, data)
+        console.log(data)
+    })
+    .catch(err => console.log("Error detectado: ",err))
+    .finally(() => console.log("Peticion finalizada"))
+}
+
+
 // Clase para crear el combo
 class Combo {
     //static id = 0
@@ -58,176 +93,111 @@ function ListenerCarrito() {
         contCarrito.innerText = PedidosId.length
     }
 }
-function RenderAdicionales(tipoAdicional, adicional) {
-    const divAdicionales = document.createElement("div")
-    const imgAdicionales = document.createElement("img")
-    const LabelAdicionales = document.createElement("label")
-    LabelAdicionales.htmlFor = adicional
-    LabelAdicionales.textContent = adicional
-    switch (tipoAdicional) {
-        case "verdura": imgAdicionales.src = ObtenerFotoVerdura(adicional)
-            break
-        case "topping": imgAdicionales.src = ObtenerFotoTopping(adicional)
-            break
-    }
-
-    imgAdicionales.className = "img-VerTop mx-2"
-    divAdicionales.appendChild(imgAdicionales)
-    divAdicionales.appendChild(LabelAdicionales)
-    return divAdicionales
-}
-/// Uso esta function para asignar la ruta de la foto de cada Topping
-function ObtenerFotoTopping(Topping) {
-    let src = ""
-    switch (Topping) {
-
-        case "Cebolla caramelizada":
-            src = "./assets/img/cebolla-caramelizada.webp"
-            break
-        case "Huevo frito":
-            src = "./assets/img/huevo-frito.webp"
-            break
-        case "Panceta":
-            src = "./assets/img/bacon.webp"
-            break
-
-        default:
-    }
-    return src
-}
-
-/// Uso esta function para asignar la ruta de la foto de cada Verdura
-function ObtenerFotoVerdura(Verdura) {
-    let src = ""
-    switch (Verdura) {
-        case "Lechuga":
-            src = "./assets/img/lechuga.webp"
-            break
-        case "Tomate":
-            src = "./assets/img/tomate.webp"
-            break
-        case "Cebolla":
-            src = "./assets/img/cebolla.webp"
-            break
-        case "Rúcula":
-            src = "./assets/img/rucula.webp"
-            break
-        case "Pepino":
-            src = "./assets/img/pepino.webp"
-            break
-        case "Morron":
-            src = "./assets/img/morron.webp"
-            break
-        default:
-    }
-    return src
-}
-/// Uso esta function para asignar la ruta de la foto de cada Combo
-function ObtenerFotoCombo(NombreCombo) {
-    let src = ""
-    switch (NombreCombo) {
-        case "CheeseBurger":
-            src = "./assets/img/cheese-burger.webp"
-            break
-        case "BlueBurger":
-            src = "./assets/img/blue-burger.webp"
-            break
-        case "VeganBurger":
-            src = "./assets/img/vegan-burger.webp"
-            break
-        case "BaconBurger":
-            src = "./assets/img/bacon-burger.webp"
-            break
-        default:
-    }
-    return src
-}
-
 function BorrarContenido(SeccionABorrar) {
     const BorrarSeccion = document.getElementById(SeccionABorrar)
     BorrarSeccion.innerHTML = ""
 }
-function RenderMenuFinalizar(idPedido,ComboPedido) {
 
-    //renderiamos el combo agregado.
-    BorrarContenido("Menu-seleccion")
-    BorrarContenido("Verduras-seleccion")
-    BorrarContenido("Toppings-seleccion")
-    BorrarContenido("Confirmar-seleccion")
+// function RenderAdicionales(tipoAdicional, adicional) {
+//     const divAdicionales = document.createElement("div")
+//     const imgAdicionales = document.createElement("img")
+//     const LabelAdicionales = document.createElement("label")
+//     LabelAdicionales.htmlFor = adicional
+//     LabelAdicionales.textContent = adicional
+//     switch (tipoAdicional) {
+//         case "verdura": imgAdicionales.src = ObtenerFotoVerdura(adicional)
+//             break
+//         case "topping": imgAdicionales.src = ObtenerFotoTopping(adicional)
+//             break
+//     }
+
+//     imgAdicionales.className = "img-VerTop mx-2"
+//     divAdicionales.appendChild(imgAdicionales)
+//     divAdicionales.appendChild(LabelAdicionales)
+//     return divAdicionales
+// }
+// function RenderMenuFinalizar(idPedido,ComboPedido) {
+
+//     //renderiamos el combo agregado.
+//     BorrarContenido("Menu-seleccion")
+//     BorrarContenido("Verduras-seleccion")
+//     BorrarContenido("Toppings-seleccion")
+//     BorrarContenido("Confirmar-seleccion")
 
 
-    const Busqueda = CombosArmados.find(combo => combo.id === parseInt(ComboPedido.idcombopedido))
-    console.log(Busqueda)
-    //Agrego el combo
-    const ContenedorCombo = document.getElementById("Menu-finalizar")
-    const cardCombo = document.createElement("div")
-    const imgCombo = document.createElement("img")
-    cardCombo.className = "col d-flex flex-row class=justify-content-center align-items-center m-2"
-    const LabelCombo = document.createElement("label")
-    LabelCombo.htmlFor = Busqueda.nombre
-    LabelCombo.textContent = Busqueda.nombre
-    imgCombo.src = ObtenerFotoCombo(Busqueda.nombre)
-    imgCombo.className = "img-combo mx-2"
+//     const Busqueda = CombosArmados.find(combo => combo.id === parseInt(ComboPedido.idcombopedido))
+//     console.log(Busqueda)
+//     //Agrego el combo
+//     const ContenedorCombo = document.getElementById("Menu-finalizar")
+//     const cardCombo = document.createElement("div")
+//     const imgCombo = document.createElement("img")
+//     cardCombo.className = "col d-flex flex-row class=justify-content-center align-items-center m-2"
+//     const LabelCombo = document.createElement("label")
+//     LabelCombo.htmlFor = Busqueda.nombre
+//     LabelCombo.textContent = Busqueda.nombre
+//     imgCombo.src = ObtenerFotoCombo(Busqueda.nombre)
+//     imgCombo.className = "img-combo mx-2"
 
-    const msjFinalizar = document.getElementById("msj-finalizar")
-    const cardMsjFinalizar = document.createElement("div")
-    cardMsjFinalizar.innerHTML = "<p class='msjFinalizar'>Su combo fue agregado correctamente</p>"
-    //cardMsjFinalizar.className = 
-    cardCombo.appendChild(imgCombo)
-    cardCombo.appendChild(LabelCombo)
-    msjFinalizar.appendChild(cardMsjFinalizar)
-    ContenedorCombo.appendChild(cardCombo)
-    /// Agrego Verduras y toppings
+//     const msjFinalizar = document.getElementById("msj-finalizar")
+//     const cardMsjFinalizar = document.createElement("div")
+//     cardMsjFinalizar.innerHTML = "<p class='msjFinalizar'>Su combo fue agregado correctamente</p>"
+//     //cardMsjFinalizar.className = 
+//     cardCombo.appendChild(imgCombo)
+//     cardCombo.appendChild(LabelCombo)
+//     msjFinalizar.appendChild(cardMsjFinalizar)
+//     ContenedorCombo.appendChild(cardCombo)
+//     /// Agrego Verduras y toppings
 
-    const cardAdicionales = document.createElement("div")
-    cardAdicionales.className = "col d-flex flex-row class=justify-content-center align-items-center m-2"
+//     const cardAdicionales = document.createElement("div")
+//     cardAdicionales.className = "col d-flex flex-row class=justify-content-center align-items-center m-2"
 
-    const VerdurasDelObjeto = [ComboPedido.verdura1, ComboPedido.verdura2, ComboPedido.verdura3]
-    const ToppingsDelObjeto = [ComboPedido.toppings1, ComboPedido.toppings2, ComboPedido.toppings3]
-    for (const verdura of VerdurasDelObjeto) {
-        if (verdura) {
-            const render = RenderAdicionales("verdura", verdura)
-            cardAdicionales.appendChild(render)
-        }
-    }
-    ContenedorCombo.appendChild(cardAdicionales)
-    for (const topping of ToppingsDelObjeto) {
-        if (topping) {
-            const render = RenderAdicionales("topping", topping)
-            cardAdicionales.appendChild(render)
-        }
+//     const VerdurasDelObjeto = [ComboPedido.verdura1, ComboPedido.verdura2, ComboPedido.verdura3]
+//     const ToppingsDelObjeto = [ComboPedido.toppings1, ComboPedido.toppings2, ComboPedido.toppings3]
+//     for (const verdura of VerdurasDelObjeto) {
+//         if (verdura) {
+//             const render = RenderAdicionales("verdura", verdura)
+//             cardAdicionales.appendChild(render)
+//         }
+//     }
+//     ContenedorCombo.appendChild(cardAdicionales)
+//     for (const topping of ToppingsDelObjeto) {
+//         if (topping) {
+//             const render = RenderAdicionales("topping", topping)
+//             cardAdicionales.appendChild(render)
+//         }
 
-    }
-    ContenedorCombo.appendChild(cardAdicionales)
-    /// renderizo el precio
-    const cardprecio = document.createElement("div")
-    cardprecio.className = "col d-flex flex-column class=justify-content-center align-items-center m-2"
-    cardprecio.innerHTML = `<p class="tituloPrecio"> Precio del combo </p>
-                            <p class ="precio">$ ${ComboPedido.precio}</p>`
-    ContenedorCombo.appendChild(cardprecio)
-    const ContenedorBtnFinalizar = document.getElementById("btn-finalizar") 
-    const cardBotones = document.createElement("div")
-    cardBotones.className = "col d-flex flex-row class=justify-content-center align-items-center m-2 w-100"
-    cardBotones.innerHTML = `<button id="btn-AgregarCombo" class="m-1 CombosClase btn btn-success  h-90">Agregar otro combo </      button>
-                            <button id="btn-FinalizarPedido" class="m-1 CombosClase btn btn-success  h-90">Finalizar pedido</      button>`
-    ContenedorBtnFinalizar.appendChild(cardBotones)
-    //envio al local el id del pedido actual, que me sirve para renderizar el carrito
+//     }
+//     ContenedorCombo.appendChild(cardAdicionales)
+//     /// renderizo el precio
+//     const cardprecio = document.createElement("div")
+//     cardprecio.className = "col d-flex flex-column class=justify-content-center align-items-center m-2"
+//     cardprecio.innerHTML = `<p class="tituloPrecio"> Precio del combo </p>
+//                             <p class ="precio">$ ${ComboPedido.precio}</p>`
+//     ContenedorCombo.appendChild(cardprecio)
+//     const ContenedorBtnFinalizar = document.getElementById("btn-finalizar") 
+//     const cardBotones = document.createElement("div")
+//     cardBotones.className = "col d-flex flex-row class=justify-content-center align-items-center m-2 w-100"
+//     cardBotones.innerHTML = `<button id="btn-AgregarCombo" class="m-1 CombosClase btn btn-success  h-90">Agregar otro combo </      button>
+//                             <button id="btn-FinalizarPedido" class="m-1 CombosClase btn btn-success  h-90">Finalizar pedido</      button>`
+//     ContenedorBtnFinalizar.appendChild(cardBotones)
+//     //envio al local el id del pedido actual, que me sirve para renderizar el carrito
 
-    localStorage.setItem("PedidoActual",idPedido)
-    const btnCarrito = document.getElementById("btn-FinalizarPedido")
-    btnCarrito.onclick = () => {
-            window.location.href="./pages/carrito.html"
-        }
-    const btnAgregarCombo = document.getElementById("btn-AgregarCombo")
-    btnAgregarCombo.onclick = () =>{
-        BorrarContenido("btn-finalizar")
-        BorrarContenido("msj-finalizar")
-        BorrarContenido("Menu-finalizar")
-        RenderSeleccionCombo(idPedido,CombosArmados)
-    }
-}
+//     localStorage.setItem("PedidoActual",idPedido)
+//     const btnCarrito = document.getElementById("btn-FinalizarPedido")
+//     btnCarrito.onclick = () => {
+//             window.location.href="./pages/carrito.html"
+//         }
+//     const btnAgregarCombo = document.getElementById("btn-AgregarCombo")
+//     btnAgregarCombo.onclick = () =>{
+//         BorrarContenido("btn-finalizar")
+//         BorrarContenido("msj-finalizar")
+//         BorrarContenido("Menu-finalizar")
+//         RenderSeleccionCombo(idPedido,CombosArmados)
+//     }
+// }
 
 function RenderConfirmarCombo(idPedido,PedidosId, idCombo, CombosArmados, Verduras, Toppings) {
+    console.log(Verduras)
     console.log("confirmar combo")
     //let Idpedido = idPedido
     let Idpedido = 0
@@ -352,7 +322,6 @@ function RenderSeleccionToppings(idPedido,IdCombo, OpcionesToppings) {
         })
     })
 }
-
 function RenderSeleccionVerdura(idPedido,IdCombo, OpcionesVerduras) {
     //console.log("id combo agregado "+IdCombo)
     const MenuSeleccionVerdura = document.getElementById("Verduras-seleccion")
@@ -441,7 +410,7 @@ function RenderSeleccionVerdura(idPedido,IdCombo, OpcionesVerduras) {
 function RenderSeleccionCombo(idPedido,CombosArmados) {
     const MenuSeleccion = document.getElementById("Menu-seleccion")
    // BorrarContenido("Menu-selccion")
-        BorrarContenido("btn-finalizar")
+    BorrarContenido("btn-finalizar")
     BorrarContenido("msj-finalizar")
     MenuSeleccion.innerHTML = ""// borro el contenedor por si vuelve a tocar  nuevo pedido
     MenuSeleccion.className = "d-flex flex-column"
@@ -545,6 +514,6 @@ function RenderMenu(MenuArray, CombosArmados) {
 }
 // Verifico cuando arranca la pagina si hay algun elemento en el carrito
 /// Renderizo verduras o toppings para mostrar en el menu post combo agregado   
-RenderMenu(Menu, CombosArmados)
+//RenderMenu(Menu, CombosArmados)
 
 ListenerCarrito()

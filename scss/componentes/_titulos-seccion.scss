@@ -1,0 +1,67 @@
+/* TÍTULOS Y PRECIOS DE SECCIÓN */
+
+.titulo-seccion {
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #1e2939;
+    text-align: center;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #fffbea 0%, #fff9db 100%);
+    border-left: 4px solid #FCBF02;
+    border-radius: 8px;
+    //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);    
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
+                0 2px 4px rgba(252, 191, 2, 0.2);
+    
+    // Efecto hover (opcional)
+    transition: all 0.3s ease;
+    &:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15),
+                    0 3px 6px rgba(252, 191, 2, 0.3);
+        transform: translateY(-2px);
+    }    
+}
+
+.precio-info {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #364153;
+    text-align: center;
+    margin-bottom: 12px;
+    padding: 8px 16px;
+    background-color: #f9fafb;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    border-left: 4px solid #FCBF02;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
+                0 2px 4px rgba(252, 191, 2, 0.2);
+    transition: all 0.3s ease;          
+    //border: 1px solid #e5e7eb;
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12),
+                    0 2px 5px rgba(0, 0, 0, 0.08);
+        transform: translateY(-1px);
+        background-color: #ffffff;
+    }
+    // Resaltar el precio
+    &::after {
+        margin-left: 4px;
+    }
+
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .titulo-seccion {
+        font-size: 1rem;
+        padding: 10px 16px;
+    }
+
+    .precio-info {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
+}

@@ -1,0 +1,236 @@
+/* PÁGINA CARRITO */
+.contenedor-carrito {
+    width: 70%;
+}
+
+.card-combo-imagen-carrito {
+    position: relative;
+    width: 128px;
+    min-width: 128px;
+    height: 172px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+// .columna-precio{
+    
+// }
+/* CARD TOTAL */
+.card-total {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.card-total-linea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-total-label,
+.card-total-valor {
+    font-size: 0.85rem;
+    color: #6a7282;
+}
+
+.card-total-divider {
+    border-top: 1px solid #f0f0f0;
+    margin: 4px 0;
+}
+
+.card-total-final {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e2939;
+}
+
+.btn-confirmar {
+    margin-top: 8px;
+    background-color: #FCBF02;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #e0aa00;
+    }
+}
+
+/* PÁGINA CARRITO */
+.contenedor-carrito {
+    width: 70%;
+}
+
+.card-combo-imagen-carrito {
+    position: relative;
+    width: 128px;
+    min-width: 128px;
+    height: 172px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+/* CARD TOTAL */
+.card-total {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.card-total-linea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-total-label,
+.card-total-valor {
+    font-size: 0.85rem;
+    color: #6a7282;
+}
+
+.card-total-divider {
+    border-top: 1px solid #f0f0f0;
+    margin: 4px 0;
+}
+
+.card-total-final {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e2939;
+}
+
+.btn-confirmar {
+    margin-top: 8px;
+    background-color: #FCBF02;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #e0aa00;
+    }
+}
+
+/* ======================================= */
+/* BOTONES DE CANTIDAD (+ y -) - SUTILES */
+/* ======================================= */
+.contenedor-cantidad{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.btn-cantidad {
+    background-color: transparent;
+    border: 1px solid #d1d5dc;
+    color: #6a7282;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: #f3f4f6;
+        border-color: #9ca3af;
+        color: #1e2939;
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+.cantidad-texto {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1e2939;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* ======================================= */
+/* BOTÓN ELIMINAR - CON ÍCONO */
+/* ======================================= */
+
+.btn-eliminar-combo {
+    background-color: transparent;
+    border: none;
+    color: #dc3545;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: center;
+
+    i {
+        font-size: 0.85rem;
+    }
+
+    &:hover {
+        color: #c82333;
+        text-decoration: underline;
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contenedor-carrito {
+        width: 100%;
+    }
+
+    .btn-cantidad {
+        width: 24px;
+        height: 24px;
+        font-size: 0.9rem;
+    }
+
+    .btn-eliminar-combo {
+        font-size: 0.75rem;
+
+        i {
+            font-size: 0.8rem;
+        }
+    }
+}

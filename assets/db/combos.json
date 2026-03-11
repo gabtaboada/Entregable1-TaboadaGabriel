@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "nombre": "CheeseBurger",
+        "descripcion": "Clásica hamburguesa de carne con queso cheddar derretido, pan suave, ketchup y mostaza.",
+        "imagen" :"./assets/img/cheese-burger.webp",
+        "precio": 18000
+    },
+    {
+        "id": 2,
+        "nombre": "BlueBurger",
+        "descripcion":"Hamburguesa de carne con queso azul fundido, cebolla caramelizada y rúcula en pan artesanal.",
+        "imagen" :"./assets/img/blue-burger.webp",
+        "precio": 19500
+    },
+    {
+        "id": 3,
+        "nombre": "VeganBurger",
+        "descripcion":"Hamburguesa vegetal con lechuga, tomate, cebolla y salsa de la casa.",
+        "imagen" :"./assets/img/vegan-burger.webp",
+        "precio": 18750
+    },
+    {
+        "id": 4,
+        "nombre": "BaconBurger",
+        "descripcion":"Hamburguesa de carne con queso cheddar, bacon crocante, lechuga y salsa especial.",
+        "imagen" :"./assets/img/bacon-burger.webp",
+        "precio": 19000
+    },
+    {
+        "id": 5,
+        "nombre": "Chicken Burger",
+        "descripcion":"Pechuga de pollo crocante con lechuga, tomate y mayonesa en pan tostado.",
+        "imagen" :"./assets/img/bacon-burger.webp",
+        "precio": 17550
+    }   
+]

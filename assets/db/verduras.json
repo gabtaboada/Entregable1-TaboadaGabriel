@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "nombre": "Lechuga",
+        "imagen":"./assets/img/lechuga.webp",
+        "precio": 1000
+    },
+    {
+        "id": 2,
+        "nombre": "Tomate",
+        "imagen":"./assets/img/tomate.webp",
+        "precio": 1000
+    },
+    {
+        "id": 3,
+        "nombre": "Cebolla",
+        "imagen":"./assets/img/cebolla.webp",
+        "precio": 1000
+    },
+    {
+        "id": 4,
+        "nombre": "Rúcula",
+        "imagen":"./assets/img/rucula.webp",
+        "precio": 1000
+    },
+    {
+        "id": 5,
+        "nombre": "Pepino",
+        "imagen":"./assets/img/pepino.webp",
+        "precio": 1000
+    },
+    {
+        "id": 6,
+        "nombre": "Morron",
+        "imagen":"./assets/img/morron.webp",
+        "precio": 1000
+    }          
+]

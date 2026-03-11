@@ -4,28 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entregable Taboada Gabriel</title>
-
+    <title>Simulador de pedidos online de hamburguesas :: Taboada Gabriel</title>
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- libreria Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <!-- TOASTIFY -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">        
     <link rel="stylesheet" href="./assets/css/estilo.css">
-    <script defer src="./assets/js/main.js"></script>
+    <script defer src="./assets/js/mainV2.js"></script>
 </head>
 
 <body>
-    <header>
-
-    </header>
+<header>
+    <div class="banner-hero">
+        <div class="banner-content">
+            <h1 class="banner-title">Burger House</h1>
+            <p class="banner-subtitle">Armá tu hamburguesa perfecta</p>
+            <span class="banner-badge">Pedidos Online</span>
+        </div>
+    </div>
+</header>
     <main>
         <section class="container">
             <div class="row">
                 <div class="col">
-                    <h1>Simulador de pedidos online de hamburguesas :: Taboada Gabriel</h1>
+                    <!-- <h1>Simulador de pedidos online de hamburguesas :: Taboada Gabriel</h1> -->
                 </div>
             </div>
+
             <div class="row">
                 <div class="col d-flex justify-content-between align-items-center m-2">
                     <div id="Menu-contenedor" class="d-flex">
@@ -37,17 +45,22 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col d-flex justify-content-center align-items-center m-2">
+                <div class="col">
+                    <h2 class="titulo">hace tu pedido</h2>
+                </div>
+            </div>            
+            <div class="row">
+                <div class="col-6 d-flex justify-content-center align-items-center m-2">
                     <div id="Menu-seleccion" class="d-flex">
 
                     </div>
                 </div>
-                <div class="col d-flex justify-content-center align-items-center m-2">
+                <div class="col d-flex justify-content-center  m-2">
                     <div id="Verduras-seleccion" class="d-flex">
 
                     </div>
                 </div>
-                <div class="col d-flex justify-content-center align-items-center m-2">
+                <div class="col d-flex justify-content-center  m-2">
                     <div id="Toppings-seleccion" class="d-flex">
 
                     </div>

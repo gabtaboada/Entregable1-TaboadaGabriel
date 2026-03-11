@@ -1,0 +1,93 @@
+/* CARDS DE COMBOS */
+#ContenedorBurger {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 8px;
+}
+
+.card-combo {
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.card-combo-imagen {
+    position: relative;
+    width: 128px;
+    min-width: 128px;
+    height: 130px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.card-combo-info {
+    flex: 1;
+    padding: 2px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.card-combo-nombre {
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: #1e2939;
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.card-combo-descripcion {
+    font-size: 0.8rem;
+    color: #6a7282;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-combo-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    gap: 8px;
+}
+
+.card-combo-precio {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1e2939;
+}
+
+.btn-agregar-combo {
+    background-color: #FCBF02;
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+
+    &:hover {
+        background-color: #e0aa00;
+    }
+}

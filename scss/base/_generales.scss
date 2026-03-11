@@ -14,15 +14,19 @@ h1 {
     @extend %marginH;
     @extend %paddingH;
 }
-h2{
+
+h2 {
     @extend %marginH;
     @extend %paddingH;
 }
-h3{
+
+h3 {
     margin: 10px 0;
 }
-h5{
+
+h5 {
     @extend %marginH;
-    @extend %paddingH;    
+    @extend %paddingH;
 }
+
 /* FIN GENERALES */

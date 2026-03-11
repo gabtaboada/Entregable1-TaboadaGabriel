@@ -1,4 +1,15 @@
 @use 'base/fonts';
+
 @use 'base/reset';
+@use 'utilities/variables';
 @use 'base/generales';
+
 @use 'section/main';
+@use 'componentes/banner';
+@use 'componentes/buttons';
+@use 'componentes/titulos-seccion';
+@use 'componentes/combos';
+@use 'componentes/seleccion-items'; 
+
+@use 'componentes/sweet-alert';
+@use 'pages/carrito';

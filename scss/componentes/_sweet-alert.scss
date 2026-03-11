@@ -1,0 +1,154 @@
+/* SWEET ALERT CUSTOMIZACIÓN */
+
+// Tu código existente...
+.card-combo-imagen-sweet {
+    position: relative;
+    width: 160px;
+    min-width: 128px;
+    height: 160px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.swal-card {
+    margin: 0 auto;
+}
+
+.swal-adicionales {
+    margin: 8px 0;
+    text-align: left;
+}
+
+.swal-adicionales-titulo {
+    display: flex;
+    justify-content: left;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6a7282;
+    text-transform: uppercase;
+    margin: 4px 0;
+}
+
+.swal-badges {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 6px;
+    font-size: 0.7rem;
+    margin: 4px 0;
+}
+
+.badge-adicional {
+    background-color: #fffbea;
+    border: 1px solid #FCBF02;
+    color: #364153;
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+.sin-adicional {
+    font-size: 0.72rem;
+    color: #99a1af;
+    font-style: italic;
+}
+
+/* ========================================= */
+/* PERSONALIZACIÓN SOLO DE BOTONES SWEETALERT */
+/* ========================================= */
+
+// BOTÓN CONFIRMAR (principal - amarillo)
+.swal2-title{
+    font-size: 1.2em;
+}
+.swal2-popup .swal2-actions .swal2-confirm.swal2-styled {
+    background: #FCBF02;
+    color: #1e2939;
+    border: 2px solid #FCBF02;
+    border-radius: 50px;
+    padding: 10px 30px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: #e0aa00;
+        border-color: #e0aa00;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 3px rgba(252, 191, 2, 0.3);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+// BOTÓN DENEGAR/SECUNDARIO (gris transparente)
+.swal2-popup .swal2-actions .swal2-deny.swal2-styled {
+    background: transparent;
+    color: #6c757d;
+    border: 1px solid #d1d5dc;
+    border-radius: 50px;
+    padding: 10px 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: #6c757d;
+        color: white;
+        border-color: #6c757d;
+        transform: translateY(-1px);
+        box-shadow: 0 5px 12px rgba(108, 117, 125, 0.25);
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.2);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+// BOTÓN CANCELAR (rojo transparente)
+.swal2-popup .swal2-actions .swal2-cancel.swal2-styled {
+    background: transparent;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 50px;
+    padding: 10px 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: #dc3545;
+        color: white;
+        border-color: #dc3545;
+        transform: translateY(-1px);
+        box-shadow: 0 5px 12px rgba(220, 53, 69, 0.25);
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
