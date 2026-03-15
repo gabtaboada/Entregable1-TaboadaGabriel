@@ -1,0 +1,227 @@
+/* FORMULARIO DE DATOS DE ENVÍO */
+
+.formulario-envio {
+    max-width: 800px;
+    margin: 40px auto;
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.formulario-titulo {
+    text-align: center;
+    margin-bottom: 30px;
+
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #1e2939;
+        margin-bottom: 5px;
+    }
+
+    p {
+        color: #6a7282;
+        font-size: 0.95rem;
+    }
+}
+
+.formulario-seccion {
+    margin-bottom: 25px;
+}
+
+.formulario-seccion-titulo {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e2939;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #FCBF02;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    i {
+        color: #FCBF02;
+        font-size: 1.2rem;
+    }
+}
+
+.form-label {
+    font-weight: 600;
+    color: #364153;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+
+    .required {
+        color: #dc3545;
+        margin-left: 3px;
+    }
+}
+
+.form-control,
+.form-select {
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+
+    &:focus {
+        border-color: #FCBF02;
+        box-shadow: 0 0 0 3px rgba(252, 191, 2, 0.1);
+    }
+
+    &.is-invalid {
+        border-color: #dc3545;
+    }
+
+    &.is-valid {
+        border-color: #28a745;
+    }
+}
+
+.invalid-feedback {
+    font-size: 0.85rem;
+}
+
+.btn-confirmar-pedido {
+    width: 100%;
+    background: #FCBF02;
+    color: #1e2939;
+    border: 2px solid #FCBF02;
+    border-radius: 50px;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 10px 0;
+
+    &:hover {
+        background: #e0aa00;
+        border-color: #e0aa00;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.btn-volver {
+    width: 100%;
+    background: transparent;
+    color: #6c757d;
+    border: 1px solid #d1d5dc;
+    border-radius: 50px;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+/* MEDIOS DE PAGO */
+
+.metodos-pago {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.metodo-pago-opcion {
+    cursor: pointer;
+    margin: 0;
+
+    input[type="radio"] {
+        display: none;
+    }
+
+    .metodo-pago-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 16px 20px;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        transition: all 0.25s ease;
+        background: #fafafa;
+
+        &:hover {
+            border-color: #FCBF02;
+            background: #fffbea;
+        }
+    }
+
+    .metodo-pago-circulo {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.25s ease;
+
+        i {
+            color: #6a7282;
+            font-size: 1.2rem;
+            transition: color 0.25s ease;
+        }
+    }
+
+    .metodo-pago-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .metodo-pago-nombre {
+        font-weight: 700;
+        color: #1e2939;
+        font-size: 0.95rem;
+    }
+
+    .metodo-pago-desc {
+        color: #6a7282;
+        font-size: 0.82rem;
+    }
+
+    .metodo-pago-check {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        border: 2px solid #d1d5dc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.25s ease;
+
+        i {
+            color: white;
+            font-size: 0.7rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+    }
+
+    // Estado seleccionado
+    input[type="radio"]:checked + .metodo-pago-card {
+        border-color: #FCBF02;
+        background: #fffbea;
+        box-shadow: 0 0 0 3px rgba(252, 191, 2, 0.15);
+
+        .metodo-pago-circulo {
+            background: #FCBF02;
+
+            i { color: #1e2939; }
+        }
+
+        .metodo-pago-check {
+            background: #FCBF02;
+            border-color: #FCBF02;
+
+            i { opacity: 1; }
+        }
+    }
+}

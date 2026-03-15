@@ -1,16 +1,47 @@
 const menu = [1, 2, 3]
 
+const UrlVerduras = "../assets/db/verduras.json"
+const UrlToppings = "../assets/db/toppings.json"
+const precioVerdura = 1000
+const precioTopping = 600
+function obtenerVerduras() {
+    fetch(UrlVerduras)
+        .then(response => response.json())
+        .then(dataVerduras => {
+            return fetch(UrlToppings)
+                .then(response => response.json())
+                .then(dataToppings => {
+                    renderMenu(menu, dataVerduras, dataToppings)
+                })
+        })
+}
 
-function renderMenu(menuArray) {
+
+/*
+function obtenerToppings(idPedido, comboId, combosArmados) {
+    fetch(UrlToppings)
+        .then(response => response.json())
+        .then(data => {
+            renderSeleccionToppings(idPedido, comboId, data, combosArmados)
+            console.log(data)
+        })
+        .catch(err => console.log("Error detectado: ", err))
+        .finally(() => console.log("Peticion finalizada"))
+}
+*/
+function renderMenu(menuArray, verduras, toppings) {
     const contenedor = document.getElementById("Menu-contenedor")
-    menuArray.forEach(opcionElegida => {
+    for (const opcionElegida of menuArray) {
+        /*       
+           }
+           menuArray.forEach(opcionElegida => {*/
         const card = document.createElement("div")
         switch (opcionElegida) {
             case 1:
                 card.innerHTML = `<button id="${opcionElegida}" class="m-2 btn btn-success">Nuevo Pedido</button>`
                 break
             case 2:
-                //card.innerHTML = `<button id="${opcionElegida}" class="m-2 btn btn-warning">Agregar combo</button>
+
                 card.innerHTML = `<button id="btn-agregarCombo" class="m-2 btn btn-warning">Agregar combo</button>`
                 break
             case 3:
@@ -24,7 +55,7 @@ function renderMenu(menuArray) {
             menuOpcion(opcionElegida)
         }
 
-    })
+    }//)
     /* ICONO CARRITO */
     const contenedorCarrito = document.getElementById("Menu-carrito")
     const cardCarrito = document.createElement("div")
@@ -35,15 +66,16 @@ function renderMenu(menuArray) {
                             <span id="span-Carrito" class="position-absolute bottom-0 start-100 translate-middle badge rounded-pill bg-warning d-none">0
                             </span>`
     contenedorCarrito.appendChild(cardCarrito)
-    const btnCarrito = document.getElementById("btn-Carrito")
+    // const btnCarrito = document.getElementById("btn-Carrito")
 
-    
+
     /* HASTA ACA EL ICONO DEL CARRITO */
-    RenderCarrito()
+    RenderCarrito(verduras, toppings)
+
     ListenerCarrito()
 }
 function menuOpcion(opcion, combosArmados) {
-    console.log(opcion)
+    //console.log(opcion)
     let idPedido = 1
     switch (opcion) {
         case 1:
@@ -72,6 +104,9 @@ function menuOpcion(opcion, combosArmados) {
                     }
                 });
             } else {
+                const mensaje = "nuevoPedido"
+                /* PROBAR AGREGADOP 19:48*/
+                localStorage.setItem("volverCarrito", mensaje)
                 window.location.href = "../index.html"
                 //console.log("else de carrito>0")
                 // renderSeleccionCombo(idPedido, combosArmados)
@@ -84,137 +119,252 @@ function menuOpcion(opcion, combosArmados) {
             window.location.href = "../index.html"
             break
         case 3:
-            console.log("Salir del sistema")
+            window.location.href = "./buscar-pedido.html"
             break
         default: Swal.fire("Revisar codigo porque el menu esta hardcodeado, en este momento es un array con valores 1,2,3");
     }
 }
 //recupero el id del pedido
-function RenderCarrito() {
+function RenderCarrito(verduras, toppings) {
+    console.log(verduras)
+    console.log(toppings)
     const carrito = JSON.parse(localStorage.getItem("carrito"))
-    console.log(carrito)
+    //console.log(carrito)
+    let totalReduce = 0
+    if ((carrito)) {
+        // console.log("existe carrito")
+        totalReduce = carrito.reduce((contador, combo) => contador + combo.precioTotal, 0)
+    } else {
+        // console.log("carritovacio")
+        totalReduce = 0
+    }
     const burgerContenedor = document.getElementById("carrito")
-    console.log(carrito)
-    let total = 0
-    const totalReduce = carrito.reduce((contador, combo) => contador + combo.precioTotal, 0)
-    console.log("total con reduce " + totalReduce)
-
-    carrito.forEach(combo => {
-        const adicionales = combo.adicionales
-        console.log("adicionales " + adicionales)
-        if (adicionales == "") {
-            const mensajeTitulo = "Sin adicionales"
-        } else {
-            const mensajeTitulo = "Adicionales"
-        }
-        total += combo.precioTotal
-        const card = document.createElement("div")
-        card.id = "cardCombo" + combo.id
-        card.innerHTML = `  <div class="card-combo w-100" >
-                                <div class="card-combo-imagen-carrito">
-                                    <img src="../${combo.imagen}" alt="${combo.nombre}" loading="lazy">
-                                </div>
-                                <div class="card-combo-info">
-                                    <div>
-                                        <h3 class="card-combo-nombre">${combo.nombre}</h3>
-                                        <p class="card-combo-descripcion">${combo.descripcion}</p>
-                                        <p class="card-combo-descripcion"><strong>${combo.adicionales ? "Adicionales" : "Sin adicionales"}</strong>${combo.adicionales ? ": " + combo.adicionales : ""}</p>
-                                        <p class="card-combo-descripcion">$ ${combo.precioCombo}</p>
-                                    </div>
-
-                                </div>
-                                <div class="d-flex flex-column gap-1 justify-content-center gap-3 me-2">
-                                        <div class="contenedor-cantidad"> 
-                                                    <button id="${combo.id}" class="btn-cantidad agregarRestar" value="restar">−</button> 
-
-                                                    <span id="contador${combo.id}">${combo.cantidadCombo}</span>
-
-                                                    <button id="${combo.id}" class="btn-cantidad agregarRestar" value="sumar">+</button>  
-                                        </div>
-                                        <span class="card-combo-precio" id="idPrecio${combo.id}">$ ${combo.precioTotal}</span>
-                                        <button id="${combo.id}" class="btn-eliminar-combo">
-                                            <i class="fas fa-trash-alt"></i> Eliminar
-                                        </button>
- 
-                                </div>
-                            </div>
-                        `
-        card.className = "d-flex flex-row justify-content-between align-items-center m-2"
-        burgerContenedor.appendChild(card)
-        const boton = card.querySelector(".btn-eliminar-combo")
-        boton.onclick = () => {
-            eliminarCombo(combo.id, carrito)
-        }
-        const botones = document.querySelectorAll(".agregarRestar")
-        console.log(botones)
-        botones.forEach((boton) => {
-            boton.onclick = (e) => {
-                const value = e.currentTarget.value
-                const botonId = e.currentTarget.id
-                agregarRestar(botonId, value)
+    if (totalReduce > 0) {
+        let total = 0
+        carrito.forEach(combo => {
+            const adicionales = combo.adicionales
+            console.log("adicionales " + adicionales)
+            if (adicionales == "") {
+                const mensajeTitulo = "Sin adicionales"
+            } else {
+                const mensajeTitulo = "Adicionales"
             }
-        })
+            total += combo.precioTotal
+            const card = document.createElement("div")
+            card.id = "cardCombo" + combo.id
+            card.innerHTML = `  <div class="card-combo-carrito w-100" >
+                                        <div class="card-combo-imagen-carrito">
+                                            <img src="../${combo.imagen}" alt="${combo.nombre}" loading="lazy">
+                                        </div>
+                                        <div class="card-combo-info">
+                                            <div>
+                                                <h3 class="card-combo-nombre">${combo.nombre}</h3>
+                                                <p class="card-combo-descripcion">${combo.descripcion}</p>
+                                                <p class="card-combo-descripcion" >
+                                                    <span id="adicionales${combo.id}"><strong>
+                                                         ${combo.adicionales ? "Adicionales" : "Sin adicionales"}</strong>${combo.adicionales ? ": " + combo.adicionales : ""}
+                                                    </span>
+                                                <button class="btn-editar " id="${combo.id}" >
+                                                    <img src="../assets/img/editar.webp" alt="Editar">
+                                                </button>                                                
+                                                </p>
+                                                <p class="card-combo-descripcion">$ ${combo.precioCombo}</p>
+                                            </div>
 
-    })
-    const cardTotal = document.createElement("div")
-    cardTotal.className = "d-flex justify-content-end w-100 mt-3 px-2"
-    cardTotal.innerHTML = `
-        <div class="card-total">
-            <div class="card-total-linea">
-                <span class="card-total-label" id="cantidadCombos">Subtotal (${carrito.length} combo${carrito.length !== 1 ? "s" : ""})</span>
-                <span class="card-total-valor" id="subtotal-final-listener">$ ${total}</span>
-            </div>
-            <div class="card-total-divider"></div>
-            <div class="card-total-linea">
-                <span class="card-total-final">Total</span>
-                <span class="card-total-final " id="total-final-listener">$ ${total}</span>
-            </div>
-            <button class="btn-confirmar">Confirmar pedido</button>
-        </div>`
-    burgerContenedor.appendChild(cardTotal)
+                                        </div>
+                                        <div class="d-flex flex-column gap-1 justify-content-center gap-3 me-2">
+                                                <div class="contenedor-cantidad"> 
+                                                            <button id="${combo.id}" class="btn-cantidad agregarRestar" value="restar">−</button> 
+
+                                                            <span id="contador${combo.id}">${combo.cantidadCombo}</span>
+
+                                                            <button id="${combo.id}" class="btn-cantidad agregarRestar" value="sumar">+</button>  
+                                                </div>
+                                                <span class="card-combo-precio" id="idPrecio${combo.id}">$ ${combo.precioTotal}</span>
+                                                <button id="${combo.id}" class="btn-eliminar-combo">
+                                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                                </button>
+        
+                                        </div>
+                                    </div>
+                                `
+            card.className = "d-flex flex-row justify-content-between align-items-center m-2"
+            burgerContenedor.appendChild(card)
+            const boton = card.querySelector(".btn-eliminar-combo")
+            boton.onclick = () => {
+                eliminarCombo(combo.id, carrito)
+            }
+            const botones = document.querySelectorAll(".agregarRestar")
+            console.log(botones)
+            botones.forEach((boton) => {
+                boton.onclick = (e) => {
+                    const value = e.currentTarget.value
+                    const botonId = e.currentTarget.id
+                    agregarRestar(botonId, value)
+                }
+            })
+            const botonEditar = document.querySelectorAll(".btn-editar")
+            botonEditar.forEach(e => {
+                e.onclick = () => {
+                    console.log("editar")
+                    console.log(e.id)
+                    editarAdicionales(e.id, verduras, toppings, carrito)
+                }
+            })
+
+        })
+        const cardTotal = document.createElement("div")
+        cardTotal.className = "d-flex justify-content-end w-100 mt-3 px-2"
+        cardTotal.id = "contenedorTotal"
+        cardTotal.innerHTML = `
+                <div class="card-total">
+                    <div class="card-total-linea">
+                        <span class="card-total-label" id="cantidadCombos">Subtotal (${carrito.length} combo${carrito.length !== 1 ? "s" : ""})</span>
+                        <span class="card-total-valor" id="subtotal-final-listener">$ ${total}</span>
+                    </div>
+                    <div class="card-total-divider"></div>
+                    <div class="card-total-linea">
+                        <span class="card-total-final">Total</span>
+                        <span class="card-total-final " id="total-final-listener">$ ${total}</span>
+                    </div>
+                    <button class="btn-confirmar" id="btn-confirmar">Confirmar pedido</button>
+                    <button class="btn-vaciar-carrito" id="btn-vaciar">
+                        <i class="fas fa-trash-can"></i> Vaciar carrito
+                    </button>
+                </div>`
+        burgerContenedor.appendChild(cardTotal)
+        const botonVaciar = document.getElementById("btn-vaciar")
+        botonVaciar.onclick = () => {
+            vaciarCarrito()
+        }
+        const botonConfirmar = document.getElementById("btn-confirmar")
+        botonConfirmar.onclick = () => {
+            Swal.fire({
+                title: "¿Confirmar pedido?",
+                showDenyButton: false,
+                showCancelButton: false,
+                confirmButtonText: "Confirmar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "./finalizar.html"
+                } else if (result.isDenied) {
+
+                }
+            });
+
+        }
+    } else {
+        console.log("NO ENTRA AL RENDER")
+
+        renderCarritoVacio()
+    }
+
 }
+
 function eliminarCombo(id) {
+
     const carritoActual = JSON.parse(localStorage.getItem("carrito"))
     const nuevoCarrito = carritoActual.filter(combo => combo.id !== id)
     const total = nuevoCarrito.reduce((contador, combo) => contador + combo.precioTotal, 0)
     const cantidadCombo = nuevoCarrito.reduce((contador, combo) => contador + combo.cantidadCombo, 0)
 
-    const cardSubTotal = document.getElementById("subtotal-final-listener")
-    cardSubTotal.innerHTML = "$ " + total
-    const cardTotal = document.getElementById("total-final-listener")
-    cardTotal.innerHTML = "$ " + total 
-/*
-    const cardSubTotal = document.getElementById("total-final-listener")
-    cardSubTotal.innerHTML = "$ " + total
-    const cardTotal = document.getElementById("subtotal-final-listener")
-    cardTotal.innerHTML = "$ " + total 
-
-*/    
-    const cardCantidad = document.getElementById("cantidadCombos")
-    cardCantidad.innerHTML = cantidadCombo
-
+    // Actualizar localStorage
     localStorage.setItem("carrito", JSON.stringify(nuevoCarrito))
-    const cardEliminar = document.getElementById("cardCombo" + id)
+
+    // Verificar si el carrito quedó vacío
+    if (cantidadCombo == 0) {
+        // ← VERIFICAR QUE LOS ELEMENTOS EXISTAN ANTES DE REMOVERLOS
+        const cardTotal = document.getElementById("contenedorTotal")
+        const cardCarrito = document.getElementById("carrito")
+        const cardTituloCarrito = document.getElementById("tituloCarrito")
+        if (cardTotal) {
+            cardTotal.remove()
+        }
+        if (cardCarrito) {
+            cardCarrito.remove()
+        }
+        if (cardTituloCarrito) {
+            cardTituloCarrito.remove()
+        }
+
+        renderCarritoVacio()
+    } else {
+        // Actualizar totales solo si hay combos
+        const cardSubTotal = document.getElementById("subtotal-final-listener")
+        const cardTotal = document.getElementById("total-final-listener")
+        const cardCantidad = document.getElementById("cantidadCombos")
+
+        if (cardSubTotal) cardSubTotal.innerHTML = "$ " + total
+        if (cardTotal) cardTotal.innerHTML = "$ " + total
+        if (cardCantidad) cardCantidad.innerHTML = cantidadCombo
+
+        // Eliminar la card del combo
+        const cardEliminar = document.getElementById("cardCombo" + id)
+        if (cardEliminar) cardEliminar.remove()
+    }
+
+    // Actualizar el listener del carrito
     ListenerCarrito()
-    cardEliminar.remove()
+
+    // Mostrar notificación
+    /*
     Toastify({
         text: "Combo eliminado",
         duration: 1500,
         destination: "#",
         newWindow: false,
         close: false,
-        gravity: "top", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        stopOnFocus: true, // Prevents dismissing of toast on hover
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
         style: {
             background: "linear-gradient(to right, #e40014, #ff6568)",
         },
-        onClick: function () { } // Callback after click
-    }).showToast();
+        onClick: function () { }
+    }).showToast();*/
+    const msj ="Carrito actualizado"
+    const color = "linear-gradient(to right, #e40014, #ff6568)"
+    msjToastify(msj,color)    
+}
+function renderCarritoVacio() {
+    const cardCarrito = document.getElementById("carrito")
+    const cardTituloCarrito = document.getElementById("tituloCarrito")
+    if (cardCarrito) {
+        cardCarrito.remove()
+    }
+    if (cardTituloCarrito) {
+        cardTituloCarrito.remove()
+    }
+    const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
+    console.log("en funcion carrito vacio")
+    console.log(carritoRecuperado)
+
+    const contenedor = document.getElementById("contenedor-carrito-vacio")
+    const card = document.createElement("div")
+    card.id = "carrito-vacio"
+    card.className = "carrito-vacio "
+    card.innerHTML = `
+                    <!--<div id="carrito-vacio" class="carrito-vacio "> -->
+                        <div class="carrito-vacio-icono">
+                            <i class="fas fa-burger"></i>
+                        </div>
+
+                        <h3>Tu carrito está vacío</h3>
+                        <p>Agrega un combo para empezar tu pedido</p>
+
+                        <a href="../index.html" class="btn btn-warning mt-2">
+                            <i class="fas fa-arrow-left"></i> Ir al menú
+                        </a>
+                 <!-- </div>                     -->
+                    `
+    contenedor.appendChild(card)
+
 }
 function agregarRestar(id, value) {
     const carritoActual = JSON.parse(localStorage.getItem("carrito"))
     const nuevoCarrito = carritoActual.find(combo => combo.id == id)
+    console.log(carritoActual)
+    console.log(nuevoCarrito)
     //let contador = nuevoCarrito.cantidad
     if (value == "sumar") {
         nuevoCarrito.cantidadCombo++
@@ -228,22 +378,85 @@ function agregarRestar(id, value) {
     const cantidad = document.getElementById("contador" + id)
     cantidad.innerHTML = nuevoCarrito.cantidadCombo
     const precio = document.getElementById("idPrecio" + id)
-    console.log("PRECIO")
-    console.log(precio)
+    //  console.log("PRECIO")
+    //  console.log(precio)
     precio.innerHTML = "$ " + nuevoCarrito.precioTotal
-    const total = carritoActual.reduce((contador, combo) => contador + combo.cantidadCombo, 0)
-
+    //const total = carritoActual.reduce((contador, combo) => contador + combo.cantidadCombo, 0)
+    const msj ="Carrito actualizado"
+    const color = "linear-gradient(to right, #00b09b, #96c93d)"
+    msjToastify(msj,color)
     ListenerCarrito()
 }
-function ListenerCarrito() {
-
-
+function editarAdicionales(id, verduras, toppings, carrito) {
+    console.log(verduras)
+    console.log(toppings)
+    //console.log(carrito)
     const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
-    const totalCantidades = carritoRecuperado.reduce((total,cantidad) => total + cantidad.cantidadCombo, 0)
-    const totalPrecio = carritoRecuperado.reduce((total,cantidad) => total + cantidad.precioTotal, 0)
-    console.log("total cantidades para carrito "+totalCantidades)   
-    console.log("total con carrito recuperado "+carritoRecuperado.length) 
+    const combo = carritoRecuperado.find(combo => combo.id == id)
+    console.log(combo)
+    //console.log(combo.adicionales)
+    const adicionalesArray = combo.adicionales.split(" - ")
+    // console.log(adicionalesArray)
+    let html = `<div style="display:flex; gap:20px;">`
+
+    html += `<div style="flex:1;"><strong>Verduras</strong>`
+    verduras.forEach(verdura => {
+        html += `
+        <label class="verdura-item">
+            <img src=".${verdura.imagen}" alt="${verdura.nombre}" class="verdura-foto">
+            <span class="verdura-nombre" style="font-size:0.8rem">${verdura.nombre}</span>
+            <div class="verdura-derecha">
+                <input type="checkbox" value="${verdura.nombre}" class="check-verdura verdura-check" ${check(verdura.nombre, adicionalesArray)}> 
+            </div>
+        </label>
+    `
+    })
+    html += `</div>`
+
+    html += `<div style="flex:1;"><strong>Toppings</strong>`
+    toppings.forEach(topping => {
+        html += `
+        <label class="Topping-item">
+            <img src=".${topping.imagen}" alt="${topping.nombre}" class="Topping-foto">
+            <span class="Topping-nombre" style="font-size:0.8rem">${topping.nombre}</span>
+            <div class="Topping-derecha">
+                <input type="checkbox" value="${topping.nombre}" class="check-toppings Topping-check" ${check(topping.nombre, adicionalesArray)}> 
+            </div>
+        </label>
+    `
+    })
+    html += `</div>`
+
+    html += `</div>`
+
+    Swal.fire({
+        title: "Editar <strong>adicionales</strong>",
+        // icon: "info",
+        html: html,
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        confirmButtonText: `
+        <i class="fa fa-thumbs-up"></i> Confirmar
+    `,
+        confirmButtonAriaLabel: "Confirmar",
+        cancelButtonText: "Cancelar",
+        // cancelButtonAriaLabel: "Thumbs down"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            actualizarAdicionales(id)
+        } else if (result.isDenied) {
+
+        }
+    });
+}
+function ListenerCarrito() {
+    const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
+    let totalCantidades = 0
+    let totalPrecio = 0
     if (carritoRecuperado) {
+        totalCantidades = carritoRecuperado.reduce((total, cantidad) => total + cantidad.cantidadCombo, 0)
+        totalPrecio = carritoRecuperado.reduce((total, cantidad) => total + cantidad.precioTotal, 0)
         const contCarrito = document.getElementById("span-Carrito")
         contCarrito.classList.remove("d-none")
         if (carritoRecuperado.length == 0) {
@@ -252,7 +465,6 @@ function ListenerCarrito() {
             botonAgregar.classList.add("disabled")
             contCarrito.classList.add("d-none")
         } else {
-            //contCarrito.innerText = carritoRecuperado.length
             contCarrito.innerText = totalCantidades
             const botonAgregar = document.getElementById("btn-agregarCombo")
             botonAgregar.classList.remove("disabled")
@@ -263,21 +475,133 @@ function ListenerCarrito() {
         const botonAgregar = document.getElementById("btn-agregarCombo")
         botonAgregar.classList.add("disabled")
     }
-
-    const SubtotalPrecio = document.getElementById("subtotal-final-listener")
-    SubtotalPrecio.innerHTML = totalPrecio
-    const cardTotal = document.getElementById("total-final-listener")
-    cardTotal.innerHTML = totalPrecio
-    const cardSubTotal = document.getElementById("cantidadCombos")
-    cardSubTotal.innerHTML = "$ " + totalCantidades
-
-
-    if(totalCantidades>1){
-        cardSubTotal.innerHTML = "Subtotal ("+totalCantidades+" combos)"
-    }else{
-        cardSubTotal.innerHTML = "Subtotal ("+totalCantidades+" combo)"
-    }
-
+    listenerTotal(totalCantidades, totalPrecio)
 }
-renderMenu(menu)
+function vaciarCarrito() {
+    Swal.fire({
+        title: "¿Desea vaciar el carrito?",
+        text: "Se eliminarán todos los combos",
+        icon: "warning",
+        showDenyButton: false,
+        showCancelButton: true,
+        confirmButtonText: "Vaciar",
+        cancelButtonText: "Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.removeItem("carrito")
+            localStorage.setItem("volverCarrito", "f")
+            const msj ="Carrito eliminado"
+            const color = "linear-gradient(to right, #e40014, #ff6568)"
+            msjToastify(msj,color)              
+            ListenerCarrito()
+            renderCarritoVacio()
+        } else if (result.isDenied) {
+            // Swal.fire("Changes are not saved", "", "info");
+
+        }
+
+    });
+}
+function listenerTotal(cantidad, totalPrecio) {
+    //* modificacion del subtotal y total *//   
+    if (cantidad > 0) {
+        const SubtotalPrecio = document.getElementById("subtotal-final-listener")
+        const cardTotal = document.getElementById("total-final-listener")
+        const cardSubTotal = document.getElementById("cantidadCombos")
+
+        // ← VERIFICAR QUE EXISTAN
+        if (SubtotalPrecio) {
+            SubtotalPrecio.innerHTML = "$ " + totalPrecio
+        }
+        if (cardTotal) {
+            cardTotal.innerHTML = "$ " + totalPrecio
+        }
+
+        if (cardSubTotal) {
+            if (cantidad > 1) {
+                cardSubTotal.innerHTML = "Subtotal (" + cantidad + " combos)"
+            } else {
+                cardSubTotal.innerHTML = "Subtotal (" + cantidad + " combo)"
+            }
+        }
+    } else {
+        borrarContenido("contenedorTotal")
+        const mensaje = "nuevoPedido"
+        localStorage.setItem("volverCarrito", mensaje)
+    }
+}
+function borrarContenido(SeccionABorrar) {
+    const BorrarSeccion = document.getElementById(SeccionABorrar)
+    if (BorrarSeccion) {  // ← AGREGAR ESTA VERIFICACIÓN
+        BorrarSeccion.innerHTML = ""
+    }
+}
+function check(nombre, adicionalesArray) {
+    return adicionalesArray.includes(nombre) ? "checked" : ""
+}
+function actualizarAdicionales(id) {
+    const carritoActual = JSON.parse(localStorage.getItem("carrito"))
+    console.log(carritoActual)
+    const carritoModificado = carritoActual.find(combo => combo.id == id)
+
+    const verdurasCheck = document.querySelectorAll(".check-verdura:checked")
+    const toppingsCheck = document.querySelectorAll(".check-toppings:checked")
+
+    let precioAdicionales = 0
+    let adicionales = ""
+    let cantidadAdicionales = 0
+    verdurasCheck.forEach(verdura => {
+        adicionales += adicionales ? " - " + verdura.value : verdura.value
+        precioAdicionales += precioVerdura
+    })
+
+    toppingsCheck.forEach(topping => {
+        adicionales += adicionales ? " - " + topping.value : topping.value
+        precioAdicionales += precioTopping
+    })
+    cantidadAdicionales = verdurasCheck.length + toppingsCheck.length
+
+    carritoModificado.adicionales=adicionales
+    carritoModificado.precioTotal = precioAdicionales + carritoModificado.precioCombo
+
+    console.log("carrito antes de hacer setitem, vamos a guardar carritoActual")
+    console.log(carritoActual)
+    localStorage.setItem("carrito", JSON.stringify(carritoActual))
+    //// FALTA RENDERIZAR PRECIOS, Y ACTUALIZAR CARRITO ////
+    const msj ="Carrito actualizado"
+    const color = "linear-gradient(to right, #00b09b, #96c93d)"
+    msjToastify(msj,color)
+    ListenerCarrito()
+    listenerAdicionales(id)
+}
+function listenerAdicionales(id){
+    const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
+    const combo = carritoRecuperado.find(combo => combo.id == id)
+    const textoAdicionales = document.getElementById("adicionales"+id)
+    textoAdicionales.innerHTML= `
+                                <strong>${combo.adicionales ? "Adicionales" : "Sin adicionales"}</strong>${combo.adicionales ? ": " + combo.adicionales : ""}
+                                `
+    const precio = document.getElementById("idPrecio" + id)
+    precio.innerHTML = "$ " + combo.precioTotal                                
+}
+function msjToastify(msj,color){
+    Toastify({
+//        text: "Combo eliminado",
+        text: msj,
+        duration: 1500,
+        destination: "#",
+        newWindow: false,
+        close: false,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+        style: {
+            //background: "linear-gradient(to right, #e40014, #ff6568)",
+            background: color,
+        },
+        onClick: function () { }
+    }).showToast();
+}
+obtenerVerduras()
+
 

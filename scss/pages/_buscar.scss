@@ -1,0 +1,24 @@
+.estado-pedido {
+    //background-color: #FCBF02;
+    //color: #1e2939;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+.estado-preparacion{
+    background-color: #FCBF02;
+    color: #1e2939;
+}
+.estado-entregado{
+    background-color: #28a745;
+    color: white;
+}
+.estado-cancelado{
+    background-color: #dc3545;
+    color: white;
+}
+.estado-no-encontrado{
+    background-color: #6c757d;
+    color: white;
+}

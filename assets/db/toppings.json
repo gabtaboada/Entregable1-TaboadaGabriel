@@ -20,19 +20,19 @@
     {
         "id": 4,
         "nombre": "Queso cheddar",
-        "imagen":"./assets/img/cebolla-caramelizada.webp",
+        "imagen":"./assets/img/cheddar.webp",
         "precio": 600
     },
     {
         "id": 5,
         "nombre": "Queso azul",
-        "imagen":"./assets/img/huevo-frito.webp",
+        "imagen":"./assets/img/roquefort.webp",
         "precio": 600
     },
     {
         "id": 6,
         "nombre": "Champiñones salteados",
-        "imagen":"./assets/img/bacon.webp",
+        "imagen":"./assets/img/hongos.webp",
         "precio": 600
     }          
 ]

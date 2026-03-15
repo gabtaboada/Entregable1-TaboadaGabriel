@@ -1,309 +1,334 @@
-/* ////////////////////////////////////  */
-const menu = [1, 2, 3]
-/*
-const CombosArmados = [
-    {
-        id: 1,
-        nombre: "CheeseBurger",
-        precio: 18000,
-    },
-    {
-        id: 2,
-        nombre: "BlueBurger",
-        precio: 19500,
-    },
-    {
-        id: 3,
-        nombre: "VeganBurger",
-        precio: 18750,
-    },
-    {
-        id: 4,
-        nombre: "BaconBurger",
-        precio: 19000,
-    },
+const Menu = [1, 2, 3]
 
-]
-*/
-const UrlCombos= "./assets/db/combos.json"
-const UrlVerduras= "./assets/db/verduras.json"
-const UrlToppings= "./assets/db/toppings.json"
-const ValorVerdura = 1000
-const ValorTopping = 600
-const Pedidos = []
-const PedidosId = []//declaro array que almacena cada ID de los pedidos
-function obtenerCombos(){
-    fetch(UrlCombos)
-    .then(response => response.json())
-    .then(data=> {
-        RenderMenu(menu, data)
-        console.log(data)
-    })
-    .catch(err => console.log("Error detectado: ",err))
-    .finally(() => console.log("Peticion finalizada"))
-}
-function obtenerVerduras(){
-    fetch(UrlVerduras)
-    .then(response => response.json())
-    .then(data=> {
-        //renderProductos(data)
-        RenderMenu(Menu, data)
-        console.log(data)
-    })
-    .catch(err => console.log("Error detectado: ",err))
-    .finally(() => console.log("Peticion finalizada"))
-}
-function obtenerToppings(){
-    fetch(UrlToppings)
-    .then(response => response.json())
-    .then(data=> {
-        //renderProductos(data)
-        RenderMenu(Menu, data)
-        console.log(data)
-    })
-    .catch(err => console.log("Error detectado: ",err))
-    .finally(() => console.log("Peticion finalizada"))
-}
+const UrlCombos = "../assets/db/combos.json"
+const UrlVerduras = "../assets/db/verduras.json"
+const UrlToppings = "../assets/db/toppings.json"
 
+let carrito =[]
 
-// Clase para crear el combo
-class Combo {
-    //static id = 0
-    constructor(IdPedido, idcombopedido, verdura1, verdura2, verdura3, toppings1, toppings2, toppings3, precio) {
-        this.id = IdPedido,
-            this.idcombopedido = idcombopedido,//seria el id del combo seleccionado
-            this.verdura1 = verdura1,
-            this.verdura2 = verdura2,
-            this.verdura3 = verdura3,
-            this.toppings1 = toppings1,
-            this.toppings2 = toppings2,
-            this.toppings3 = toppings3,
-            this.precio = precio
+const precioVerdura = 1000
+const precioTopping = 600
+
+//////  Creo una clase comboPedido que voy a guardar cada combo que se hacen en un pedido.
+//////  en un pedido puede haber varios combos. por este motivo hago la propiedad idPedido
+//////  que hace referencia al numero de pedido.
+class comboPedido {
+    //static id = 0 // no hago esto, porque si vuelvo al index, me pisa el id y arranca de 0 de nuevo
+    constructor(id,idPedido, idCombo, nombre,descripcion, adicionales, imagen,cantidadCombo,precioCombo,precioTotal) {
+            this.id = id,//
+            this.idPedido = idPedido,
+            this.idCombo = idCombo,//id del combo guardado en combos.json
+            this.nombre = nombre,
+            this.descripcion = descripcion,
+            this.adicionales = adicionales,
+            this.imagen = imagen,
+            this.cantidadCombo = cantidadCombo,
+            this.precioCombo = precioCombo,
+            this.precioTotal = precioTotal
     }
-
 }
-function ListenerCarrito() {
-    if (PedidosId == "") {
-        const contCarrito = document.getElementById("span-Carrito")
-        contCarrito.classList.add("d-none")
+
+function obtenerCombos() {
+    fetch(UrlCombos)
+        .then(response => response.json())
+        .then(data => {
+            
+            if(mensajeCarrito){
+                let idPedido = 1
+                const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
+                const idPedidos =pedidosGuardados.map(pedidos => pedidos.id)
+                console.log("ARRAY DE ID")
+                console.log(idPedidos)
+                //const maxId = Math.max(...idPedidos)
+                //console.log("maxID "+maxId)
+                let idMax =0
+                for (const id of idPedidos) {
+                    idMax = id
+                }
+                idPedido += idMax
+                console.log("con for of "+idMax)
+                console.log("idPedido"+idPedido)
+                console.log("mensaje del carrito "+mensajeCarrito)  
+                switch(mensajeCarrito){
+                    case "armadoCombo":
+                        console.log("ARMADO COMBO")
+                        renderSeleccionCombo(idPedido, data)
+                        break
+                    case "nuevoPedido":
+                        
+                        console.log("NUEVO COMBO")
+                        renderSeleccionCombo(idPedido, data)
+                        break
+                    default : alert("hola")
+                    
+                }  
+            }
+
+            renderMenu(Menu, data)
+            //console.log(data)
+        })
+        .catch(err => console.log("Error detectado: ", err))
+        .finally(() => console.log("Peticion finalizada"))
+}
+function obtenerVerduras(idPedido, comboId, combosArmados) {
+    fetch(UrlVerduras)
+        .then(response => response.json())
+        .then(data => {
+            renderSeleccionVerdura(idPedido, comboId, data, combosArmados)
+            //console.log(data)
+        })
+        .catch(err => console.log("Error detectado: ", err))
+        .finally(() => console.log("Peticion finalizada"))
+}
+function obtenerToppings(idPedido, comboId, combosArmados) {
+    fetch(UrlToppings)
+        .then(response => response.json())
+        .then(data => {
+            renderSeleccionToppings(idPedido, comboId, data, combosArmados)
+            //console.log(data)
+        })
+        .catch(err => console.log("Error detectado: ", err))
+        .finally(() => console.log("Peticion finalizada"))
+}
+function renderMenu(menuArray, combosArmados) {
+    const contenedor = document.getElementById("Menu-contenedor")
+    for (const opcionElegida of menuArray) {
+
+        const card = document.createElement("div")
+        switch (opcionElegida) {
+            case 1:
+                card.innerHTML = `<button id="${opcionElegida}" class="m-2 btn btn-success"> <i class="fas fa-plus-circle"></i> Nuevo Pedido</button>`
+                break
+            case 2:
+                // card.innerHTML = `<button id="${opcionElegida}" class="m-2 btn btn-warning btn-agregarCombo">Agregar combo</button>`
+                card.innerHTML = `<button id="btn-agregarCombo" class="m-2 btn btn-warning btn-agregarCombo"><i class="fas fa-hamburger"></i>Agregar combo</button>`
+                break
+            case 3:
+                card.innerHTML = `<button id="${opcionElegida}" class="m-2 btn btn-dark "><i class="fas fa-list-alt"></i>Ver estado del pedido</button>`
+                break
+            default: Swal.fire("Revisar codigo porque el menu esta hardcodeado, en este momento es un array con valores 1,2,3");
+        }
+        contenedor.appendChild(card)
+        const boton = card.querySelector("button")
+        console.log(boton)
+        boton.onclick = () => {
+            
+            menuOpcion(opcionElegida, combosArmados)
+            ListenerCarrito()
+            //borrarContenido("Menu-finalizar")
+        }
+    }//)
+    /* ICONO CARRITO */
+    const ContenedorCarrito = document.getElementById("Menu-carrito")
+    const cardCarrito = document.createElement("div")
+    cardCarrito.className = "position-relative d-inline-block"
+    cardCarrito.innerHTML = `
+                            <button id="btn-Carrito" class="btn-carrito btn p-0 border-0   bg-transparent">
+                            <img id="btn-Carrito" src="./assets/img/carrito.webp" class="img-VerTop" > </button>
+                            <span id="span-Carrito" class="position-absolute bottom-0 start-100 translate-middle badge rounded-pill bg-warning d-none">0
+                            </span>`
+    ContenedorCarrito.appendChild(cardCarrito)
+    const btnCarrito = document.getElementById("btn-Carrito")
+    btnCarrito.onclick = () => {
+        window.location.href = "./pages/carrito.html"
+    }
+    ListenerCarrito()
+    /* HASTA ACA EL ICONO DEL CARRITO */
+}
+function menuOpcion(opcion, combosArmados) {
+    console.log(opcion)
+    let idPedido = 1
+    const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
+    const idPedidos =pedidosGuardados.map(pedidos => pedidos.id)
+    console.log("ARRAY DE ID")
+    console.log(idPedidos)
+    //const maxId = Math.max(...idPedidos)
+    //console.log("maxID "+maxId)
+    let idMax =0
+    for (const id of idPedidos) {
+        idMax = id
+    }
+    idPedido += idMax
+    console.log("con for of "+idMax)
+    console.log("idPedido"+idPedido)
+    if (pedidosGuardados) {
 
     } else {
-        const contCarrito = document.getElementById("span-Carrito")
-        contCarrito.classList.remove("d-none")
-        contCarrito.innerText = PedidosId.length
+        //let idPedido = 1
+    }          
+    //let idPedido = 3
+    switch (opcion) {
+        case 1:
+            const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
+            if((carritoRecuperado) && (carritoRecuperado.length > 0) )
+            {
+                Swal.fire({
+                    title: "Tienes combos guardados en el carrito. Al iniciar un nuevo pedido, se perderán. ¿Deseas continuar?",
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "Continuar",
+                    denyButtonText: `Don't save`,
+                    cancelButtonText:"Cancelar",
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        carrito=[]
+                        localStorage.removeItem("carrito")
+                        ListenerCarrito()
+                        renderSeleccionCombo(idPedido, combosArmados)
+                    } else if (result.isDenied) {
+                    }
+                    });
+            }else{
+                console.log("else de carrito>0")
+                renderSeleccionCombo(idPedido, combosArmados)
+            }
+           // renderSeleccionCombo(idPedido, combosArmados)
+            break
+        case 2:
+            idPedido = 1
+            renderSeleccionCombo(idPedido, combosArmados)
+            console.log("Mostrar pedido")
+            break
+        case 3:
+            window.location.href ="./pages/buscar-pedido.html"
+            break
+        default: Swal.fire("Revisar codigo porque el menu esta hardcodeado, en este momento es un array con valores 1,2,3");
     }
 }
-function BorrarContenido(SeccionABorrar) {
-    const BorrarSeccion = document.getElementById(SeccionABorrar)
-    BorrarSeccion.innerHTML = ""
-}
 
-// function RenderAdicionales(tipoAdicional, adicional) {
-//     const divAdicionales = document.createElement("div")
-//     const imgAdicionales = document.createElement("img")
-//     const LabelAdicionales = document.createElement("label")
-//     LabelAdicionales.htmlFor = adicional
-//     LabelAdicionales.textContent = adicional
-//     switch (tipoAdicional) {
-//         case "verdura": imgAdicionales.src = ObtenerFotoVerdura(adicional)
-//             break
-//         case "topping": imgAdicionales.src = ObtenerFotoTopping(adicional)
-//             break
-//     }
-
-//     imgAdicionales.className = "img-VerTop mx-2"
-//     divAdicionales.appendChild(imgAdicionales)
-//     divAdicionales.appendChild(LabelAdicionales)
-//     return divAdicionales
-// }
-// function RenderMenuFinalizar(idPedido,ComboPedido) {
-
-//     //renderiamos el combo agregado.
-//     BorrarContenido("Menu-seleccion")
-//     BorrarContenido("Verduras-seleccion")
-//     BorrarContenido("Toppings-seleccion")
-//     BorrarContenido("Confirmar-seleccion")
-
-
-//     const Busqueda = CombosArmados.find(combo => combo.id === parseInt(ComboPedido.idcombopedido))
-//     console.log(Busqueda)
-//     //Agrego el combo
-//     const ContenedorCombo = document.getElementById("Menu-finalizar")
-//     const cardCombo = document.createElement("div")
-//     const imgCombo = document.createElement("img")
-//     cardCombo.className = "col d-flex flex-row class=justify-content-center align-items-center m-2"
-//     const LabelCombo = document.createElement("label")
-//     LabelCombo.htmlFor = Busqueda.nombre
-//     LabelCombo.textContent = Busqueda.nombre
-//     imgCombo.src = ObtenerFotoCombo(Busqueda.nombre)
-//     imgCombo.className = "img-combo mx-2"
-
-//     const msjFinalizar = document.getElementById("msj-finalizar")
-//     const cardMsjFinalizar = document.createElement("div")
-//     cardMsjFinalizar.innerHTML = "<p class='msjFinalizar'>Su combo fue agregado correctamente</p>"
-//     //cardMsjFinalizar.className = 
-//     cardCombo.appendChild(imgCombo)
-//     cardCombo.appendChild(LabelCombo)
-//     msjFinalizar.appendChild(cardMsjFinalizar)
-//     ContenedorCombo.appendChild(cardCombo)
-//     /// Agrego Verduras y toppings
-
-//     const cardAdicionales = document.createElement("div")
-//     cardAdicionales.className = "col d-flex flex-row class=justify-content-center align-items-center m-2"
-
-//     const VerdurasDelObjeto = [ComboPedido.verdura1, ComboPedido.verdura2, ComboPedido.verdura3]
-//     const ToppingsDelObjeto = [ComboPedido.toppings1, ComboPedido.toppings2, ComboPedido.toppings3]
-//     for (const verdura of VerdurasDelObjeto) {
-//         if (verdura) {
-//             const render = RenderAdicionales("verdura", verdura)
-//             cardAdicionales.appendChild(render)
-//         }
-//     }
-//     ContenedorCombo.appendChild(cardAdicionales)
-//     for (const topping of ToppingsDelObjeto) {
-//         if (topping) {
-//             const render = RenderAdicionales("topping", topping)
-//             cardAdicionales.appendChild(render)
-//         }
-
-//     }
-//     ContenedorCombo.appendChild(cardAdicionales)
-//     /// renderizo el precio
-//     const cardprecio = document.createElement("div")
-//     cardprecio.className = "col d-flex flex-column class=justify-content-center align-items-center m-2"
-//     cardprecio.innerHTML = `<p class="tituloPrecio"> Precio del combo </p>
-//                             <p class ="precio">$ ${ComboPedido.precio}</p>`
-//     ContenedorCombo.appendChild(cardprecio)
-//     const ContenedorBtnFinalizar = document.getElementById("btn-finalizar") 
-//     const cardBotones = document.createElement("div")
-//     cardBotones.className = "col d-flex flex-row class=justify-content-center align-items-center m-2 w-100"
-//     cardBotones.innerHTML = `<button id="btn-AgregarCombo" class="m-1 CombosClase btn btn-success  h-90">Agregar otro combo </      button>
-//                             <button id="btn-FinalizarPedido" class="m-1 CombosClase btn btn-success  h-90">Finalizar pedido</      button>`
-//     ContenedorBtnFinalizar.appendChild(cardBotones)
-//     //envio al local el id del pedido actual, que me sirve para renderizar el carrito
-
-//     localStorage.setItem("PedidoActual",idPedido)
-//     const btnCarrito = document.getElementById("btn-FinalizarPedido")
-//     btnCarrito.onclick = () => {
-//             window.location.href="./pages/carrito.html"
-//         }
-//     const btnAgregarCombo = document.getElementById("btn-AgregarCombo")
-//     btnAgregarCombo.onclick = () =>{
-//         BorrarContenido("btn-finalizar")
-//         BorrarContenido("msj-finalizar")
-//         BorrarContenido("Menu-finalizar")
-//         RenderSeleccionCombo(idPedido,CombosArmados)
-//     }
-// }
-
-function RenderConfirmarCombo(idPedido,PedidosId, idCombo, CombosArmados, Verduras, Toppings) {
-    console.log(Verduras)
-    console.log("confirmar combo")
-    //let Idpedido = idPedido
-    let Idpedido = 0
-    for (const pedido of PedidosId) {
-        Idpedido = parseInt(pedido)
-    }
-    Idpedido += 1
-
-    /*
-    IdPedidoRecuperado = JSON.parse(localStorage.getItem("PedidosId"))
-    const busqueda = IdPedidoRecuperado.find(id => id ===Idpedido)
-    console.log("busqueda")
-    console.log(busqueda)*/
-    PedidosId.push(Idpedido)// en este array guardo los numeros de pedidos para poder usarlo en los objetos creados que serian los combos pedidos
+function renderSeleccionCombo(idPedido, combosArmados) {
     const MenuSeleccion = document.getElementById("Menu-seleccion")
-    MenuSeleccion.innerHTML = ""
-    const VerdurasSeleccion = document.getElementById("Verduras-seleccion")
-    VerdurasSeleccion.innerHTML = ""
-    const ToppingsSeleccion = document.getElementById("Toppings-seleccion")
-    ToppingsSeleccion.innerHTML = ""
-    const ConfirmarSeleccion = document.getElementById("Confirmar-seleccion")
-    ConfirmarSeleccion.innerHTML = ""
-    const VerdurasSeleccionadas = []
-    const ToppingsSeleccionadas = []
-    const RecuperoCombo = CombosArmados.find(combo => combo.id === parseInt(idCombo))
-    //console.log(RecuperoCombo)
+    borrarContenido("Verduras-seleccion")
+    borrarContenido("Toppings-seleccion")
+    borrarContenido("btn-finalizar")
+    borrarContenido("msj-finalizar")
+    MenuSeleccion.innerHTML = ""// borro el contenedor por si vuelve a tocar  nuevo pedido
+    MenuSeleccion.className = "d-flex flex-column"
+    MenuSeleccion.innerHTML = "<p class='d-flex flex-column text-center     titulo-seccion'>Seleccione el combo</p><div class='d-flex flex-column' id='ContenedorBurger'></div>"
+    const burgerContenedor = document.getElementById("ContenedorBurger")
 
-    let precio = RecuperoCombo.precio
-    Verduras.forEach((Verdura, index) => {
-        precio += ValorVerdura
-        VerdurasSeleccionadas.push(Verdura.value)
-    })
-    Toppings.forEach((Topping, index) => {
-        precio += ValorTopping
-        ToppingsSeleccionadas.push(Topping.value)
+    combosArmados.forEach(combo => {
+        const card = document.createElement("div")
+        card.innerHTML = `<button id="${combo.id}" class="CombosClase">
+                            <div class="card-combo">
+                                <div class="card-combo-imagen">
+                                    <img src="${combo.imagen}" alt="${combo.nombre}" loading="lazy">
+                                </div>
+                                <div class="card-combo-info">
+                                    <div>
+                                        <h3 class="card-combo-nombre">${combo.nombre}</h3>
+                                        <p class="card-combo-descripcion">${combo.descripcion}</p>
+                                    </div>
+                                    <div class="card-combo-footer">
+                                        <span class="card-combo-precio">$ ${combo.precio}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>    
+                        `
+        card.className = "d-flex flex-row justify-content-between align-items-center m-2"
+        burgerContenedor.appendChild(card)
     })
 
-    const ComboPedido = new Combo(Idpedido, idCombo, VerdurasSeleccionadas[0], VerdurasSeleccionadas[1], VerdurasSeleccionadas[2], ToppingsSeleccionadas[0], ToppingsSeleccionadas[1], ToppingsSeleccionadas[2], precio)
-    Pedidos.push(ComboPedido)//En pedidos guardo cada combo que se pide, Idpedido correspende al numero de pedido, si tengo 3 combos del mismo pedido, van a repetir ese valor. De esta forma puedo identificar en el array pedidos[] todos los combos y agruparlos
-    const pedidosJSON = JSON.stringify(Pedidos)
-    const PedidosIdJSON =JSON.stringify(PedidosId)
-    
-    localStorage.setItem("pedidos",pedidosJSON)
-    localStorage.setItem("PedidosId",PedidosIdJSON)
-    ListenerCarrito()
-    RenderMenuFinalizar(idPedido,ComboPedido)
+    const Botones = document.querySelectorAll(".CombosClase")
+    Botones.forEach((boton) => {
+        boton.onclick = (e) => {
+            borrarContenido("Verduras-seleccion")
+            borrarContenido("Toppings-seleccion")
+            borrarContenido("Confirmar-seleccion")
+            const botonId = e.currentTarget.id
+            obtenerVerduras(idPedido, botonId, combosArmados)
+        }
+    })
+
 }
-function RenderAgregarCombo(idPedido,IdCombo) {
-    //console.log("id combo agregado "+IdCombo)
-    const borrar = document.getElementById("Btn-ContinuarAFinalizar")
-    borrar.parentElement.remove()
-    const MenuSeleccionTopping = document.getElementById("Toppings-seleccion")
-    const ConfirmarSeleccion = document.getElementById("Confirmar-seleccion")
-    const VerdurasSeleccionadas = document.querySelectorAll(".check-verduras:checked")
-    const ToppingsSeleccionadas = document.querySelectorAll(".Check-Toppings:checked")
+function renderSeleccionVerdura(idPedido, idCombo, opcionesVerduras, combosArmados) {
+    //console.log("id combo agregado "+idCombo)
+    const menuSeleccionVerdura = document.getElementById("Verduras-seleccion")
+    menuSeleccionVerdura.innerHTML = ""//borro el contenedor por si vuelve a tocar  nuevo pedido
+    menuSeleccionVerdura.innerHTML = `<p class="precio-info">Precio por cada uno: $${precioVerdura}</p>
+                                    <div class='d-flex flex-column' id='ContenedorVerduras'></div>`
+    menuSeleccionVerdura.className = "d-flex flex-column"
+
+    opcionesVerduras.forEach(verdura => {
+        const card = document.createElement("div")
+        card.innerHTML = `
+                            <label class="verdura-item ">
+                                <img src="${verdura.imagen}" alt="${verdura.nombre}" class="verdura-foto">
+                                <span class="verdura-nombre">${verdura.nombre}</span>
+                                <div class="verdura-derecha">
+                                    <input type="checkbox" value="${verdura.nombre}"  
+                                        class="check-verduras verdura-check" 
+                                </div>
+                            </label>`
+        menuSeleccionVerdura.appendChild(card)
+    })
+
+    const Checks = document.querySelectorAll(".check-verduras")
+    const VerdurasSeleccionadas = []
+    Checks.forEach((check) => {
+        check.addEventListener("change", () => {
+            borrarContenido("Toppings-seleccion")
+            borrarContenido("Confirmar-seleccion")
+            //este if pregunta si existe el boton continuar a toppings, xq lo borra cuando detecta al continuar para toppings
+            if (!document.getElementById("Btn-ContinuarAtoppings")) {
+                const cardContinuar = document.createElement("div")
+                cardContinuar.innerHTML = `
+                                            <button id="Btn-ContinuarAtoppings" class="m-2 CombosClase btn            btn-secondary">Continuar</button>
+                                            `
+                cardContinuar.className = "d-flex justify-content-center"
+                menuSeleccionVerdura.appendChild(cardContinuar)
+                const boton = document.getElementById("Btn-ContinuarAtoppings")
+                boton.onclick = () => {
+                    obtenerToppings(idPedido, idCombo, combosArmados)
+                }
+            }
+        })
+    })
+
+    // Boton Continuar a toppings
 
     const card = document.createElement("div")
-    card.innerHTML = `<button id="BtnAgregar" class="m-2 CombosClase btn btn-secondary">Agregar combo</button>`
-    ConfirmarSeleccion.appendChild(card)
-    const Boton = document.getElementById("BtnAgregar")
-    Boton.onclick = () => {
-        RenderConfirmarCombo(idPedido,PedidosId, IdCombo, CombosArmados, VerdurasSeleccionadas, ToppingsSeleccionadas)
+    card.innerHTML = `
+                        <button id="Btn-ContinuarAtoppings" class="m-2 CombosClase btn btn-secondary">Continuar</button>`
+    card.className = "d-flex justify-content-center"
+    menuSeleccionVerdura.appendChild(card)
+
+    const boton = document.getElementById("Btn-ContinuarAtoppings")
+    boton.onclick = () => {
+        obtenerToppings(idPedido, idCombo, combosArmados)
     }
+
 }
-function RenderSeleccionToppings(idPedido,IdCombo, OpcionesToppings) {
-    //console.log("id combo agregado "+IdCombo)
-    const borrar = document.getElementById("Btn-ContinuarAtoppings")
-    if (borrar) {
-        borrar.parentElement.remove()
-    }
+function renderSeleccionToppings(idPedido, idCombo, opcionesToppings, combosArmados) {
+    const menuSeleccionToppings = document.getElementById("Toppings-seleccion")
+    menuSeleccionToppings.innerHTML = ""//borro el contenedor por si vuelve a tocar  nuevo pedido
+    menuSeleccionToppings.innerHTML = `<p class="precio-info">Precio por cada uno: $${precioTopping}</p>
+                                        <div class='d-flex flex-column' id='ContenedorToppings'></div>`
+    menuSeleccionToppings.className = "d-flex flex-column"
 
-    const MenuSeleccionTopping = document.getElementById("Toppings-seleccion")
-    MenuSeleccionTopping.innerHTML = ""//borro el contenedor por si vuelve a tocar  nuevo pedido
-    MenuSeleccionTopping.className = "d-flex flex-column"
-    MenuSeleccionTopping.innerHTML = "<p>Precio por cada uno : $600</p><div class='d-flex flex-column' id='ContenedorTopping'></div>"
-    const ToppingsContenedor = document.getElementById("ContenedorTopping")
-    for (const Topping of OpcionesToppings) {
+    opcionesToppings.forEach(Topping => {
         const card = document.createElement("div")
-        const input = document.createElement("input")
-        const img = document.createElement("img")
-        card.className = "class=justify-content-center align-items-center m-2"
-        input.type = "checkbox"
-        input.value = Topping
-        input.id = "Topping"
-        input.className = "Check-Toppings mx-2"
-
-        const Label = document.createElement("label")
-        Label.htmlFor = input.id
-        Label.textContent = Topping
-        img.src = ObtenerFotoTopping(Topping)
-        img.alt = Topping
-
-        img.className = "img-VerTop mx-2"
-        card.appendChild(img)
-        card.appendChild(input)
-        card.appendChild(Label)
-        ToppingsContenedor.appendChild(card)
-    }
+        card.innerHTML = `
+                            <label class="Topping-item ">
+                                <img src="${Topping.imagen}" alt="${Topping.nombre}" class="Topping-foto">
+                                <span class="Topping-nombre">${Topping.nombre}</span>
+                                <div class="Topping-derecha">
+                                    <input type="checkbox" value="${Topping.nombre}"        class="check-Toppings Topping-check"> 
+                                </div>
+                            </label>`
+        menuSeleccionToppings.appendChild(card)
+    })
     // boton continuar a finalizar pedido
     const card = document.createElement("div")
     card.innerHTML = `<button id="Btn-ContinuarAFinalizar" class="m-2 CombosClase btn btn-secondary">Continuar</button>`
     card.className = "d-flex justify-content-center"
-    MenuSeleccionTopping.appendChild(card)
+    menuSeleccionToppings.appendChild(card)
     const boton = document.getElementById("Btn-ContinuarAFinalizar")
     boton.onclick = () => {
-        RenderAgregarCombo(idPedido,IdCombo)
+        mostrarConfirmacion(idPedido, idCombo, combosArmados)
+
+
     }
     const Checks = document.querySelectorAll(".Check-Toppings")
     Checks.forEach((check) => {
@@ -313,207 +338,196 @@ function RenderSeleccionToppings(idPedido,IdCombo, OpcionesToppings) {
             if (!document.getElementById("Btn-ContinuarAFinalizar")) {
                 const card = document.createElement("div")
                 card.innerHTML = `<button id="Btn-ContinuarAFinalizar" class="m-2 CombosClase btn btn-secondary">Continuar</button>`
-                MenuSeleccionTopping.appendChild(card)
+                menuSeleccionToppings.appendChild(card)
                 const boton = document.getElementById("Btn-ContinuarAFinalizar")
                 boton.onclick = () => {
-                    RenderSeleccionToppings(idPedido,IdCombo, OpcionesToppings)
+                    obtenerToppings(idPedido, idCombo)
                 }
             }
         })
     })
 }
-function RenderSeleccionVerdura(idPedido,IdCombo, OpcionesVerduras) {
-    //console.log("id combo agregado "+IdCombo)
-    const MenuSeleccionVerdura = document.getElementById("Verduras-seleccion")
-    MenuSeleccionVerdura.innerHTML = ""//borro el contenedor por si vuelve a tocar  nuevo pedido
-    MenuSeleccionVerdura.innerHTML = "<p>Puede agregar hasta un maximo de 3 verduras.</p><p>Precio por cada uno: $1000</p><div class='d-flex flex-column' id='ContenedorVerduras'></div>"
-    const Verdurascontenedor = document.getElementById("ContenedorVerduras")
-    MenuSeleccionVerdura.className = "d-flex flex-column"
-    const MensajeError = document.createElement("span")
-    MensajeError.textContent = "No se puede elegir mas de 3 verduras"
-    MensajeError.className = "Mensaje-Error Oculto"
-    MenuSeleccionVerdura.appendChild(MensajeError)
-
-    for (const verdura of OpcionesVerduras) {
-        const card = document.createElement("div")
-        const input = document.createElement("input")
-        const img = document.createElement("img")
-        card.className = "justify-content-center align-items-center m-2"
-        input.type = "checkbox"
-        input.value = verdura
-        input.id = "verdura"
-        input.className = "check-verduras mx-2"
-
-        const Label = document.createElement("label")
-        Label.htmlFor = input.id
-        Label.textContent = verdura
-        img.src = ObtenerFotoVerdura(verdura)
-        img.alt = verdura
-
-        img.className = "img-VerTop mx-2"
-        card.appendChild(img)
-        card.appendChild(input)
-        card.appendChild(Label)
-        Verdurascontenedor.appendChild(card)
-    }
-
-    const Checks = document.querySelectorAll(".check-verduras")
-    const VerdurasSeleccionadas = []
-    Checks.forEach((check) => {
-        check.addEventListener("change", () => {
-            BorrarContenido("Toppings-seleccion")
-            BorrarContenido("Confirmar-seleccion")
-            //este if pregunta si existe el boton continuar a toppings, xq lo borra cuando detecta al continuar para toppings
-            if (!document.getElementById("Btn-ContinuarAtoppings")) {
-                const card = document.createElement("div")
-                card.innerHTML = `<button id="Btn-ContinuarAtoppings" class="m-2 CombosClase btn btn-secondary">Continuar</button>`
-                card.className = "d-flex justify-content-center"
-                MenuSeleccionVerdura.appendChild(card)
-                const boton = document.getElementById("Btn-ContinuarAtoppings")
-                boton.onclick = () => {
-                    RenderSeleccionToppings(idPedido,IdCombo, OpcionesToppings)
-                }
-            }
-            const Seleccionadas = document.querySelectorAll(".check-verduras:checked")
-            const CantidadVerdurasSeleccionadas = Seleccionadas.length
-            if (CantidadVerdurasSeleccionadas > 3) {
-                check.checked = false
-                const Mensaje = document.querySelector(".Mensaje-Error")
-                Mensaje.classList.remove("Oculto")
-                Mensaje.classList.add("Error")
-            } else {
-                const Mensaje = document.querySelector(".Mensaje-Error")
-                if (Mensaje.classList == "Error") {
-                    Mensaje.classList.remove("Error")
-                }
-                VerdurasSeleccionadas.push(check.value)
-                Mensaje.classList.add("Oculto")
-            }
-        })
+function mostrarConfirmacion(idPedido, idCombo, combosArmados) {
+    const busqueda = combosArmados.find(combo => combo.id === parseInt(idCombo))
+    const verdurasCheck = document.querySelectorAll(".check-verduras:checked")
+    const toppingsCheck = document.querySelectorAll(".check-Toppings:checked")
+    let precioTotal = parseInt(busqueda.precio)
+    let adicionales = ""
+    let cantidadAdicionales = 0
+    verdurasCheck.forEach(verdura => {
+        adicionales += adicionales ? " - " + verdura.value : verdura.value
+        precioTotal += precioVerdura
     })
-
-    // Boton Continuar a toppings
-
-
-    const card = document.createElement("div")
-    card.innerHTML = `<button id="Btn-ContinuarAtoppings" class="m-2 CombosClase btn btn-secondary">Continuar</button>`
-    card.className = "d-flex justify-content-center"
-    MenuSeleccionVerdura.appendChild(card)
-
-    const boton = document.getElementById("Btn-ContinuarAtoppings")
-    boton.onclick = () => {
-        RenderSeleccionToppings(idPedido,IdCombo, OpcionesToppings)
-    }
-
-}
-//Render para mostrar los combos. Por este paso arranca el programa
-function RenderSeleccionCombo(idPedido,CombosArmados) {
-    const MenuSeleccion = document.getElementById("Menu-seleccion")
-   // BorrarContenido("Menu-selccion")
-    BorrarContenido("btn-finalizar")
-    BorrarContenido("msj-finalizar")
-    MenuSeleccion.innerHTML = ""// borro el contenedor por si vuelve a tocar  nuevo pedido
-    MenuSeleccion.className = "d-flex flex-column"
-    MenuSeleccion.innerHTML = "<p class='d-flex flex-column text-center'>Seleccione el combo</p><div class='d-flex flex-column' id='ContenedorBurger'></div>"
-    const Burgercontenedor = document.getElementById("ContenedorBurger")
-    for (const Combo of CombosArmados) {
-        const card = document.createElement("div")
-        card.innerHTML = `<div class="d-flex flex-column justify-content-between align-items-center m-2"><button id="${Combo.id}" class="m-1 CombosClase btn btn-success w-100">${Combo.nombre} </button><p class="mt-2  text-center">$ ${Combo.precio}</p></div>`
-        card.className = "d-flex flex-row justify-content-between align-items-center m-2"
-
-        const img = document.createElement("img")
-        img.src = ObtenerFotoCombo(Combo.nombre)
-        img.alt = Combo.nombre
-        img.className = "img-combo"
-        card.appendChild(img)
-        Burgercontenedor.appendChild(card)
-    }
-    const Botones = document.querySelectorAll(".CombosClase")
-    Botones.forEach((boton) => {
-        boton.onclick = (e) => {
-            BorrarContenido("Verduras-seleccion")
-            BorrarContenido("Toppings-seleccion")
-            BorrarContenido("Confirmar-seleccion")
-            const BotonId = e.currentTarget.id
-            RenderSeleccionVerdura(idPedido,BotonId, OpcionesVerduras)
-        }
+    
+    toppingsCheck.forEach(topping => {
+        adicionales += adicionales ? " - " + topping.value : topping.value
+        precioTotal += precioTopping
     })
-
-}
-function MenuOpcion(opcion, CombosArmados) {
-    switch (opcion) {
-        case 1:
-            //busco si tengo algun pedido hecho, para sumar el contador. y reseteo el carrito.
-            const ValorIdPedido = JSON.parse(localStorage.getItem("PedidosId"))
-            let idPedido = 0
-            if(ValorIdPedido){
-                for (const valor of ValorIdPedido) {
-                    idPedido = valor
-                }
-                idPedido +=1
-            }else{
-                idPedido = 1
-            }
-            
-            RenderSeleccionCombo(idPedido,CombosArmados)
-            break
-        case 2:
-            console.log("Mostrar pedido")
-            break
-        case 3:
-            console.log("Salir del sistema")
-            break
-        default: alert("Revisar codigo porque el menu esta hardcodeado, en este momento es un array con valores 1,2,3")
+    cantidadAdicionales = verdurasCheck.length + toppingsCheck.length
+    /* recupero el carrito - array de objetos*/
+    let carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
+    let idMax = 1
+    if (carritoRecuperado){
+        console.log("ENTRA A CARRITO")
+        
+        carritoRecuperado.forEach(combopedido =>{
+            console.log(combopedido.id)
+            idMax = combopedido.id
+        }) 
+        idMax +=1
     }
+    
+    console.log("id del pedido antes de guardarlo en el objeto"+idPedido)
+    const comboNuevo = new comboPedido(idMax,idPedido, idCombo, busqueda.nombre,busqueda.descripcion, adicionales, busqueda.imagen,1,busqueda.precio,precioTotal)
+    console.log(comboNuevo)
+
+    Swal.fire({
+        title: "¿Desea agregar este combo al carrito?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Agregar combo",
+        denyButtonText: `Modificar combo`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            agregarCombo(comboNuevo)
+        } else if (result.isDenied) {
+            //Swal.fire("Changes are not saved", "", "info");
+        }
+    });
 }
-function RenderMenu(MenuArray, CombosArmados) {
-    const Contenedor = document.getElementById("Menu-contenedor")
-    for (const OpcionElegida of MenuArray) {
-        const card = document.createElement("div")
-        switch (OpcionElegida) {
-            case 1:
-                //NUEVO PEDIDO
-                //Si hay algo en el carrito, no muestro el boton. 
-                    if (PedidosId == "") {
+function agregarCombo(comboNuevo) {
+    
+    console.log("/*/*/*/* funcion agregar combo */*/*/*/ ")
+    console.log(comboNuevo)
+   
+///// A PARTIR ACA AYUDA ////
+    // PRIMERO recupero lo que había en localStorage
+        //const carritoRecuperado = JSON.parse(localStorage.getItem("carrito")) || []
+        let carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
 
-                       
-
-                    } else {
-
-    }   
-                card.innerHTML = `<button id="${OpcionElegida}" class="m-2 btn btn-dark">Nuevo Pedido</button>`
-                break
-            case 2:
-                card.innerHTML = `<button id="${OpcionElegida}" class="m-2 btn btn-dark">Ver Pedido</button>`
-                break
-            case 3:
-                card.innerHTML = `<button id="${OpcionElegida}" class="m-2 btn btn-dark ">Salir</button>`
-                break
-            default: alert("Revisar codigo porque el menu esta hardcodeado, en este momento es un array con valores 1,2,3")
+        if (carritoRecuperado === null) {
+            carritoRecuperado = []
         }
-        Contenedor.appendChild(card)
-        const boton = card.querySelector("button")
-        boton.onclick = () => {
-            MenuOpcion(OpcionElegida, CombosArmados)
-            BorrarContenido("Menu-finalizar")
-        }
+        // DESPUÉS agrego el nuevo combo al array recuperado
+        carritoRecuperado.push(comboNuevo)
+        
+        // FINALMENTE guardo el array completo
+        localStorage.setItem("carrito", JSON.stringify(carritoRecuperado))
+        
+        // actualizo la variable local también
+        carrito = carritoRecuperado   
+///// HASTA ACA AYUDA ////
 
+    ListenerCarrito()
+   /* Toastify({
+        text: "Carrito actualizado",
+        duration: 1500,
+        destination: "#",
+        newWindow: false,
+        close: false,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+        onClick: function () { } // Callback after click
+    }).showToast();*/
+
+    const msj ="Carrito actualizado"
+    const color = "linear-gradient(to right, #00b09b, #96c93d)"
+    msjToastify(msj,color)    
+    Swal.fire({
+        title: "Su combo fue agregado <strong>correctamente</strong>",
+        icon: "success",
+        html: `<div class="card-combo swal-card">
+                            <div class="card-combo-imagen-sweet ">
+                                <img src="${comboNuevo.imagen}" alt="${comboNuevo.nombre}" loading="lazy">
+                            </div>
+                            <div class="card-combo-info">
+                                <div>
+                                    <h3 class="card-combo-nombre">${comboNuevo.nombre}</h3>
+                                </div>
+                                <div class="swal-adicionales">
+                                    <p class="swal-adicionales-titulo">Adicionales:</p>
+                                    <p class="swal-badges">${comboNuevo.adicionales}</p>
+                                </div>
+                                <div class="card-combo-footer">
+                                    <span class="card-combo-precio">$ ${comboNuevo.precioTotal}</span>
+                                </div>
+                            </div>
+                            </div>`
+        ,
+        showCloseButton: true,
+        showCancelButton: false,
+        focusConfirm: false,
+        confirmButtonText: `
+                        <i class="fa fa-thumbs-up"></i> Continuar!
+                    `,
+        confirmButtonAriaLabel: "Thumbs up, Continuar!",
+        cancelButtonText: `
+                        <i class="fa fa-thumbs-down"></i>
+                    `,
+        cancelButtonAriaLabel: "Thumbs down"
+    });
+    /*Borro toda la pantalla por si el usuario sale de la alerta con la cruz, al haber agregado un combo, si sale, puede agregar el mismo*/
+    borrarContenido("Verduras-seleccion")
+    borrarContenido("Toppings-seleccion")
+    //borrarContenido("Menu-seleccion")
+    
+    ////******   YA TENGO TODO. IDCOMBO . ID DEL PEDIDO . VERDURAS Y TOPPINGS *******//////
+    ////******   AHORA FALTA GUARDAR EL PEDIDO. ACTUALIZAR EL CARRITO. GUARDAR EN STORAGE *******//////
+
+
+}
+function ListenerCarrito() {
+    const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
+    if(carritoRecuperado){
+        const contCarrito = document.getElementById("span-Carrito")
+        contCarrito.classList.remove("d-none")
+        if(carritoRecuperado.length == 0){
+            contCarrito.classList.add("d-none")
+            contCarrito.innerText =""
+            const botonAgregar = document.getElementById("btn-agregarCombo")
+            botonAgregar.classList.add("disabled")             
+        }else{
+            contCarrito.innerText = carritoRecuperado.length
+            const botonAgregar = document.getElementById("btn-agregarCombo")
+            botonAgregar.classList.remove("disabled")  
+        }
+    } else {
+        const contCarrito = document.getElementById("span-Carrito")
+        contCarrito.classList.add("d-none")
+        const botonAgregar = document.getElementById("btn-agregarCombo")
+        botonAgregar.classList.add("disabled")   
     }
 
-    ContenedorCarrito = document.getElementById("Menu-carrito")
-    const cardCarrito = document.createElement("div")
-    cardCarrito.className = "position-relative d-inline-block"
-    cardCarrito.innerHTML = `<button id="btn-Carrito" class="btn-carrito btn p-0 border-0 bg-transparent"><img id="btn-Carrito" src="./assets/img/carrito.webp" class="img-VerTop" > </button>
-        <span id="span-Carrito" class="position-absolute bottom-0 start-100 translate-middle badge rounded-pill bg-warning d-none">0</span>`
-    ContenedorCarrito.appendChild(cardCarrito)
-    const btnCarrito = document.getElementById("btn-Carrito")
-        btnCarrito.onclick = () => {
-            window.location.href="./pages/carrito.html"
-        }
 
+    console.log(carritoRecuperado)
 }
-// Verifico cuando arranca la pagina si hay algun elemento en el carrito
-/// Renderizo verduras o toppings para mostrar en el menu post combo agregado   
-//RenderMenu(Menu, CombosArmados)
+function borrarContenido(SeccionABorrar) {
+    const BorrarSeccion = document.getElementById(SeccionABorrar)
+    BorrarSeccion.innerHTML = ""
+}
+function msjToastify(msj,color){
+    Toastify({
+//        text: "Combo eliminado",
+        text: msj,
+        duration: 1500,
+        destination: "#",
+        newWindow: false,
+        close: false,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+        style: {
+            //background: "linear-gradient(to right, #e40014, #ff6568)",
+            background: color,
+        },
+        onClick: function () { }
+    }).showToast();
+}
+let mensajeCarrito = localStorage.getItem("volverCarrito")
+console.log("mensaje volver carrito "+mensajeCarrito)
 
-ListenerCarrito()
+obtenerCombos()

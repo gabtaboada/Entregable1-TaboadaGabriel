@@ -31,7 +31,7 @@
         "id": 5,
         "nombre": "Chicken Burger",
         "descripcion":"Pechuga de pollo crocante con lechuga, tomate y mayonesa en pan tostado.",
-        "imagen" :"./assets/img/bacon-burger.webp",
+        "imagen" :"./assets/img/chicken-burger.webp",
         "precio": 17550
     }   
 ]
