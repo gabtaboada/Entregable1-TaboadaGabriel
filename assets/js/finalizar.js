@@ -19,8 +19,6 @@ class Pedido {
     }
 }
 
-
-
 function renderMenu(menuArray) {
     const contenedor = document.getElementById("Menu-contenedor")
     for (const opcionElegida of menuArray) {

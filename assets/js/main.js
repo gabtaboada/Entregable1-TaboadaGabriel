@@ -6,15 +6,15 @@ const UrlToppings = "../assets/db/toppings.json"
 
 let carrito = []
 
-const precioVerdura = 1000
-const precioTopping = 600
+let precioVerdura = 0
+let precioTopping = 0
 
 //////  Creo una clase comboPedido que voy a guardar cada combo que se hacen en un pedido.
 //////  en un pedido puede haber varios combos. por este motivo hago la propiedad idPedido
 //////  que hace referencia al numero de pedido.
 class comboPedido {
     //static id = 0 // no hago esto, porque si vuelvo al index, me pisa el id y arranca de 0 de nuevo
-    constructor(id, idPedido, idCombo, nombre, descripcion,adicionales,cantidadAdicionales, imagen, cantidadCombo,precioAdicionales, precioCombo, precioTotal) {
+    constructor(id, idPedido, idCombo, nombre, descripcion, adicionales, cantidadAdicionales, imagen, cantidadCombo, precioAdicionales, precioCombo, precioTotal) {
         this.id = id,//
             this.idPedido = idPedido,
             this.idCombo = idCombo,//id del combo guardado en combos.json
@@ -34,7 +34,7 @@ function obtenerCombos() {
     fetch(UrlCombos)
         .then(response => response.json())
         .then(data => {
-            console.log("mensaje en obtener combos "+mensajeCarrito)
+            console.log("mensaje en obtener combos " + mensajeCarrito)
             if (mensajeCarrito) {
                 /*
                 let idPedido = 1
@@ -51,15 +51,15 @@ function obtenerCombos() {
                 idPedido += idMax
                 console.log("con for of " + idMax)
                 */
-               const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
+                const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
 
-let idMax = 0
-if (pedidosGuardados) {
-    for (const p of pedidosGuardados) {
-        idMax = p.id
-    }
-}
-const idPedido = idMax + 1
+                let idMax = 0
+                if (pedidosGuardados) {
+                    for (const p of pedidosGuardados) {
+                        idMax = p.id
+                    }
+                }
+                const idPedido = idMax + 1
                 console.log("idPedido en obtener pedidos" + idPedido)
                 switch (mensajeCarrito) {
                     case "armadoCombo":
@@ -139,7 +139,7 @@ function renderMenu(menuArray, combosArmados) {
                             <span id="span-Carrito" class="position-absolute bottom-0 start-0 translate-middle badge rounded-pill bg-warning d-none">0
                             </span>`
     const cardPrecioCarrito = document.createElement("p")
-    cardPrecioCarrito.id = "precio-carrito"                            
+    cardPrecioCarrito.id = "precio-carrito"
     cardPrecioCarrito.classList = "p-precio-carrito"
     ContenedorCarrito.appendChild(cardCarrito)
     ContenedorCarrito.appendChild(cardPrecioCarrito)
@@ -154,21 +154,21 @@ function menuOpcion(opcion, combosArmados) {
     // console.log(opcion)
     let idPedido = 1
     const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
-   //// error al guardar en local pedidos. cuando no existe pedidos guardados
-   //  const idPedidos = pedidosGuardados.map(pedidos => pedidos.id)
+    //// error al guardar en local pedidos. cuando no existe pedidos guardados
+    //  const idPedidos = pedidosGuardados.map(pedidos => pedidos.id)
 
     /*console.log("ARRAY DE ID")
     console.log(idPedidos)*/
     //const maxId = Math.max(...idPedidos)
     //console.log("maxID "+maxId)
-   //// error al guardar en local pedidos. cuando no existe pedidos guardados
-   // 
-   let idMax = 0
-   /*    
+    //// error al guardar en local pedidos. cuando no existe pedidos guardados
+    // 
     let idMax = 0
-    for (const id of idPedidos) {
-        idMax = id
-    }*/
+    /*    
+     let idMax = 0
+     for (const id of idPedidos) {
+         idMax = id
+     }*/
     if (pedidosGuardados) {
         const idPedidos = pedidosGuardados.map(pedidos => pedidos.id)
         for (const id of idPedidos) {
@@ -178,8 +178,8 @@ function menuOpcion(opcion, combosArmados) {
         idPedido = idMax + 1
     } else {
         idPedido = 1
-    }   
-    
+    }
+
     console.log("con for of " + idMax)
     console.log("idPedido " + idPedido)
 
@@ -213,9 +213,9 @@ function menuOpcion(opcion, combosArmados) {
             // renderSeleccionCombo(idPedido, combosArmados)
             break
         case 2:
-//            idPedido = 1
+            //            idPedido = 1
             renderSeleccionCombo(idPedido, combosArmados)
-            console.log("Mostrar pedido con idPedido "+idPedido)
+            console.log("Mostrar pedido con idPedido " + idPedido)
             break
         case 3:
             window.location.href = "./pages/buscar-pedido.html"
@@ -274,10 +274,12 @@ function renderSeleccionCombo(idPedido, combosArmados) {
 
 }
 function renderSeleccionVerdura(idPedido, idCombo, opcionesVerduras, combosArmados) {
+    
     /*console.log("id combo agregado "+idCombo+" de")
     console.log(combosArmados)*/
     const comboSeleccionado = combosArmados.find(combo => combo.id == idCombo)
     const verdura = opcionesVerduras.find(verdura => verdura.adicional == "verdura")
+    precioVerdura = verdura.precio
     const menuSeleccionVerdura = document.getElementById("Verduras-seleccion")
     menuSeleccionVerdura.innerHTML = ""//borro el contenedor por si vuelve a tocar  nuevo pedido
     menuSeleccionVerdura.innerHTML = `<p class="precio-info">Seleccione la verdura</p>
@@ -351,6 +353,7 @@ function renderSeleccionVerdura(idPedido, idCombo, opcionesVerduras, combosArmad
 }
 function renderSeleccionToppings(idPedido, idCombo, opcionesToppings, combosArmados, subtotal) {
     const topping = opcionesToppings.find(topping => topping.adicional == "topping")
+    precioTopping = topping.precio
     const menuSeleccionToppings = document.getElementById("Toppings-seleccion")
     menuSeleccionToppings.innerHTML = ""//borro el contenedor por si vuelve a tocar  nuevo pedido
     menuSeleccionToppings.innerHTML = `
@@ -445,7 +448,7 @@ function mostrarConfirmacion(idPedido, idCombo, combosArmados) {
         })
         idMax += 1
     }*/
-   ///////// PROBANDO ESTE BLOQUE
+    ///////// PROBANDO ESTE BLOQUE
     let carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
     console.log("muestro el carrito recuperado")
     console.log(carritoRecuperado)
@@ -453,21 +456,21 @@ function mostrarConfirmacion(idPedido, idCombo, combosArmados) {
     console.log("muestro el combosTotal")
     console.log(combosTotal)
     let idMax = 1//Si es el primero,guarda 1
-    if(combosTotal){
+    if (combosTotal) {
         combosTotal.forEach(comboTot => {
             console.log(comboTot.id)
             idMax = comboTot.id
         })
-        idMax += 1        
+        idMax += 1
 
     }
-    if(carritoRecuperado){
+    if (carritoRecuperado) {
         carritoRecuperado.forEach(combopedido => {
             console.log(combopedido.id)
             idMax = combopedido.id
         })
         idMax += 1
-    }    
+    }
     /*
     if (carritoRecuperado) {
         console.log("ENTRA A CARRITO")
@@ -478,10 +481,10 @@ function mostrarConfirmacion(idPedido, idCombo, combosArmados) {
         })
         idMax += 1*/
 
-//////////// PROBANDO ESTE BLOQUE
-    console.log("idMax de los combosTotales "+idMax)
+    //////////// PROBANDO ESTE BLOQUE
+    console.log("idMax de los combosTotales " + idMax)
     console.log("id del pedido antes de guardarlo en el objeto" + idPedido)
-    const comboNuevo = new comboPedido(idMax, idPedido, idCombo, busqueda.nombre, busqueda.descripcion, adicionales,cantidadAdicionales, busqueda.imagen, 1,precioAdicionales, busqueda.precio, precioTotal)
+    const comboNuevo = new comboPedido(idMax, idPedido, idCombo, busqueda.nombre, busqueda.descripcion, adicionales, cantidadAdicionales, busqueda.imagen, 1, precioAdicionales, busqueda.precio, precioTotal)
     console.log(comboNuevo)
 
     Swal.fire({
@@ -574,22 +577,22 @@ function agregarCombo(comboNuevo) {
 function ListenerCarrito() {
     let totalPrecio = 0
     const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
-    
+
     if (carritoRecuperado) {
         totalPrecio = carritoRecuperado.reduce((total, cantidad) => total + cantidad.precioTotal, 0)
         const contCarrito = document.getElementById("span-Carrito")
         contCarrito.classList.remove("d-none")
         const precioCarrito = document.getElementById("precio-carrito")
-        precioCarrito.classList.remove("d-none")        
+        precioCarrito.classList.remove("d-none")
         if (carritoRecuperado.length == 0) {
             contCarrito.classList.add("d-none")
             contCarrito.innerText = ""
             const botonAgregar = document.getElementById("btn-agregarCombo")
             botonAgregar.classList.add("disabled")
             const precioCarrito = document.getElementById("precio-carrito")
-            precioCarrito.classList.add("d-none")                 
+            precioCarrito.classList.add("d-none")
         } else {
-            precioCarrito.innerText =`$ ${totalPrecio}`
+            precioCarrito.innerText = `$ ${totalPrecio}`
             contCarrito.innerText = carritoRecuperado.length
             const botonAgregar = document.getElementById("btn-agregarCombo")
             botonAgregar.classList.remove("disabled")
@@ -598,7 +601,7 @@ function ListenerCarrito() {
         const contCarrito = document.getElementById("span-Carrito")
         contCarrito.classList.add("d-none")
         const precioCarrito = document.getElementById("precio-carrito")
-        precioCarrito.classList.add("d-none")        
+        precioCarrito.classList.add("d-none")
         const botonAgregar = document.getElementById("btn-agregarCombo")
         botonAgregar.classList.add("disabled")
     }
