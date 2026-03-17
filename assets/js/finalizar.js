@@ -30,7 +30,7 @@ function renderMenu(menuArray) {
                 card.innerHTML = `<button id="${opcionElegida}" class="m-2 btn btn-success">Nuevo Pedido</button>`
                 break
             case 2:
-                card.innerHTML = `<button id="btn-agregarCombo" class="m-2 btn btn-warning" disabled>Agregar combo</button>`
+                card.innerHTML = `<button id="btn-agregarCombo" class="m-2 btn btn-warning" >Agregar combo</button>`
                 break
             case 3:
                 card.innerHTML = `<button id="${opcionElegida}" class="m-2 btn btn-dark ">Ver estado del pedido</button>`
@@ -51,9 +51,15 @@ function renderMenu(menuArray) {
     cardCarrito.innerHTML = `
                             <button id="btn-Carrito" class="btn-carrito btn p-0 border-0   bg-transparent">
                             <img id="btn-Carrito" src="../assets/img/carrito.webp" class="img-VerTop" > </button>
-                            <span id="span-Carrito" class="position-absolute bottom-0 start-100 translate-middle badge rounded-pill bg-warning d-none">0
+                            <span id="span-Carrito" class="position-absolute bottom-0 start-0 translate-middle badge rounded-pill bg-warning d-none">0
                             </span>`
+    const cardPrecioCarrito = document.createElement("p")
+    cardPrecioCarrito.id = "precio-carrito"
+    cardPrecioCarrito.classList ="p-precio-carrito"    
+    
     contenedorCarrito.appendChild(cardCarrito)
+    contenedorCarrito.appendChild(cardPrecioCarrito)
+
     const btnCarrito = document.getElementById("btn-Carrito")
     btnCarrito.onclick = () => {
         window.location.href = "./carrito.html"
@@ -63,32 +69,7 @@ function renderMenu(menuArray) {
     /* HASTA ACA EL ICONO DEL CARRITO */
     ListenerCarrito()
 }
-function ListenerCarrito() {
-    const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
-    let totalCantidades = 0
-    let totalPrecio = 0
-    if (carritoRecuperado) {
-        totalCantidades = carritoRecuperado.reduce((total, cantidad) => total + cantidad.cantidadCombo, 0)
-        totalPrecio = carritoRecuperado.reduce((total, cantidad) => total + cantidad.precioTotal, 0)
-        const contCarrito = document.getElementById("span-Carrito")
-        contCarrito.classList.remove("d-none")
-        if (carritoRecuperado.length == 0) {
-            contCarrito.innerText = ""
-            const botonAgregar = document.getElementById("btn-agregarCombo")
-            botonAgregar.classList.add("disabled")
-            contCarrito.classList.add("d-none")
-        } else {
-            contCarrito.innerText = totalCantidades
-            const botonAgregar = document.getElementById("btn-agregarCombo")
-            botonAgregar.classList.remove("disabled")
-        }
-    } else {
-        const contCarrito = document.getElementById("span-Carrito")
-        contCarrito.classList.add("d-none")
-        const botonAgregar = document.getElementById("btn-agregarCombo")
-        botonAgregar.classList.add("disabled")
-    }
-}
+
 function menuOpcion(opcion, combosArmados) {
     //console.log(opcion)
     let idPedido = 1
@@ -140,67 +121,100 @@ function menuOpcion(opcion, combosArmados) {
     }
 }
 function renderFormulario() {
-    const contenedorFormu = document.getElementById("formularioDatosEnvio")
-    // const card = document.createElement("div")
-    // card.className = "formulario-seccion"
-    const cardDatos = datosPersonales()
-    const cardDireccion = direccionEnvio()
-    const cardPago = mediosPagos()
-    const cardDotones = botones()
-    contenedorFormu.appendChild(cardDatos)
-    contenedorFormu.appendChild(cardDireccion)
-    contenedorFormu.appendChild(cardPago)
-    contenedorFormu.appendChild(cardDotones)
-    
-    
-    const inputNombre = document.getElementById("nombre")
-    inputNombre.onblur = () => {
-        if( (!inputNombre.value) || isNaN((inputNombre.value)) ){
-            console.log("nombre invalido")
-        }
+    const carrito = JSON.parse(localStorage.getItem("carrito"))
+    let totalReduce = 0
+    if ((carrito)) {
+        totalReduce = carrito.reduce((contador, combo) => contador + combo.precioTotal, 0)
+    } else {
+        totalReduce = 0
     }
-
-    
-    //const btn = contenedorFormu.querySelectorAll("button")//PROBAR, CON ESTE FUNCIONA DE 10
-    /*
-    const btn = document.querySelectorAll("button")// PROBAR SI FUNCIONA CON ESTE
-    console.log(btn)
-    btn.forEach((boton) => {
-                boton.onclick = (e) => {
-                    const value = e.currentTarget.value
-                    console.log(value)
-                    if(value=="confirmar"){
-                        confirmarPedido()
-                    }else{
-                        window.location.href = "./carrito.html"
-                    }
+    if(totalReduce > 0){
+        const contenedorFormu = document.getElementById("formularioDatosEnvio")
+            // const card = document.createElement("div")
+            // card.className = "formulario-seccion"
+    const contenedorFormulario = document.getElementById("formulario-envio")
+    contenedorFormulario.classList.remove="d-none"            
+            const cardDatos = datosPersonales()
+            const cardDireccion = direccionEnvio()
+            const cardPago = mediosPagos()
+            const cardDotones = botones()
+            contenedorFormu.appendChild(cardDatos)
+            contenedorFormu.appendChild(cardDireccion)
+            contenedorFormu.appendChild(cardPago)
+            contenedorFormu.appendChild(cardDotones)
+            
+            
+            const inputNombre = document.getElementById("nombre")
+            inputNombre.onblur = () => {
+                if( (!inputNombre.value) || isNaN((inputNombre.value)) ){
+                    console.log("nombre invalido")
                 }
-    })    
-      */
-    const boton = document.getElementById("formularioDatosEnvio")
-    boton.onsubmit = (e) => {
-    e.preventDefault()
-            const medioPago = document.querySelector('input[name="medioPago"]:checked')
-            const medioPagoError = document.getElementById("medioPagoError")
-            if (medioPago) {
-                console.log(medioPago.value) // "transferencia" o "efectivo"
-                console.log("existe medio pago ")
-                medioPagoError.classList.add("d-none") 
-                
-            } else {
-                medioPagoError.classList.remove("d-none")      
-                console.log("No seleccionó ningún medio de pago")
-            }    
-        if (!boton.checkValidity()) {
-            boton.classList.add("was-validated")  // clase de Bootstrap que muestra los errores
-        
-            return  // frena acá, no continúa
-        }
-    confirmarPedido()
-}       
-    
-}
+            }
 
+            
+            //const btn = contenedorFormu.querySelectorAll("button")//PROBAR, CON ESTE FUNCIONA DE 10
+            /*
+            const btn = document.querySelectorAll("button")// PROBAR SI FUNCIONA CON ESTE
+            console.log(btn)
+            btn.forEach((boton) => {
+                        boton.onclick = (e) => {
+                            const value = e.currentTarget.value
+                            console.log(value)
+                            if(value=="confirmar"){
+                                confirmarPedido()
+                            }else{
+                                window.location.href = "./carrito.html"
+                            }
+                        }
+            })    
+            */
+            const boton = document.getElementById("formularioDatosEnvio")
+            boton.onsubmit = (e) => {
+            e.preventDefault()
+                    const medioPago = document.querySelector('input[name="medioPago"]:checked')
+                    const medioPagoError = document.getElementById("medioPagoError")
+                    if (medioPago) {
+                        console.log(medioPago.value) // "transferencia" o "efectivo"
+                        console.log("existe medio pago ")
+                        medioPagoError.classList.add("d-none") 
+                        
+                    } else {
+                        medioPagoError.classList.remove("d-none")      
+                        console.log("No seleccionó ningún medio de pago")
+                    }    
+                if (!boton.checkValidity()) {
+                    boton.classList.add("was-validated")  // clase de Bootstrap que muestra los errores
+                
+                    return  // frena acá, no continúa
+                }
+                confirmarPedido()
+            }       
+    }else{
+        console.log("no entra")
+        renderCarritoVacio()
+    }
+}
+function renderCarritoVacio(){
+    const contenedor = document.getElementById("contenedor-carrito-vacio")
+    const card = document.createElement("div")
+    const contenedorFormulario = document.getElementById("formulario-envio")
+    contenedorFormulario.classList="d-none"
+    card.id = "carrito-vacio"
+    card.className = "carrito-vacio "
+    card.innerHTML = `
+                        <div class="carrito-vacio-icono">
+                            <i class="fas fa-burger"></i>
+                        </div>
+
+                        <h3>Tu carrito está vacío</h3>
+                        <p>Agrega un combo para empezar tu pedido</p>
+
+                        <a href="../index.html" class="btn btn-warning mt-2">
+                            <i class="fas fa-arrow-left"></i> Ir al menú
+                        </a>
+                    `
+    contenedor.appendChild(card)
+}
 function datosPersonales() {
     const card = document.createElement("div")
     card.className = "formulario-seccion"
@@ -363,9 +377,25 @@ function botones(){
     return card                
 }
 function confirmarPedido(){
+    
+    combosTotal = JSON.parse(localStorage.getItem("combosTotal"))
     const carritoActual = JSON.parse(localStorage.getItem("carrito"))
+    console.log("Combo total traigo del storage")
+    console.log(combosTotal)
+    console.log("carrito actual")
+    console.log(carritoActual)
     const precio = carritoActual.reduce((contador, pedido) => contador + pedido.precioTotal, 0)
-    const id = carritoActual[0].idPedido
+    //const id = carritoActual[0].idPedido
+////////////// PROBAR
+    const pedidosExistentes = JSON.parse(localStorage.getItem("pedidos"))
+    let idMax = 0
+    if (pedidosExistentes) {
+        for (const p of pedidosExistentes) {
+            idMax = p.id
+        }
+    }
+    const id = idMax + 1
+///////////////////
     const nombre = document.getElementById("nombre").value
     const apellido = document.getElementById("apellido").value
     const telefono = document.getElementById("telefono").value
@@ -385,9 +415,36 @@ function confirmarPedido(){
         console.log("No seleccionó ningún medio de pago")
     }
     */
+    // ITERO EL CARRITO , PARA GUARDAR COMBO POR COMBO
+    if (!Array.isArray(combosTotal)) {
+        combosTotal = []
+    }
+/////////////// probar
+/*
+    carritoActual.forEach(combo => {
+        combosTotal.push(combo)
+    })*/
+    /////////////  PROBAR
+    let idMaxCombo = 0
+for (const c of combosTotal) {
+    idMaxCombo = c.id
+}
+
+carritoActual.forEach(combo => {
+    idMaxCombo++
+    combo.id = idMaxCombo
+    combosTotal.push(combo)
+})
+
+////////////
+
+
     const pedidoNuevo = new Pedido(id,estado,nombre,apellido,telefono,mail,direccion,altura,piso,depto,codigoPostal,medioPago.value,precio)
     console.log(pedidoNuevo)
+    console.log("muestro comboTOTAL")
+    console.log(combosTotal)
     /* falta el medio de pago */
+    
     Swal.fire({
         title: "Su pedido fue <strong>confirmado</strong>",
         icon: "success",
@@ -436,12 +493,14 @@ function confirmarPedido(){
                 if (pedidosGuardados) {
                     pedidosGuardados.push(pedidoNuevo)
                     localStorage.setItem("pedidos", JSON.stringify(pedidosGuardados))
-                    localStorage.setItem("combosTotal", JSON.stringify(carritoActual))
+                    //localStorage.setItem("combosTotal", JSON.stringify(carritoActual))
+                    localStorage.setItem("combosTotal", JSON.stringify(combosTotal))
                     
                 } else {
                     const pedido = pedidoNuevo
                     localStorage.setItem("pedidos", JSON.stringify([pedidoNuevo]))
-                    localStorage.setItem("combosTotal", JSON.stringify([carritoActual]))
+                    //localStorage.setItem("combosTotal", JSON.stringify([carritoActual]))
+                    localStorage.setItem("combosTotal", JSON.stringify(combosTotal))
                 }                
                 window.location.href ="../index.html"
                 
@@ -449,5 +508,45 @@ function confirmarPedido(){
                 }
         });
 }
+function ListenerCarrito() {
+    const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
+    console.log("en listener")
+    console.log(carritoRecuperado)
+    let totalCantidades = 0
+    let totalPrecio = 0
+    if (carritoRecuperado) {
+        totalCantidades = carritoRecuperado.reduce((total, cantidad) => total + cantidad.cantidadCombo, 0)
+        totalPrecio = carritoRecuperado.reduce((total, cantidad) => total + cantidad.precioTotal, 0)
+        const contCarrito = document.getElementById("span-Carrito")
+        contCarrito.classList.remove("d-none")
+        const botonAgregar = document.getElementById("btn-agregarCombo")
+        console.log("boton agregar")
+        console.log(botonAgregar.classList)
+        botonAgregar.classList.remove("disabled")        
+        const precioCarrito = document.getElementById("precio-carrito")
+        precioCarrito.classList.remove("d-none")            
+        if (carritoRecuperado.length == 0) {
+            contCarrito.innerText = ""
+            const botonAgregar = document.getElementById("btn-agregarCombo")
+            botonAgregar.classList.add("disabled")
+            contCarrito.classList.add("d-none")
+            const precioCarrito = document.getElementById("precio-carrito")
+            precioCarrito.classList.add("d-none")             
+        } else {
+            precioCarrito.innerText =`$ ${totalPrecio}`
+            contCarrito.innerText = totalCantidades
+            const botonAgregar = document.getElementById("btn-agregarCombo")
+            botonAgregar.classList.remove("disabled")
+        }
+    } else {
+        const contCarrito = document.getElementById("span-Carrito")
+        contCarrito.classList.add("d-none")
+        const precioCarrito = document.getElementById("precio-carrito")
+        precioCarrito.classList.add("d-none")   
+        const botonAgregar = document.getElementById("btn-agregarCombo")
+        botonAgregar.classList.add("disabled")
+    }
+}
 renderMenu(menu)
 renderFormulario()
+

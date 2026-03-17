@@ -63,9 +63,13 @@ function renderMenu(menuArray, verduras, toppings) {
     cardCarrito.innerHTML = `
                             <button id="btn-Carrito" class="btn-carrito btn p-0 border-0   bg-transparent">
                             <img id="btn-Carrito" src="../assets/img/carrito.webp" class="img-VerTop" > </button>
-                            <span id="span-Carrito" class="position-absolute bottom-0 start-100 translate-middle badge rounded-pill bg-warning d-none">0
+                            <span id="span-Carrito" class="position-absolute bottom-0 start-0 translate-middle badge rounded-pill bg-warning d-none">0
                             </span>`
+    const cardPrecioCarrito = document.createElement("p")
+    cardPrecioCarrito.id = "precio-carrito"
+    cardPrecioCarrito.classList ="p-precio-carrito"
     contenedorCarrito.appendChild(cardCarrito)
+    contenedorCarrito.appendChild(cardPrecioCarrito)
     // const btnCarrito = document.getElementById("btn-Carrito")
 
 
@@ -75,7 +79,6 @@ function renderMenu(menuArray, verduras, toppings) {
     ListenerCarrito()
 }
 function menuOpcion(opcion, combosArmados) {
-    //console.log(opcion)
     let idPedido = 1
     switch (opcion) {
         case 1:
@@ -108,10 +111,8 @@ function menuOpcion(opcion, combosArmados) {
                 /* PROBAR AGREGADOP 19:48*/
                 localStorage.setItem("volverCarrito", mensaje)
                 window.location.href = "../index.html"
-                //console.log("else de carrito>0")
-                // renderSeleccionCombo(idPedido, combosArmados)
+
             }
-            // renderSeleccionCombo(idPedido, combosArmados)
             break
         case 2:
             const mensaje = "armadoCombo"
@@ -126,16 +127,13 @@ function menuOpcion(opcion, combosArmados) {
 }
 //recupero el id del pedido
 function RenderCarrito(verduras, toppings) {
-    console.log(verduras)
-    console.log(toppings)
+    //console.log(verduras)
+    //console.log(toppings)
     const carrito = JSON.parse(localStorage.getItem("carrito"))
-    //console.log(carrito)
     let totalReduce = 0
     if ((carrito)) {
-        // console.log("existe carrito")
         totalReduce = carrito.reduce((contador, combo) => contador + combo.precioTotal, 0)
     } else {
-        // console.log("carritovacio")
         totalReduce = 0
     }
     const burgerContenedor = document.getElementById("carrito")
@@ -143,7 +141,7 @@ function RenderCarrito(verduras, toppings) {
         let total = 0
         carrito.forEach(combo => {
             const adicionales = combo.adicionales
-            console.log("adicionales " + adicionales)
+           // console.log("adicionales " + adicionales)
             if (adicionales == "") {
                 const mensajeTitulo = "Sin adicionales"
             } else {
@@ -195,19 +193,19 @@ function RenderCarrito(verduras, toppings) {
                 eliminarCombo(combo.id, carrito)
             }
             const botones = document.querySelectorAll(".agregarRestar")
-            console.log(botones)
+           // console.log(botones)
             botones.forEach((boton) => {
                 boton.onclick = (e) => {
                     const value = e.currentTarget.value
                     const botonId = e.currentTarget.id
-                    agregarRestar(botonId, value)
+                    agregarRestar(botonId, value,verduras,toppings)
                 }
             })
             const botonEditar = document.querySelectorAll(".btn-editar")
             botonEditar.forEach(e => {
                 e.onclick = () => {
-                    console.log("editar")
-                    console.log(e.id)
+                    //console.log("editar")
+                   // console.log(e.id)
                     editarAdicionales(e.id, verduras, toppings, carrito)
                 }
             })
@@ -254,7 +252,7 @@ function RenderCarrito(verduras, toppings) {
 
         }
     } else {
-        console.log("NO ENTRA AL RENDER")
+       // console.log("NO ENTRA AL RENDER")
 
         renderCarritoVacio()
     }
@@ -305,23 +303,7 @@ function eliminarCombo(id) {
 
     // Actualizar el listener del carrito
     ListenerCarrito()
-
     // Mostrar notificación
-    /*
-    Toastify({
-        text: "Combo eliminado",
-        duration: 1500,
-        destination: "#",
-        newWindow: false,
-        close: false,
-        gravity: "top",
-        position: "right",
-        stopOnFocus: true,
-        style: {
-            background: "linear-gradient(to right, #e40014, #ff6568)",
-        },
-        onClick: function () { }
-    }).showToast();*/
     const msj ="Carrito actualizado"
     const color = "linear-gradient(to right, #e40014, #ff6568)"
     msjToastify(msj,color)    
@@ -336,15 +318,12 @@ function renderCarritoVacio() {
         cardTituloCarrito.remove()
     }
     const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
-    console.log("en funcion carrito vacio")
-    console.log(carritoRecuperado)
 
     const contenedor = document.getElementById("contenedor-carrito-vacio")
     const card = document.createElement("div")
     card.id = "carrito-vacio"
     card.className = "carrito-vacio "
     card.innerHTML = `
-                    <!--<div id="carrito-vacio" class="carrito-vacio "> -->
                         <div class="carrito-vacio-icono">
                             <i class="fas fa-burger"></i>
                         </div>
@@ -355,13 +334,14 @@ function renderCarritoVacio() {
                         <a href="../index.html" class="btn btn-warning mt-2">
                             <i class="fas fa-arrow-left"></i> Ir al menú
                         </a>
-                 <!-- </div>                     -->
                     `
     contenedor.appendChild(card)
 
 }
 function agregarRestar(id, value) {
+    /* obtengo el carrito del storage*/
     const carritoActual = JSON.parse(localStorage.getItem("carrito"))
+    /* busco el combo el cual quiero modificar las cantidades*/
     const nuevoCarrito = carritoActual.find(combo => combo.id == id)
     console.log(carritoActual)
     console.log(nuevoCarrito)
@@ -373,7 +353,9 @@ function agregarRestar(id, value) {
             nuevoCarrito.cantidadCombo--
         }
     }
-    nuevoCarrito.precioTotal = nuevoCarrito.precioCombo * nuevoCarrito.cantidadCombo
+
+    nuevoCarrito.precioTotal = nuevoCarrito.precioCombo * nuevoCarrito.cantidadCombo + ( nuevoCarrito.precioAdicionales * nuevoCarrito.cantidadCombo )
+    console.log("precio total nuevo "+nuevoCarrito.precioTotal)
     localStorage.setItem("carrito", JSON.stringify(carritoActual))
     const cantidad = document.getElementById("contador" + id)
     cantidad.innerHTML = nuevoCarrito.cantidadCombo
@@ -390,13 +372,11 @@ function agregarRestar(id, value) {
 function editarAdicionales(id, verduras, toppings, carrito) {
     console.log(verduras)
     console.log(toppings)
-    //console.log(carrito)
+    
     const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
     const combo = carritoRecuperado.find(combo => combo.id == id)
     console.log(combo)
-    //console.log(combo.adicionales)
     const adicionalesArray = combo.adicionales.split(" - ")
-    // console.log(adicionalesArray)
     let html = `<div style="display:flex; gap:20px;">`
 
     html += `<div style="flex:1;"><strong>Verduras</strong>`
@@ -452,19 +432,26 @@ function editarAdicionales(id, verduras, toppings, carrito) {
 }
 function ListenerCarrito() {
     const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
+    console.log(carritoRecuperado)
     let totalCantidades = 0
     let totalPrecio = 0
     if (carritoRecuperado) {
         totalCantidades = carritoRecuperado.reduce((total, cantidad) => total + cantidad.cantidadCombo, 0)
         totalPrecio = carritoRecuperado.reduce((total, cantidad) => total + cantidad.precioTotal, 0)
         const contCarrito = document.getElementById("span-Carrito")
+        const precioCarrito = document.getElementById("precio-carrito")
         contCarrito.classList.remove("d-none")
+        precioCarrito.classList.remove("d-none")
         if (carritoRecuperado.length == 0) {
             contCarrito.innerText = ""
             const botonAgregar = document.getElementById("btn-agregarCombo")
             botonAgregar.classList.add("disabled")
             contCarrito.classList.add("d-none")
+            const precioCarrito = document.getElementById("precio-carrito")
+            precioCarrito.classList.add("d-none")            
+            
         } else {
+            precioCarrito.innerText =`$ ${totalPrecio}`
             contCarrito.innerText = totalCantidades
             const botonAgregar = document.getElementById("btn-agregarCombo")
             botonAgregar.classList.remove("disabled")
@@ -472,6 +459,8 @@ function ListenerCarrito() {
     } else {
         const contCarrito = document.getElementById("span-Carrito")
         contCarrito.classList.add("d-none")
+        const precioCarrito = document.getElementById("precio-carrito")
+        precioCarrito.classList.add("d-none")
         const botonAgregar = document.getElementById("btn-agregarCombo")
         botonAgregar.classList.add("disabled")
     }
@@ -540,8 +529,9 @@ function check(nombre, adicionalesArray) {
     return adicionalesArray.includes(nombre) ? "checked" : ""
 }
 function actualizarAdicionales(id) {
+    //console.log("entro a funcion actualizar adicionales")
     const carritoActual = JSON.parse(localStorage.getItem("carrito"))
-    console.log(carritoActual)
+   // console.log(carritoActual)
     const carritoModificado = carritoActual.find(combo => combo.id == id)
 
     const verdurasCheck = document.querySelectorAll(".check-verdura:checked")
@@ -559,13 +549,20 @@ function actualizarAdicionales(id) {
         adicionales += adicionales ? " - " + topping.value : topping.value
         precioAdicionales += precioTopping
     })
+   // console.log("adicionales sin multiplicar "+precioAdicionales)
+    //precioAdicionales = precioAdicionales*carritoModificado.cantidadCombo
     cantidadAdicionales = verdurasCheck.length + toppingsCheck.length
-
+    
+    //console.log("cantidad adicionales :"+cantidadAdicionales+" precio adicionales :"+precioAdicionales+" cantidad de combos de esa hamburguesa: "+ carritoModificado.cantidadCombo+" precio del combo :"+carritoModificado.precioCombo)
+    //precioAdicionales = precioAdicionales*carritoModificado.cantidadCombo
+    let precioTotCombos = carritoModificado.cantidadCombo * carritoModificado.precioCombo
     carritoModificado.adicionales=adicionales
-    carritoModificado.precioTotal = precioAdicionales + carritoModificado.precioCombo
-
+    carritoModificado.precioAdicionales = precioAdicionales
+    carritoModificado.cantidadAdicionales = cantidadAdicionales
+    carritoModificado.precioTotal = (precioAdicionales * carritoModificado.cantidadCombo)+ precioTotCombos
+/*
     console.log("carrito antes de hacer setitem, vamos a guardar carritoActual")
-    console.log(carritoActual)
+    console.log(carritoActual)*/
     localStorage.setItem("carrito", JSON.stringify(carritoActual))
     //// FALTA RENDERIZAR PRECIOS, Y ACTUALIZAR CARRITO ////
     const msj ="Carrito actualizado"

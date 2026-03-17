@@ -499,6 +499,15 @@ h3 {
   overflow: hidden;
 }
 
+.card-combo-descripcion-confirmacion {
+  font-size: 0.69rem;
+  color: #6a7282;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .card-combo-footer {
   display: flex;
   align-items: center;
@@ -834,6 +843,11 @@ h3 {
   font-size: 0.95rem;
   color: #6a7282;
   margin: 5px 0 0 0;
+}
+
+.p-precio-carrito {
+  font-size: 0.9rem;
+  color: #6a7282;
 }
 
 @keyframes bagSwing {

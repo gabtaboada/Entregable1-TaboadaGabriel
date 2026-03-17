@@ -60,7 +60,14 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-
+.card-combo-descripcion-confirmacion {
+    font-size: 0.69rem;
+    color: #6a7282;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 .card-combo-footer {
     display: flex;
     align-items: center;
