@@ -102,40 +102,6 @@ h3 {
   font-style: italic;
 }
 
-/*panel  subottal*/
-#contenedor-subtotal {
-  top: 20px;
-  display: flex;
-  justify-content: flex-end;
-  right: 20px;
-  z-index: 100;
-}
-
-.card-subtotal-total {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 16px 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  min-width: 260px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.card-subtotal-total .card-subtotal-linea {
-  display: flex;
-  justify-content: end;
-  gap: 10px;
-  align-items: center;
-}
-.card-subtotal-total .card-subtotal {
-  font-size: 0.9rem;
-  color: #6a7282;
-}
-
-/*
-.container{
-    position: relative;
-}*/
 /* BANNER HERO */
 .banner-hero {
   position: relative;
@@ -417,14 +383,13 @@ h3 {
 }
 
 .precio-info-valor {
-  font-size: 0.75rem;
-  font-style: italic;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #364153;
   padding: 5px 12px;
   background-color: #f9fafb;
   border-radius: 6px;
-  border-left: 3px solid #fcdb02;
+  border-left: 3px solid #FCBF02;
   margin-bottom: 8px;
 }
 

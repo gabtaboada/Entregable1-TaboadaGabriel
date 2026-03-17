@@ -4,7 +4,7 @@ const UrlCombos = "../assets/db/combos.json"
 const UrlVerduras = "../assets/db/verduras.json"
 const UrlToppings = "../assets/db/toppings.json"
 
-let carrito =[]
+let carrito = []
 
 const precioVerdura = 1000
 const precioTopping = 600
@@ -14,8 +14,8 @@ const precioTopping = 600
 //////  que hace referencia al numero de pedido.
 class comboPedido {
     //static id = 0 // no hago esto, porque si vuelvo al index, me pisa el id y arranca de 0 de nuevo
-    constructor(id,idPedido, idCombo, nombre,descripcion, adicionales, imagen,cantidadCombo,precioCombo,precioTotal) {
-            this.id = id,//
+    constructor(id, idPedido, idCombo, nombre, descripcion, adicionales, imagen, cantidadCombo, precioCombo, precioTotal) {
+        this.id = id,//
             this.idPedido = idPedido,
             this.idCombo = idCombo,//id del combo guardado en combos.json
             this.nombre = nombre,
@@ -32,36 +32,37 @@ function obtenerCombos() {
     fetch(UrlCombos)
         .then(response => response.json())
         .then(data => {
-            
-            if(mensajeCarrito){
+
+            if (mensajeCarrito) {
                 let idPedido = 1
                 const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
-                const idPedidos =pedidosGuardados.map(pedidos => pedidos.id)
+                const idPedidos = pedidosGuardados.map(pedidos => pedidos.id)
                 console.log("ARRAY DE ID")
                 console.log(idPedidos)
                 //const maxId = Math.max(...idPedidos)
                 //console.log("maxID "+maxId)
-                let idMax =0
+                let idMax = 0
                 for (const id of idPedidos) {
                     idMax = id
                 }
                 idPedido += idMax
-                console.log("con for of "+idMax)
-                console.log("idPedido"+idPedido)
-                console.log("mensaje del carrito "+mensajeCarrito)  
-                switch(mensajeCarrito){
+                console.log("con for of " + idMax)
+                console.log("idPedido" + idPedido)
+                console.log("mensaje del carrito " + mensajeCarrito)
+                switch (mensajeCarrito) {
                     case "armadoCombo":
                         console.log("ARMADO COMBO")
                         renderSeleccionCombo(idPedido, data)
                         break
                     case "nuevoPedido":
-                        
+
                         console.log("NUEVO COMBO")
+                        borrarContenido("contenedor-subtotal")
                         renderSeleccionCombo(idPedido, data)
                         break
-                    default : alert("hola")
-                    
-                }  
+                    default: alert("hola")
+
+                }
             }
 
             renderMenu(Menu, data)
@@ -71,20 +72,23 @@ function obtenerCombos() {
         .finally(() => console.log("Peticion finalizada"))
 }
 function obtenerVerduras(idPedido, comboId, combosArmados) {
+    const combo = combosArmados.find(combo => combo.id == comboId)
     fetch(UrlVerduras)
         .then(response => response.json())
         .then(data => {
+            listenerSubtotal(combo.precio)//actualizo el subtotal que voy mostrando
             renderSeleccionVerdura(idPedido, comboId, data, combosArmados)
             //console.log(data)
         })
         .catch(err => console.log("Error detectado: ", err))
         .finally(() => console.log("Peticion finalizada"))
 }
-function obtenerToppings(idPedido, comboId, combosArmados) {
+function obtenerToppings(idPedido, comboId, combosArmados, subtotal) {
+    console.log(subtotal)
     fetch(UrlToppings)
         .then(response => response.json())
         .then(data => {
-            renderSeleccionToppings(idPedido, comboId, data, combosArmados)
+            renderSeleccionToppings(idPedido, comboId, data, combosArmados, subtotal)
             //console.log(data)
         })
         .catch(err => console.log("Error detectado: ", err))
@@ -112,7 +116,7 @@ function renderMenu(menuArray, combosArmados) {
         const boton = card.querySelector("button")
         console.log(boton)
         boton.onclick = () => {
-            
+
             menuOpcion(opcionElegida, combosArmados)
             ListenerCarrito()
             //borrarContenido("Menu-finalizar")
@@ -136,53 +140,55 @@ function renderMenu(menuArray, combosArmados) {
     /* HASTA ACA EL ICONO DEL CARRITO */
 }
 function menuOpcion(opcion, combosArmados) {
-    console.log(opcion)
+    // console.log(opcion)
     let idPedido = 1
     const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
-    const idPedidos =pedidosGuardados.map(pedidos => pedidos.id)
-    console.log("ARRAY DE ID")
-    console.log(idPedidos)
+    const idPedidos = pedidosGuardados.map(pedidos => pedidos.id)
+    /*console.log("ARRAY DE ID")
+    console.log(idPedidos)*/
     //const maxId = Math.max(...idPedidos)
     //console.log("maxID "+maxId)
-    let idMax =0
+    let idMax = 0
     for (const id of idPedidos) {
         idMax = id
     }
     idPedido += idMax
-    console.log("con for of "+idMax)
-    console.log("idPedido"+idPedido)
+    /* console.log("con for of " + idMax)
+     console.log("idPedido" + idPedido)*/
     if (pedidosGuardados) {
 
     } else {
         //let idPedido = 1
-    }          
+    }
     //let idPedido = 3
     switch (opcion) {
         case 1:
             const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
-            if((carritoRecuperado) && (carritoRecuperado.length > 0) )
-            {
+            if ((carritoRecuperado) && (carritoRecuperado.length > 0)) {
                 Swal.fire({
-                    title: "Tienes combos guardados en el carrito. Al iniciar un nuevo pedido, se perderán. ¿Deseas continuar?",
+                    title: "Tenes combos guardados en el carrito. Al iniciar un nuevo pedido, se perderán. ¿Deseas continuar?",
                     showDenyButton: false,
                     showCancelButton: true,
                     confirmButtonText: "Continuar",
                     denyButtonText: `Don't save`,
-                    cancelButtonText:"Cancelar",
-                    }).then((result) => {
+                    cancelButtonText: "Cancelar",
+                }).then((result) => {
                     if (result.isConfirmed) {
-                        carrito=[]
+                        carrito = []
                         localStorage.removeItem("carrito")
+
                         ListenerCarrito()
+                        borrarContenido("contenedor-subtotal")
                         renderSeleccionCombo(idPedido, combosArmados)
                     } else if (result.isDenied) {
                     }
-                    });
-            }else{
+                });
+            } else {
                 console.log("else de carrito>0")
+                borrarContenido("contenedor-subtotal")
                 renderSeleccionCombo(idPedido, combosArmados)
             }
-           // renderSeleccionCombo(idPedido, combosArmados)
+            // renderSeleccionCombo(idPedido, combosArmados)
             break
         case 2:
             idPedido = 1
@@ -190,7 +196,7 @@ function menuOpcion(opcion, combosArmados) {
             console.log("Mostrar pedido")
             break
         case 3:
-            window.location.href ="./pages/buscar-pedido.html"
+            window.location.href = "./pages/buscar-pedido.html"
             break
         default: Swal.fire("Revisar codigo porque el menu esta hardcodeado, en este momento es un array con valores 1,2,3");
     }
@@ -221,6 +227,9 @@ function renderSeleccionCombo(idPedido, combosArmados) {
                                     </div>
                                     <div class="card-combo-footer">
                                         <span class="card-combo-precio">$ ${combo.precio}</span>
+                                        <!--<div id="contenedor-subtotal" class="d-flex justify-content-center">
+
+                                        </div> -->                                           
                                     </div>
                                 </div>
                             </div>
@@ -229,7 +238,7 @@ function renderSeleccionCombo(idPedido, combosArmados) {
         card.className = "d-flex flex-row justify-content-between align-items-center m-2"
         burgerContenedor.appendChild(card)
     })
-
+    renderSubtotal()
     const Botones = document.querySelectorAll(".CombosClase")
     Botones.forEach((boton) => {
         boton.onclick = (e) => {
@@ -243,10 +252,14 @@ function renderSeleccionCombo(idPedido, combosArmados) {
 
 }
 function renderSeleccionVerdura(idPedido, idCombo, opcionesVerduras, combosArmados) {
-    //console.log("id combo agregado "+idCombo)
+    /*console.log("id combo agregado "+idCombo+" de")
+    console.log(combosArmados)*/
+    const comboSeleccionado = combosArmados.find(combo => combo.id == idCombo)
+    const verdura = opcionesVerduras.find(verdura => verdura.adicional == "verdura")
     const menuSeleccionVerdura = document.getElementById("Verduras-seleccion")
     menuSeleccionVerdura.innerHTML = ""//borro el contenedor por si vuelve a tocar  nuevo pedido
-    menuSeleccionVerdura.innerHTML = `<p class="precio-info">Precio por cada uno: $${precioVerdura}</p>
+    menuSeleccionVerdura.innerHTML = `<p class="precio-info">Seleccione la verdura</p>
+                                    <p class="precio-info-valor">Precio por cada uno:<strong> $${verdura.precio}</strong></p>
                                     <div class='d-flex flex-column' id='ContenedorVerduras'></div>`
     menuSeleccionVerdura.className = "d-flex flex-column"
 
@@ -264,10 +277,27 @@ function renderSeleccionVerdura(idPedido, idCombo, opcionesVerduras, combosArmad
         menuSeleccionVerdura.appendChild(card)
     })
 
-    const Checks = document.querySelectorAll(".check-verduras")
-    const VerdurasSeleccionadas = []
-    Checks.forEach((check) => {
-        check.addEventListener("change", () => {
+    //let precio = 0
+    let subtotal = comboSeleccionado.precio
+    const checks = document.querySelectorAll(".check-verduras")
+    // const VerdurasSeleccionadas = []
+
+    checks.forEach((check) => {
+        check.onchange = () => {
+            //check.addEventListener("change", () => {
+            if (check.checked) {
+                subtotal += verdura.precio
+            } else {
+                if (subtotal > comboSeleccionado.precio) {
+                    subtotal -= verdura.precio
+                }
+            }
+            // const msj ="Subtotal"
+            // const color = "linear-gradient(to right, #00b09b, #96c93d)"
+            // msjToastify(msj,color)    
+            // console.log(subtotal)
+            listenerSubtotal(subtotal)
+
             borrarContenido("Toppings-seleccion")
             borrarContenido("Confirmar-seleccion")
             //este if pregunta si existe el boton continuar a toppings, xq lo borra cuando detecta al continuar para toppings
@@ -280,10 +310,10 @@ function renderSeleccionVerdura(idPedido, idCombo, opcionesVerduras, combosArmad
                 menuSeleccionVerdura.appendChild(cardContinuar)
                 const boton = document.getElementById("Btn-ContinuarAtoppings")
                 boton.onclick = () => {
-                    obtenerToppings(idPedido, idCombo, combosArmados)
+                    obtenerToppings(idPedido, idCombo, combosArmados, subtotal)
                 }
             }
-        })
+        }
     })
 
     // Boton Continuar a toppings
@@ -296,15 +326,18 @@ function renderSeleccionVerdura(idPedido, idCombo, opcionesVerduras, combosArmad
 
     const boton = document.getElementById("Btn-ContinuarAtoppings")
     boton.onclick = () => {
-        obtenerToppings(idPedido, idCombo, combosArmados)
+        obtenerToppings(idPedido, idCombo, combosArmados, subtotal)
     }
 
 }
-function renderSeleccionToppings(idPedido, idCombo, opcionesToppings, combosArmados) {
+function renderSeleccionToppings(idPedido, idCombo, opcionesToppings, combosArmados, subtotal) {
+    const topping = opcionesToppings.find(topping => topping.adicional == "topping")
     const menuSeleccionToppings = document.getElementById("Toppings-seleccion")
     menuSeleccionToppings.innerHTML = ""//borro el contenedor por si vuelve a tocar  nuevo pedido
-    menuSeleccionToppings.innerHTML = `<p class="precio-info">Precio por cada uno: $${precioTopping}</p>
-                                        <div class='d-flex flex-column' id='ContenedorToppings'></div>`
+    menuSeleccionToppings.innerHTML = `
+                                        <p class="precio-info">Seleccione el topping</p>
+                                        <p class="precio-info-valor">Precio por cada uno:<strong> $${topping.precio}</strong></p>
+                                        <div class='d-flex flex-column id='ContenedorToppings'></div>`
     menuSeleccionToppings.className = "d-flex flex-column"
 
     opcionesToppings.forEach(Topping => {
@@ -330,10 +363,23 @@ function renderSeleccionToppings(idPedido, idCombo, opcionesToppings, combosArma
 
 
     }
-    const Checks = document.querySelectorAll(".Check-Toppings")
-    Checks.forEach((check) => {
-        check.addEventListener("change", () => {
-            BorrarContenido("Confirmar-seleccion")
+
+    //let precio = 0    
+    const checks = document.querySelectorAll(".check-Toppings")
+    console.log(subtotal)
+    listenerSubtotal(subtotal)
+    checks.forEach((check) => {
+        check.onchange = () => {
+            if (check.checked) {
+                subtotal += topping.precio
+            } else {
+                if (subtotal > 0) {
+                    subtotal -= topping.precio
+                }
+            }
+
+            listenerSubtotal(subtotal)
+            borrarContenido("Confirmar-seleccion")
             //este if pregunta si existe el boton continuar a finalizar, xq lo borra cuando detecta al continuar para finalizar
             if (!document.getElementById("Btn-ContinuarAFinalizar")) {
                 const card = document.createElement("div")
@@ -341,10 +387,10 @@ function renderSeleccionToppings(idPedido, idCombo, opcionesToppings, combosArma
                 menuSeleccionToppings.appendChild(card)
                 const boton = document.getElementById("Btn-ContinuarAFinalizar")
                 boton.onclick = () => {
-                    obtenerToppings(idPedido, idCombo)
+                    obtenerToppings(idPedido, idCombo, combosArmados, subtotal)
                 }
             }
-        })
+        }
     })
 }
 function mostrarConfirmacion(idPedido, idCombo, combosArmados) {
@@ -358,7 +404,7 @@ function mostrarConfirmacion(idPedido, idCombo, combosArmados) {
         adicionales += adicionales ? " - " + verdura.value : verdura.value
         precioTotal += precioVerdura
     })
-    
+
     toppingsCheck.forEach(topping => {
         adicionales += adicionales ? " - " + topping.value : topping.value
         precioTotal += precioTopping
@@ -367,18 +413,18 @@ function mostrarConfirmacion(idPedido, idCombo, combosArmados) {
     /* recupero el carrito - array de objetos*/
     let carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
     let idMax = 1
-    if (carritoRecuperado){
+    if (carritoRecuperado) {
         console.log("ENTRA A CARRITO")
-        
-        carritoRecuperado.forEach(combopedido =>{
+
+        carritoRecuperado.forEach(combopedido => {
             console.log(combopedido.id)
             idMax = combopedido.id
-        }) 
-        idMax +=1
+        })
+        idMax += 1
     }
-    
-    console.log("id del pedido antes de guardarlo en el objeto"+idPedido)
-    const comboNuevo = new comboPedido(idMax,idPedido, idCombo, busqueda.nombre,busqueda.descripcion, adicionales, busqueda.imagen,1,busqueda.precio,precioTotal)
+
+    console.log("id del pedido antes de guardarlo en el objeto" + idPedido)
+    const comboNuevo = new comboPedido(idMax, idPedido, idCombo, busqueda.nombre, busqueda.descripcion, adicionales, busqueda.imagen, 1, busqueda.precio, precioTotal)
     console.log(comboNuevo)
 
     Swal.fire({
@@ -396,47 +442,34 @@ function mostrarConfirmacion(idPedido, idCombo, combosArmados) {
     });
 }
 function agregarCombo(comboNuevo) {
-    
+
     console.log("/*/*/*/* funcion agregar combo */*/*/*/ ")
     console.log(comboNuevo)
-   
-///// A PARTIR ACA AYUDA ////
-    // PRIMERO recupero lo que había en localStorage
-        //const carritoRecuperado = JSON.parse(localStorage.getItem("carrito")) || []
-        let carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
 
-        if (carritoRecuperado === null) {
-            carritoRecuperado = []
-        }
-        // DESPUÉS agrego el nuevo combo al array recuperado
-        carritoRecuperado.push(comboNuevo)
-        
-        // FINALMENTE guardo el array completo
-        localStorage.setItem("carrito", JSON.stringify(carritoRecuperado))
-        
-        // actualizo la variable local también
-        carrito = carritoRecuperado   
-///// HASTA ACA AYUDA ////
+    ///// A PARTIR ACA AYUDA ////
+    // PRIMERO recupero lo que había en localStorage
+    //const carritoRecuperado = JSON.parse(localStorage.getItem("carrito")) || []
+    let carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
+
+    if (carritoRecuperado === null) {
+        carritoRecuperado = []
+    }
+    // DESPUÉS agrego el nuevo combo al array recuperado
+    carritoRecuperado.push(comboNuevo)
+
+    // FINALMENTE guardo el array completo
+    localStorage.setItem("carrito", JSON.stringify(carritoRecuperado))
+
+    // actualizo la variable local también
+    carrito = carritoRecuperado
+    ///// HASTA ACA AYUDA ////
 
     ListenerCarrito()
-   /* Toastify({
-        text: "Carrito actualizado",
-        duration: 1500,
-        destination: "#",
-        newWindow: false,
-        close: false,
-        gravity: "top", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        stopOnFocus: true, // Prevents dismissing of toast on hover
-        style: {
-            background: "linear-gradient(to right, #00b09b, #96c93d)",
-        },
-        onClick: function () { } // Callback after click
-    }).showToast();*/
-
-    const msj ="Carrito actualizado"
+    borrarContenido("contenedor-subtotal")
+    renderSubtotal()
+    const msj = "Carrito actualizado"
     const color = "linear-gradient(to right, #00b09b, #96c93d)"
-    msjToastify(msj,color)    
+    msjToastify(msj, color)
     Swal.fire({
         title: "Su combo fue agregado <strong>correctamente</strong>",
         icon: "success",
@@ -474,7 +507,7 @@ function agregarCombo(comboNuevo) {
     borrarContenido("Verduras-seleccion")
     borrarContenido("Toppings-seleccion")
     //borrarContenido("Menu-seleccion")
-    
+
     ////******   YA TENGO TODO. IDCOMBO . ID DEL PEDIDO . VERDURAS Y TOPPINGS *******//////
     ////******   AHORA FALTA GUARDAR EL PEDIDO. ACTUALIZAR EL CARRITO. GUARDAR EN STORAGE *******//////
 
@@ -482,36 +515,36 @@ function agregarCombo(comboNuevo) {
 }
 function ListenerCarrito() {
     const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
-    if(carritoRecuperado){
+    if (carritoRecuperado) {
         const contCarrito = document.getElementById("span-Carrito")
         contCarrito.classList.remove("d-none")
-        if(carritoRecuperado.length == 0){
+        if (carritoRecuperado.length == 0) {
             contCarrito.classList.add("d-none")
-            contCarrito.innerText =""
+            contCarrito.innerText = ""
             const botonAgregar = document.getElementById("btn-agregarCombo")
-            botonAgregar.classList.add("disabled")             
-        }else{
+            botonAgregar.classList.add("disabled")
+        } else {
             contCarrito.innerText = carritoRecuperado.length
             const botonAgregar = document.getElementById("btn-agregarCombo")
-            botonAgregar.classList.remove("disabled")  
+            botonAgregar.classList.remove("disabled")
         }
     } else {
         const contCarrito = document.getElementById("span-Carrito")
         contCarrito.classList.add("d-none")
         const botonAgregar = document.getElementById("btn-agregarCombo")
-        botonAgregar.classList.add("disabled")   
+        botonAgregar.classList.add("disabled")
     }
 
 
     console.log(carritoRecuperado)
 }
 function borrarContenido(SeccionABorrar) {
-    const BorrarSeccion = document.getElementById(SeccionABorrar)
-    BorrarSeccion.innerHTML = ""
+    const borrarSeccion = document.getElementById(SeccionABorrar)
+    borrarSeccion.innerHTML = ""
 }
-function msjToastify(msj,color){
+function msjToastify(msj, color) {
     Toastify({
-//        text: "Combo eliminado",
+        //        text: "Combo eliminado",
         text: msj,
         duration: 1500,
         destination: "#",
@@ -527,7 +560,30 @@ function msjToastify(msj,color){
         onClick: function () { }
     }).showToast();
 }
+function renderSubtotal() {
+    const contenedorSubtotal = document.getElementById("contenedor-subtotal")
+    //contenedorSubtotal.classList.add("d-none")
+
+    const card = document.createElement("div")
+    card.innerHTML = `
+                        <div class="card-subtotal-total">
+                            <div class="card-subtotal-linea">
+                                    <span class="card-subtotal">Sub-total</span>
+                                    <span class="card-subtotal " id="subtotal-listener"><strong>$ 0</strong></span>
+                            </div>
+                        </div>
+                    `
+    contenedorSubtotal.appendChild(card)
+}
+function listenerSubtotal(subtotal) {
+    const listenerSubtotal = document.getElementById("subtotal-listener")
+    listenerSubtotal.innerHTML = `<strong>$ ${subtotal}</strong>`
+    const contenedorSubtotal = document.getElementById("contenedor-subtotal")
+    //contenedorSubtotal.classList.remove("d-none")
+
+}
+
 let mensajeCarrito = localStorage.getItem("volverCarrito")
-console.log("mensaje volver carrito "+mensajeCarrito)
+console.log("mensaje volver carrito " + mensajeCarrito)
 
 obtenerCombos()

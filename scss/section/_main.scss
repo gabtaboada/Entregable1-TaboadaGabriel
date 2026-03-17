@@ -68,3 +68,39 @@
     padding: 10px;
     font-style: italic;
 }
+/*panel  subottal*/
+#contenedor-subtotal {
+   // position: absolute;
+    top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    right: 20px;
+    z-index: 100;
+}
+
+.card-subtotal-total {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .card-subtotal-linea {
+        display: flex;
+        //justify-content: space-between;
+        justify-content: end;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .card-subtotal {
+        font-size: 0.9rem;
+        color: #6a7282;
+    }
+}/*
+.container{
+    position: relative;
+}*/

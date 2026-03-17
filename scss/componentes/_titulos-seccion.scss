@@ -52,7 +52,17 @@
     }
 
 }
-
+.precio-info-valor {
+    font-size: 0.75rem;
+    font-style: italic;
+    font-weight: 600;
+    color: #364153;
+    padding: 5px 12px;
+    background-color: #f9fafb;
+    border-radius: 6px;
+    border-left: 3px solid #fcdb02;
+    margin-bottom: 8px;
+}
 // Responsive
 @media (max-width: 768px) {
     .titulo-seccion {

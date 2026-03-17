@@ -153,6 +153,27 @@ function renderBusqueda(){
         buscarPedido(idPedido)
 
     }
+    const inputPedido = document.getElementById("idPedido");
+    // 👇 AGREGÁ ESTE EVENTO AL FORMULARIO
+    const formulario = document.getElementById("formularioBusqueda")
+    formulario.addEventListener("submit", (e) => {
+        e.preventDefault(); // Evita que se recargue la página
+        const idPedido = document.getElementById("idPedido").value
+        buscarPedido(idPedido);
+    });
+
+    /*
+    inputPedido.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault(); // Evita el submit
+            // Ejecutar búsqueda
+            buscarPedido();
+        }
+    });    */
+    /*boton.addEventListener("submit", (e) => {
+        e.preventDefault(); // Evita que se recargue la página
+        buscarPedido();
+    });  */  
     
 }
 function buscarPedido(idPedido){
