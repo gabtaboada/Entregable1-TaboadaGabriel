@@ -377,9 +377,9 @@ function editarAdicionales(id, verduras, toppings, carrito) {
     const combo = carritoRecuperado.find(combo => combo.id == id)
     console.log(combo)
     const adicionalesArray = combo.adicionales.split(" - ")
-    let html = `<div style="display:flex; gap:20px;">`
+    let html = `<div style="display:flex; gap:20px;"><div style="flex:1;"><strong>Verduras</strong>`
 
-    html += `<div style="flex:1;"><strong>Verduras</strong>`
+   // html += `<div style="flex:1;"><strong>Verduras</strong>`
     verduras.forEach(verdura => {
         html += `
         <label class="verdura-item">
@@ -391,9 +391,9 @@ function editarAdicionales(id, verduras, toppings, carrito) {
         </label>
     `
     })
-    html += `</div>`
+   // html += `</div>`
 
-    html += `<div style="flex:1;"><strong>Toppings</strong>`
+    html += `</div><div style="flex:1;"><strong>Toppings</strong>`
     toppings.forEach(topping => {
         html += `
         <label class="Topping-item">
@@ -405,9 +405,9 @@ function editarAdicionales(id, verduras, toppings, carrito) {
         </label>
     `
     })
-    html += `</div>`
+    html += `</div></div>`
 
-    html += `</div>`
+    //html += `</div>`
 
     Swal.fire({
         title: "Editar <strong>adicionales</strong>",

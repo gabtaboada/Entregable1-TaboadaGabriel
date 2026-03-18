@@ -36,31 +36,14 @@ function obtenerCombos() {
         .then(data => {
             console.log("mensaje en obtener combos " + mensajeCarrito)
             if (mensajeCarrito) {
-                /*
-                let idPedido = 1
                 const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
-                const idPedidos = pedidosGuardados.map(pedidos => pedidos.id)
-                console.log("ARRAY DE ID")
-                console.log(idPedidos)
-                //const maxId = Math.max(...idPedidos)
-                //console.log("maxID "+maxId)
-                let idMax = 0
-                for (const id of idPedidos) {
-                    idMax = id
-                }
-                idPedido += idMax
-                console.log("con for of " + idMax)
-                */
-                const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
-
                 let idMax = 0
                 if (pedidosGuardados) {
-                    for (const p of pedidosGuardados) {
-                        idMax = p.id
+                    for (const pedido of pedidosGuardados) {
+                        idMax = pedido.id
                     }
                 }
                 const idPedido = idMax + 1
-                console.log("idPedido en obtener pedidos" + idPedido)
                 switch (mensajeCarrito) {
                     case "armadoCombo":
                         console.log("ARMADO COMBO")
@@ -72,7 +55,7 @@ function obtenerCombos() {
                         borrarContenido("contenedor-subtotal")
                         renderSeleccionCombo(idPedido, data)
                         break
-                    default: alert("hola")
+                    default: Swal.fire("Revisar codigo porque el menu esta hardcodeado");
 
                 }
             }
@@ -112,7 +95,6 @@ function renderMenu(menuArray, combosArmados) {
                 card.innerHTML = `<button id="${opcionElegida}" class="m-2 btn btn-success"> <i class="fas fa-plus-circle"></i> Nuevo Pedido</button>`
                 break
             case 2:
-                // card.innerHTML = `<button id="${opcionElegida}" class="m-2 btn btn-warning btn-agregarCombo">Agregar combo</button>`
                 card.innerHTML = `<button id="btn-agregarCombo" class="m-2 btn btn-warning btn-agregarCombo"><i class="fas fa-hamburger"></i>Agregar combo</button>`
                 break
             case 3:
@@ -123,10 +105,8 @@ function renderMenu(menuArray, combosArmados) {
         contenedor.appendChild(card)
         const boton = card.querySelector("button")
         boton.onclick = () => {
-
             menuOpcion(opcionElegida, combosArmados)
             ListenerCarrito()
-            //borrarContenido("Menu-finalizar")
         }
     }//)
     /* ICONO CARRITO */
@@ -151,24 +131,9 @@ function renderMenu(menuArray, combosArmados) {
     /* HASTA ACA EL ICONO DEL CARRITO */
 }
 function menuOpcion(opcion, combosArmados) {
-    // console.log(opcion)
     let idPedido = 1
     const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
-    //// error al guardar en local pedidos. cuando no existe pedidos guardados
-    //  const idPedidos = pedidosGuardados.map(pedidos => pedidos.id)
-
-    /*console.log("ARRAY DE ID")
-    console.log(idPedidos)*/
-    //const maxId = Math.max(...idPedidos)
-    //console.log("maxID "+maxId)
-    //// error al guardar en local pedidos. cuando no existe pedidos guardados
-    // 
     let idMax = 0
-    /*    
-     let idMax = 0
-     for (const id of idPedidos) {
-         idMax = id
-     }*/
     if (pedidosGuardados) {
         const idPedidos = pedidosGuardados.map(pedidos => pedidos.id)
         for (const id of idPedidos) {
@@ -179,10 +144,6 @@ function menuOpcion(opcion, combosArmados) {
     } else {
         idPedido = 1
     }
-
-    console.log("con for of " + idMax)
-    console.log("idPedido " + idPedido)
-
     switch (opcion) {
         case 1:
             const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
@@ -210,11 +171,10 @@ function menuOpcion(opcion, combosArmados) {
                 borrarContenido("contenedor-subtotal")
                 renderSeleccionCombo(idPedido, combosArmados)
             }
-            // renderSeleccionCombo(idPedido, combosArmados)
             break
         case 2:
-            //            idPedido = 1
             renderSeleccionCombo(idPedido, combosArmados)
+            //borrarContenido("contenedor-subtotal")
             console.log("Mostrar pedido con idPedido " + idPedido)
             break
         case 3:
@@ -502,27 +462,16 @@ function mostrarConfirmacion(idPedido, idCombo, combosArmados) {
     });
 }
 function agregarCombo(comboNuevo) {
-
-    console.log("/*/*/*/* funcion agregar combo */*/*/*/ ")
-    console.log(comboNuevo)
-
-    ///// A PARTIR ACA AYUDA ////
-    // PRIMERO recupero lo que había en localStorage
-    //const carritoRecuperado = JSON.parse(localStorage.getItem("carrito")) || []
     let carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
 
     if (carritoRecuperado === null) {
         carritoRecuperado = []
     }
-    // DESPUÉS agrego el nuevo combo al array recuperado
     carritoRecuperado.push(comboNuevo)
 
-    // FINALMENTE guardo el array completo
     localStorage.setItem("carrito", JSON.stringify(carritoRecuperado))
 
-    // actualizo la variable local también
     carrito = carritoRecuperado
-    ///// HASTA ACA AYUDA ////
 
     ListenerCarrito()
     borrarContenido("contenedor-subtotal")
@@ -567,12 +516,6 @@ function agregarCombo(comboNuevo) {
     /*Borro toda la pantalla por si el usuario sale de la alerta con la cruz, al haber agregado un combo, si sale, puede agregar el mismo*/
     borrarContenido("Verduras-seleccion")
     borrarContenido("Toppings-seleccion")
-    //borrarContenido("Menu-seleccion")
-
-    ////******   YA TENGO TODO. IDCOMBO . ID DEL PEDIDO . VERDURAS Y TOPPINGS *******//////
-    ////******   AHORA FALTA GUARDAR EL PEDIDO. ACTUALIZAR EL CARRITO. GUARDAR EN STORAGE *******//////
-
-
 }
 function ListenerCarrito() {
     let totalPrecio = 0
@@ -633,6 +576,7 @@ function msjToastify(msj, color) {
 }
 function renderSubtotal() {
     const contenedorSubtotal = document.getElementById("contenedor-subtotal")
+    contenedorSubtotal.innerHTML = ""
     //contenedorSubtotal.classList.add("d-none")
 
     const card = document.createElement("div")

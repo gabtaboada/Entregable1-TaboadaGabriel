@@ -34,9 +34,14 @@ function renderMenu(menuArray) {
     cardCarrito.innerHTML = `
                             <button id="btn-Carrito" class="btn-carrito btn p-0 border-0   bg-transparent">
                             <img id="btn-Carrito" src="../assets/img/carrito.webp" class="img-VerTop" > </button>
-                            <span id="span-Carrito" class="position-absolute bottom-0 start-100 translate-middle badge rounded-pill bg-warning d-none">0
+                            <span id="span-Carrito" class="position-absolute bottom-0 start-0 translate-middle badge rounded-pill bg-warning d-none">0
                             </span>`
+    const cardPrecioCarrito = document.createElement("p")
+    cardPrecioCarrito.id = "precio-carrito"
+    cardPrecioCarrito.classList = "p-precio-carrito"
+
     contenedorCarrito.appendChild(cardCarrito)
+    contenedorCarrito.appendChild(cardPrecioCarrito)
     const btnCarrito = document.getElementById("btn-Carrito")
     btnCarrito.onclick = () => {
         window.location.href = "./carrito.html"
@@ -75,11 +80,10 @@ function menuOpcion(opcion) {
                 });
             } else {
                 const mensaje = "nuevoPedido"
-                /* PROBAR AGREGADOP 19:48*/
+
                 localStorage.setItem("volverCarrito", mensaje)
                 window.location.href = "../index.html"
-                //console.log("else de carrito>0")
-                // renderSeleccionCombo(idPedido, combosArmados)
+
             }
             // renderSeleccionCombo(idPedido, combosArmados)
             break
@@ -103,12 +107,17 @@ function ListenerCarrito() {
         totalPrecio = carritoRecuperado.reduce((total, cantidad) => total + cantidad.precioTotal, 0)
         const contCarrito = document.getElementById("span-Carrito")
         contCarrito.classList.remove("d-none")
+        const precioCarrito = document.getElementById("precio-carrito")
+        precioCarrito.classList.remove("d-none")
         if (carritoRecuperado.length == 0) {
             contCarrito.innerText = ""
             const botonAgregar = document.getElementById("btn-agregarCombo")
             botonAgregar.classList.add("disabled")
             contCarrito.classList.add("d-none")
+            const precioCarrito = document.getElementById("precio-carrito")
+            precioCarrito.classList.add("d-none")
         } else {
+            precioCarrito.innerText = `$ ${totalPrecio}`
             contCarrito.innerText = totalCantidades
             const botonAgregar = document.getElementById("btn-agregarCombo")
             botonAgregar.classList.remove("disabled")
@@ -116,16 +125,18 @@ function ListenerCarrito() {
     } else {
         const contCarrito = document.getElementById("span-Carrito")
         contCarrito.classList.add("d-none")
+        const precioCarrito = document.getElementById("precio-carrito")
+        precioCarrito.classList.add("d-none")
         const botonAgregar = document.getElementById("btn-agregarCombo")
         botonAgregar.classList.add("disabled")
     }
 }
-function renderBusqueda(){
+function renderBusqueda() {
     const contenedor = document.getElementById("formularioBusqueda")
     const card = document.createElement("div")
     card.className = "formulario-seccion"
     card.innerHTML =
-                                `
+        `
                                     <div class="row">
                                         <div class="col-12 mb-3">
                                             <label for="nombre" class="form-label"># Número de pedido
@@ -147,7 +158,7 @@ function renderBusqueda(){
     contenedor.appendChild(card)
 
     const boton = document.getElementById("btn-buscar")
-    boton.onclick = () =>{
+    boton.onclick = () => {
         const idPedido = document.getElementById("idPedido").value
         console.log(idPedido)
         buscarPedido(idPedido)
@@ -162,21 +173,11 @@ function renderBusqueda(){
         buscarPedido(idPedido);
     });
 
-    /*
-    inputPedido.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault(); // Evita el submit
-            // Ejecutar búsqueda
-            buscarPedido();
-        }
-    });    */
-    /*boton.addEventListener("submit", (e) => {
-        e.preventDefault(); // Evita que se recargue la página
-        buscarPedido();
-    });  */  
-    
+
 }
-function buscarPedido(idPedido){
+
+
+function buscarPedido(idPedido) {
     // estoy simulando que trae este dato de una base de datos. 
     const pedidos = JSON.parse(localStorage.getItem("pedidos"))
     const combos = JSON.parse(localStorage.getItem("combosTotal"))
@@ -251,7 +252,6 @@ function buscarPedido(idPedido){
     }else{
         Swal.fire("No se encontro ese pedido, intente nuevamente");
     }
-    
 
 }
 renderMenu(Menu)

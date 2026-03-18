@@ -1,0 +1,126 @@
+#contenedor-pedidos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 70%;
+
+    // columnas con mismo ancho en header y cards
+    .pedido-id {
+        width: 80px;
+        min-width: 80px;
+        flex-shrink: 0;
+    }
+
+    .pedido-nombre {
+        width: 200px;
+        min-width: 200px;
+        flex-shrink: 0;
+    }
+
+    .pedido-precio {
+        width: 120px;
+        min-width: 120px;
+        flex-shrink: 0;
+        text-align: right;
+    }
+
+    .pedido-estado,
+    .pedido-estado-header {
+        width: 150px;
+        min-width: 150px;
+        flex-shrink: 0;
+        text-align: center;
+    }
+
+    .card-pedido {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        transition: box-shadow 0.2s ease;
+        gap: 10px;
+
+        &:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .pedido-id {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #FCBF02;
+        }
+
+        .pedido-nombre {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1e2939;
+            width:200px
+        }
+
+        .pedido-precio {
+            font-size: 0.9rem;
+            color: #364153;
+            font-weight: 600;
+        }
+    }
+
+    .card-pedido-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background: #1e2939;
+        border-radius: 10px;
+        padding: 10px 20px;
+        margin-bottom: 4px;
+        gap: 10px;
+        
+        span {
+            color: #FCBF02;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;  
+            width:200px                
+        }
+        .cliente{
+                width: 200px;
+        }
+            .precio{
+            width: 120px;
+                min-width: 120px;
+                flex-shrink: 0;
+                text-align: right;
+            }
+            .estado{
+                width: 150px;
+                text-align: center;
+            }            
+    }
+}
+
+.pedido-estado {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.estado-preparacion {
+    background-color: #FCBF02;
+    color: #1e2939;
+}
+
+.estado-entregado {
+    background-color: #28a745;
+    color: white;
+}
+
+.estado-cancelado {
+    background-color: #dc3545;
+    color: white;
+}
