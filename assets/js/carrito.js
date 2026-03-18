@@ -1,9 +1,3 @@
-const menu = [1, 2, 3]
-
-const UrlVerduras = "../assets/db/verduras.json"
-const UrlToppings = "../assets/db/toppings.json"
-const precioVerdura = 1000
-const precioTopping = 600
 function obtenerVerduras() {
     fetch(UrlVerduras)
         .then(response => response.json())
@@ -14,6 +8,8 @@ function obtenerVerduras() {
                     renderMenu(menu, dataVerduras, dataToppings)
                 })
         })
+        .catch(err => console.log("Error detectado: ", err))
+        .finally(() => console.log("Peticion finalizada"))
 }
 
 
@@ -32,9 +28,6 @@ function obtenerToppings(idPedido, comboId, combosArmados) {
 function renderMenu(menuArray, verduras, toppings) {
     const contenedor = document.getElementById("Menu-contenedor")
     for (const opcionElegida of menuArray) {
-        /*       
-           }
-           menuArray.forEach(opcionElegida => {*/
         const card = document.createElement("div")
         switch (opcionElegida) {
             case 1:
@@ -55,7 +48,7 @@ function renderMenu(menuArray, verduras, toppings) {
             menuOpcion(opcionElegida)
         }
 
-    }//)
+    }
     /* ICONO CARRITO */
     const contenedorCarrito = document.getElementById("Menu-carrito")
     const cardCarrito = document.createElement("div")
@@ -67,28 +60,22 @@ function renderMenu(menuArray, verduras, toppings) {
                             </span>`
     const cardPrecioCarrito = document.createElement("p")
     cardPrecioCarrito.id = "precio-carrito"
-    cardPrecioCarrito.classList ="p-precio-carrito"
+    cardPrecioCarrito.classList = "p-precio-carrito"
     contenedorCarrito.appendChild(cardCarrito)
     contenedorCarrito.appendChild(cardPrecioCarrito)
-    // const btnCarrito = document.getElementById("btn-Carrito")
-
 
     /* HASTA ACA EL ICONO DEL CARRITO */
     RenderCarrito(verduras, toppings)
-
-    ListenerCarrito()
+    listenerCarrito()
 }
 function menuOpcion(opcion, combosArmados) {
     let idPedido = 1
     switch (opcion) {
         case 1:
-
             const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
-            // if(carrito.length > 0)
-
             if ((carritoRecuperado) && (carritoRecuperado.length > 0)) {
                 Swal.fire({
-                    title: "Tienes combos guardados en el carrito. Al iniciar un nuevo pedido, se perderán. ¿Deseas continuar?",
+                    title: "Tenes combos guardados en el carrito. Al iniciar un nuevo pedido, se perderán. ¿Deseas continuar?",
                     showDenyButton: false,
                     showCancelButton: true,
                     confirmButtonText: "Continuar",
@@ -96,22 +83,17 @@ function menuOpcion(opcion, combosArmados) {
                     cancelButtonText: "Cancelar",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        //=[]
                         localStorage.removeItem("carrito")
                         const mensaje = "nuevoPedido"
                         localStorage.setItem("volverCarrito", mensaje)
                         window.location.href = "../index.html"
-                        //ListenerCarrito()
-                        //renderSeleccionCombo(idPedido, combosArmados)
                     } else if (result.isDenied) {
                     }
                 });
             } else {
                 const mensaje = "nuevoPedido"
-                /* PROBAR AGREGADOP 19:48*/
                 localStorage.setItem("volverCarrito", mensaje)
                 window.location.href = "../index.html"
-
             }
             break
         case 2:
@@ -125,10 +107,7 @@ function menuOpcion(opcion, combosArmados) {
         default: Swal.fire("Revisar codigo porque el menu esta hardcodeado, en este momento es un array con valores 1,2,3");
     }
 }
-//recupero el id del pedido
 function RenderCarrito(verduras, toppings) {
-    //console.log(verduras)
-    //console.log(toppings)
     const carrito = JSON.parse(localStorage.getItem("carrito"))
     let totalReduce = 0
     if ((carrito)) {
@@ -141,7 +120,6 @@ function RenderCarrito(verduras, toppings) {
         let total = 0
         carrito.forEach(combo => {
             const adicionales = combo.adicionales
-           // console.log("adicionales " + adicionales)
             if (adicionales == "") {
                 const mensajeTitulo = "Sin adicionales"
             } else {
@@ -160,7 +138,7 @@ function RenderCarrito(verduras, toppings) {
                                                 <p class="card-combo-descripcion">${combo.descripcion}</p>
                                                 <p class="card-combo-descripcion" >
                                                     <span id="adicionales${combo.id}"><strong>
-                                                         ${combo.adicionales ? "Adicionales" : "Sin adicionales"}</strong>${combo.adicionales ? ": " + combo.adicionales : ""}
+                                                        ${combo.adicionales ? "Adicionales" : "Sin adicionales"}</strong>${combo.adicionales ? ": " + combo.adicionales : ""}
                                                     </span>
                                                 <button class="btn-editar " id="${combo.id}" >
                                                     <img src="../assets/img/editar.webp" alt="Editar">
@@ -168,7 +146,6 @@ function RenderCarrito(verduras, toppings) {
                                                 </p>
                                                 <p class="card-combo-descripcion">$ ${combo.precioCombo}</p>
                                             </div>
-
                                         </div>
                                         <div class="d-flex flex-column gap-1 justify-content-center gap-3 me-2">
                                                 <div class="contenedor-cantidad"> 
@@ -193,19 +170,16 @@ function RenderCarrito(verduras, toppings) {
                 eliminarCombo(combo.id, carrito)
             }
             const botones = document.querySelectorAll(".agregarRestar")
-           // console.log(botones)
             botones.forEach((boton) => {
                 boton.onclick = (e) => {
                     const value = e.currentTarget.value
                     const botonId = e.currentTarget.id
-                    agregarRestar(botonId, value,verduras,toppings)
+                    agregarRestar(botonId, value, verduras, toppings)
                 }
             })
             const botonEditar = document.querySelectorAll(".btn-editar")
             botonEditar.forEach(e => {
                 e.onclick = () => {
-                    //console.log("editar")
-                   // console.log(e.id)
                     editarAdicionales(e.id, verduras, toppings, carrito)
                 }
             })
@@ -245,33 +219,24 @@ function RenderCarrito(verduras, toppings) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = "./finalizar.html"
-                } else if (result.isDenied) {
-
-                }
+                } 
             });
 
         }
     } else {
-       // console.log("NO ENTRA AL RENDER")
-
         renderCarritoVacio()
     }
-
 }
 
 function eliminarCombo(id) {
-
     const carritoActual = JSON.parse(localStorage.getItem("carrito"))
     const nuevoCarrito = carritoActual.filter(combo => combo.id !== id)
     const total = nuevoCarrito.reduce((contador, combo) => contador + combo.precioTotal, 0)
     const cantidadCombo = nuevoCarrito.reduce((contador, combo) => contador + combo.cantidadCombo, 0)
-
     // Actualizar localStorage
     localStorage.setItem("carrito", JSON.stringify(nuevoCarrito))
-
     // Verificar si el carrito quedó vacío
     if (cantidadCombo == 0) {
-        // ← VERIFICAR QUE LOS ELEMENTOS EXISTAN ANTES DE REMOVERLOS
         const cardTotal = document.getElementById("contenedorTotal")
         const cardCarrito = document.getElementById("carrito")
         const cardTituloCarrito = document.getElementById("tituloCarrito")
@@ -284,10 +249,9 @@ function eliminarCombo(id) {
         if (cardTituloCarrito) {
             cardTituloCarrito.remove()
         }
-
         renderCarritoVacio()
     } else {
-        // Actualizar totales solo si hay combos
+        // Actualizo totales solo si hay combos
         const cardSubTotal = document.getElementById("subtotal-final-listener")
         const cardTotal = document.getElementById("total-final-listener")
         const cardCantidad = document.getElementById("cantidadCombos")
@@ -296,17 +260,18 @@ function eliminarCombo(id) {
         if (cardTotal) cardTotal.innerHTML = "$ " + total
         if (cardCantidad) cardCantidad.innerHTML = cantidadCombo
 
-        // Eliminar la card del combo
+        // Eliminar card del combo
         const cardEliminar = document.getElementById("cardCombo" + id)
-        if (cardEliminar) cardEliminar.remove()
+        if (cardEliminar){
+            cardEliminar.remove()
+        }
     }
-
     // Actualizar el listener del carrito
-    ListenerCarrito()
-    // Mostrar notificación
-    const msj ="Carrito actualizado"
+    listenerCarrito()
+    // noticifacion
+    const msj = "Carrito actualizado"
     const color = "linear-gradient(to right, #e40014, #ff6568)"
-    msjToastify(msj,color)    
+    msjToastify(msj, color)
 }
 function renderCarritoVacio() {
     const cardCarrito = document.getElementById("carrito")
@@ -343,9 +308,6 @@ function agregarRestar(id, value) {
     const carritoActual = JSON.parse(localStorage.getItem("carrito"))
     /* busco el combo el cual quiero modificar las cantidades*/
     const nuevoCarrito = carritoActual.find(combo => combo.id == id)
-    console.log(carritoActual)
-    console.log(nuevoCarrito)
-    //let contador = nuevoCarrito.cantidad
     if (value == "sumar") {
         nuevoCarrito.cantidadCombo++
     } else {
@@ -354,32 +316,22 @@ function agregarRestar(id, value) {
         }
     }
 
-    nuevoCarrito.precioTotal = nuevoCarrito.precioCombo * nuevoCarrito.cantidadCombo + ( nuevoCarrito.precioAdicionales * nuevoCarrito.cantidadCombo )
-    console.log("precio total nuevo "+nuevoCarrito.precioTotal)
+    nuevoCarrito.precioTotal = nuevoCarrito.precioCombo * nuevoCarrito.cantidadCombo + (nuevoCarrito.precioAdicionales * nuevoCarrito.cantidadCombo)
     localStorage.setItem("carrito", JSON.stringify(carritoActual))
     const cantidad = document.getElementById("contador" + id)
     cantidad.innerHTML = nuevoCarrito.cantidadCombo
     const precio = document.getElementById("idPrecio" + id)
-    //  console.log("PRECIO")
-    //  console.log(precio)
     precio.innerHTML = "$ " + nuevoCarrito.precioTotal
-    //const total = carritoActual.reduce((contador, combo) => contador + combo.cantidadCombo, 0)
-    const msj ="Carrito actualizado"
+    const msj = "Carrito actualizado"
     const color = "linear-gradient(to right, #00b09b, #96c93d)"
-    msjToastify(msj,color)
-    ListenerCarrito()
+    msjToastify(msj, color)
+    listenerCarrito()
 }
 function editarAdicionales(id, verduras, toppings, carrito) {
-    console.log(verduras)
-    console.log(toppings)
-    
     const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
     const combo = carritoRecuperado.find(combo => combo.id == id)
-    console.log(combo)
     const adicionalesArray = combo.adicionales.split(" - ")
     let html = `<div style="display:flex; gap:20px;"><div style="flex:1;"><strong>Verduras</strong>`
-
-   // html += `<div style="flex:1;"><strong>Verduras</strong>`
     verduras.forEach(verdura => {
         html += `
         <label class="verdura-item">
@@ -391,8 +343,6 @@ function editarAdicionales(id, verduras, toppings, carrito) {
         </label>
     `
     })
-   // html += `</div>`
-
     html += `</div><div style="flex:1;"><strong>Toppings</strong>`
     toppings.forEach(topping => {
         html += `
@@ -406,33 +356,23 @@ function editarAdicionales(id, verduras, toppings, carrito) {
     `
     })
     html += `</div></div>`
-
-    //html += `</div>`
-
     Swal.fire({
         title: "Editar <strong>adicionales</strong>",
-        // icon: "info",
         html: html,
         showCloseButton: true,
         showCancelButton: true,
         focusConfirm: false,
-        confirmButtonText: `
-        <i class="fa fa-thumbs-up"></i> Confirmar
-    `,
+        confirmButtonText: `<i class="fa fa-thumbs-up"></i> Confirmar`,
         confirmButtonAriaLabel: "Confirmar",
         cancelButtonText: "Cancelar",
-        // cancelButtonAriaLabel: "Thumbs down"
     }).then((result) => {
         if (result.isConfirmed) {
-            actualizarAdicionales(id)
-        } else if (result.isDenied) {
-
+            actualizarAdicionales(id, verduras, toppings)
         }
     });
 }
-function ListenerCarrito() {
+function listenerCarrito() {
     const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
-    console.log(carritoRecuperado)
     let totalCantidades = 0
     let totalPrecio = 0
     if (carritoRecuperado) {
@@ -448,10 +388,10 @@ function ListenerCarrito() {
             botonAgregar.classList.add("disabled")
             contCarrito.classList.add("d-none")
             const precioCarrito = document.getElementById("precio-carrito")
-            precioCarrito.classList.add("d-none")            
-            
+            precioCarrito.classList.add("d-none")
+
         } else {
-            precioCarrito.innerText =`$ ${totalPrecio}`
+            precioCarrito.innerText = `$ ${totalPrecio}`
             contCarrito.innerText = totalCantidades
             const botonAgregar = document.getElementById("btn-agregarCombo")
             botonAgregar.classList.remove("disabled")
@@ -479,16 +419,12 @@ function vaciarCarrito() {
         if (result.isConfirmed) {
             localStorage.removeItem("carrito")
             localStorage.setItem("volverCarrito", "f")
-            const msj ="Carrito eliminado"
+            const msj = "Carrito eliminado"
             const color = "linear-gradient(to right, #e40014, #ff6568)"
-            msjToastify(msj,color)              
-            ListenerCarrito()
+            msjToastify(msj, color)
+            listenerCarrito()
             renderCarritoVacio()
-        } else if (result.isDenied) {
-            // Swal.fire("Changes are not saved", "", "info");
-
         }
-
     });
 }
 function listenerTotal(cantidad, totalPrecio) {
@@ -498,7 +434,7 @@ function listenerTotal(cantidad, totalPrecio) {
         const cardTotal = document.getElementById("total-final-listener")
         const cardSubTotal = document.getElementById("cantidadCombos")
 
-        // ← VERIFICAR QUE EXISTAN
+        // Verifico que existan
         if (SubtotalPrecio) {
             SubtotalPrecio.innerHTML = "$ " + totalPrecio
         }
@@ -519,19 +455,16 @@ function listenerTotal(cantidad, totalPrecio) {
         localStorage.setItem("volverCarrito", mensaje)
     }
 }
-function borrarContenido(SeccionABorrar) {
-    const BorrarSeccion = document.getElementById(SeccionABorrar)
-    if (BorrarSeccion) {  // ← AGREGAR ESTA VERIFICACIÓN
-        BorrarSeccion.innerHTML = ""
-    }
-}
+
 function check(nombre, adicionalesArray) {
     return adicionalesArray.includes(nombre) ? "checked" : ""
 }
-function actualizarAdicionales(id) {
-    //console.log("entro a funcion actualizar adicionales")
+function actualizarAdicionales(id, verduras, toppings) {
     const carritoActual = JSON.parse(localStorage.getItem("carrito"))
-   // console.log(carritoActual)
+    const verdura = verduras.find(verdura => verdura.adicional == "verdura")
+    precioVerdura = verdura.precio
+    const topping = toppings.find(topping => topping.adicional == "topping")
+    precioTopping = topping.precio    
     const carritoModificado = carritoActual.find(combo => combo.id == id)
 
     const verdurasCheck = document.querySelectorAll(".check-verdura:checked")
@@ -549,55 +482,32 @@ function actualizarAdicionales(id) {
         adicionales += adicionales ? " - " + topping.value : topping.value
         precioAdicionales += precioTopping
     })
-   // console.log("adicionales sin multiplicar "+precioAdicionales)
-    //precioAdicionales = precioAdicionales*carritoModificado.cantidadCombo
+
     cantidadAdicionales = verdurasCheck.length + toppingsCheck.length
-    
-    //console.log("cantidad adicionales :"+cantidadAdicionales+" precio adicionales :"+precioAdicionales+" cantidad de combos de esa hamburguesa: "+ carritoModificado.cantidadCombo+" precio del combo :"+carritoModificado.precioCombo)
-    //precioAdicionales = precioAdicionales*carritoModificado.cantidadCombo
+
     let precioTotCombos = carritoModificado.cantidadCombo * carritoModificado.precioCombo
-    carritoModificado.adicionales=adicionales
+    carritoModificado.adicionales = adicionales
     carritoModificado.precioAdicionales = precioAdicionales
     carritoModificado.cantidadAdicionales = cantidadAdicionales
-    carritoModificado.precioTotal = (precioAdicionales * carritoModificado.cantidadCombo)+ precioTotCombos
-/*
-    console.log("carrito antes de hacer setitem, vamos a guardar carritoActual")
-    console.log(carritoActual)*/
+    carritoModificado.precioTotal = (precioAdicionales * carritoModificado.cantidadCombo) + precioTotCombos
+
     localStorage.setItem("carrito", JSON.stringify(carritoActual))
-    //// FALTA RENDERIZAR PRECIOS, Y ACTUALIZAR CARRITO ////
-    const msj ="Carrito actualizado"
+
+    const msj = "Carrito actualizado"
     const color = "linear-gradient(to right, #00b09b, #96c93d)"
-    msjToastify(msj,color)
-    ListenerCarrito()
+    msjToastify(msj, color)
+    listenerCarrito()
     listenerAdicionales(id)
 }
-function listenerAdicionales(id){
+function listenerAdicionales(id) {
     const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
     const combo = carritoRecuperado.find(combo => combo.id == id)
-    const textoAdicionales = document.getElementById("adicionales"+id)
-    textoAdicionales.innerHTML= `
+    const textoAdicionales = document.getElementById("adicionales" + id)
+    textoAdicionales.innerHTML = `
                                 <strong>${combo.adicionales ? "Adicionales" : "Sin adicionales"}</strong>${combo.adicionales ? ": " + combo.adicionales : ""}
                                 `
     const precio = document.getElementById("idPrecio" + id)
-    precio.innerHTML = "$ " + combo.precioTotal                                
-}
-function msjToastify(msj,color){
-    Toastify({
-//        text: "Combo eliminado",
-        text: msj,
-        duration: 1500,
-        destination: "#",
-        newWindow: false,
-        close: false,
-        gravity: "top",
-        position: "right",
-        stopOnFocus: true,
-        style: {
-            //background: "linear-gradient(to right, #e40014, #ff6568)",
-            background: color,
-        },
-        onClick: function () { }
-    }).showToast();
+    precio.innerHTML = "$ " + combo.precioTotal
 }
 obtenerVerduras()
 

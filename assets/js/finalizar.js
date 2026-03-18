@@ -1,7 +1,6 @@
-const menu = [1, 2, 3]
+// const menu = [1, 2, 3]
 let mensajeCarrito = localStorage.getItem("volverCarrito")
 class Pedido {
-    //static id = 0
     constructor(id, estado, nombre, apellido, telefono, mail, direccion, altura, piso, depto, codigoPostal, medioPago, precio) {
         this.id = id,//
             this.estado = estado,
@@ -40,7 +39,6 @@ function renderMenu(menuArray) {
         boton.onclick = () => {
             menuOpcion(opcionElegida)
         }
-
     }//)
     /* ICONO CARRITO */
     const contenedorCarrito = document.getElementById("Menu-carrito")
@@ -62,21 +60,14 @@ function renderMenu(menuArray) {
     btnCarrito.onclick = () => {
         window.location.href = "./carrito.html"
     }
-
-
     /* HASTA ACA EL ICONO DEL CARRITO */
-    ListenerCarrito()
+    listenerCarrito()
 }
-
 function menuOpcion(opcion, combosArmados) {
-    //console.log(opcion)
     let idPedido = 1
     switch (opcion) {
         case 1:
-
             const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
-            // if(carrito.length > 0)
-
             if ((carritoRecuperado) && (carritoRecuperado.length > 0)) {
                 Swal.fire({
                     title: "Tienes combos guardados en el carrito. Al iniciar un nuevo pedido, se perderán. ¿Deseas continuar?",
@@ -87,25 +78,18 @@ function menuOpcion(opcion, combosArmados) {
                     cancelButtonText: "Cancelar",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        //=[]
                         localStorage.removeItem("carrito")
                         const mensaje = "nuevoPedido"
                         localStorage.setItem("volverCarrito", mensaje)
                         window.location.href = "../index.html"
-                        //ListenerCarrito()
-                        //renderSeleccionCombo(idPedido, combosArmados)
                     } else if (result.isDenied) {
                     }
                 });
             } else {
                 const mensaje = "nuevoPedido"
-                /* PROBAR AGREGADOP 19:48*/
                 localStorage.setItem("volverCarrito", mensaje)
                 window.location.href = "../index.html"
-                //console.log("else de carrito>0")
-                // renderSeleccionCombo(idPedido, combosArmados)
             }
-            // renderSeleccionCombo(idPedido, combosArmados)
             break
         case 2:
             const mensaje = "armadoCombo"
@@ -128,8 +112,6 @@ function renderFormulario() {
     }
     if (totalReduce > 0) {
         const contenedorFormu = document.getElementById("formularioDatosEnvio")
-        // const card = document.createElement("div")
-        // card.className = "formulario-seccion"
         const contenedorFormulario = document.getElementById("formulario-envio")
         contenedorFormulario.classList.remove = "d-none"
         const cardDatos = datosPersonales()
@@ -141,54 +123,24 @@ function renderFormulario() {
         contenedorFormu.appendChild(cardPago)
         contenedorFormu.appendChild(cardDotones)
 
-
-        const inputNombre = document.getElementById("nombre")
-        inputNombre.onblur = () => {
-            if ((!inputNombre.value) || isNaN((inputNombre.value))) {
-                console.log("nombre invalido")
-            }
-        }
-
-
-        //const btn = contenedorFormu.querySelectorAll("button")//PROBAR, CON ESTE FUNCIONA DE 10
-        /*
-        const btn = document.querySelectorAll("button")// PROBAR SI FUNCIONA CON ESTE
-        console.log(btn)
-        btn.forEach((boton) => {
-                    boton.onclick = (e) => {
-                        const value = e.currentTarget.value
-                        console.log(value)
-                        if(value=="confirmar"){
-                            confirmarPedido()
-                        }else{
-                            window.location.href = "./carrito.html"
-                        }
-                    }
-        })    
-        */
         const boton = document.getElementById("formularioDatosEnvio")
         boton.onsubmit = (e) => {
             e.preventDefault()
             const medioPago = document.querySelector('input[name="medioPago"]:checked')
             const medioPagoError = document.getElementById("medioPagoError")
             if (medioPago) {
-                console.log(medioPago.value) // "transferencia" o "efectivo"
-                console.log("existe medio pago ")
                 medioPagoError.classList.add("d-none")
 
             } else {
                 medioPagoError.classList.remove("d-none")
-                console.log("No seleccionó ningún medio de pago")
             }
             if (!boton.checkValidity()) {
-                boton.classList.add("was-validated")  // clase de Bootstrap que muestra los errores
-
-                return  // frena acá, no continúa
+                boton.classList.add("was-validated")
+            } else {
+                confirmarPedido()
             }
-            confirmarPedido()
         }
     } else {
-        console.log("no entra")
         renderCarritoVacio()
     }
 }
@@ -258,7 +210,6 @@ function datosPersonales() {
                             </div>
                         </div>
     `
-
     return card
 }
 function direccionEnvio() {
@@ -375,15 +326,10 @@ function botones() {
     return card
 }
 function confirmarPedido() {
-
     combosTotal = JSON.parse(localStorage.getItem("combosTotal"))
     const carritoActual = JSON.parse(localStorage.getItem("carrito"))
-    // console.log("Combo total traigo del storage")
-    // console.log(combosTotal)
-    // console.log("carrito actual")
-    // console.log(carritoActual)
+
     const precio = carritoActual.reduce((contador, pedido) => contador + pedido.precioTotal, 0)
-    //const id = carritoActual[0].idPedido////////////// PROBAR
     const pedidosExistentes = JSON.parse(localStorage.getItem("pedidos"))
     let idMax = 0
     if (pedidosExistentes) {
@@ -405,23 +351,11 @@ function confirmarPedido() {
     const estado = "En preparación"
 
     const medioPago = document.querySelector('input[name="medioPago"]:checked')
-    /*
-    if (medioPago) {
-        console.log(medioPago.value) // "transferencia" o "efectivo"
-    } else {
-        console.log("No seleccionó ningún medio de pago")
-    }
-    */
-    // ITERO EL CARRITO , PARA GUARDAR COMBO POR COMBO
+
+    // itero el carrito para guardar combo por commbo
     if (!Array.isArray(combosTotal)) {
         combosTotal = []
     }
-    /////////////// probar
-    /*
-        carritoActual.forEach(combo => {
-            combosTotal.push(combo)
-        })*/
-    /////////////  PROBAR
     let idMaxCombo = 0
     for (const combo of combosTotal) {
         idMaxCombo = combo.id
@@ -432,12 +366,8 @@ function confirmarPedido() {
         combo.id = idMaxCombo
         combosTotal.push(combo)
     })
-
     ////////////
-
-
     const pedidoNuevo = new Pedido(id, estado, nombre, apellido, telefono, mail, direccion, altura, piso, depto, codigoPostal, medioPago.value, precio)
-
     Swal.fire({
         title: "Su pedido fue <strong>confirmado</strong>",
         icon: "success",
@@ -467,48 +397,35 @@ function confirmarPedido() {
             `).join("")}
             <hr>
             <p style="text-align:right;"><strong>Total: $${precio}</strong></p>
-        </div>
-                            `
-        ,
+        </div>`,
         showCloseButton: true,
         showCancelButton: false,
         focusConfirm: false,
-        confirmButtonText: `
-                        <i class="fa fa-thumbs-up"></i> Continuar!
-                    `,
+        confirmButtonText: `<i class="fa fa-thumbs-up"></i> Continuar!`,
         confirmButtonAriaLabel: "Thumbs up, Continuar!",
-        cancelButtonText: `
-                        <i class="fa fa-thumbs-down"></i>
-                    `,
+        cancelButtonText: `<i class="fa fa-thumbs-down"></i>`,
         cancelButtonAriaLabel: "Thumbs down"
     }).then((result) => {
         if (result.isConfirmed) {
-            //COMENTO HASTA QUE QUEDE LISTO ELARRAY DONDE GUARDO EL PEDIDO
             localStorage.removeItem("carrito")
             localStorage.removeItem("volverCarrito")
             const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
-
             if (pedidosGuardados) {
                 pedidosGuardados.push(pedidoNuevo)
                 localStorage.setItem("pedidos", JSON.stringify(pedidosGuardados))
-                //localStorage.setItem("combosTotal", JSON.stringify(carritoActual))
                 localStorage.setItem("combosTotal", JSON.stringify(combosTotal))
 
             } else {
                 const pedido = pedidoNuevo
                 localStorage.setItem("pedidos", JSON.stringify([pedidoNuevo]))
-                //localStorage.setItem("combosTotal", JSON.stringify([carritoActual]))
                 localStorage.setItem("combosTotal", JSON.stringify(combosTotal))
             }
             window.location.href = "../index.html"
-
-        } else if (result.isDenied) {
-        }
+        } 
     });
 }
-function ListenerCarrito() {
+function listenerCarrito() {
     const carritoRecuperado = JSON.parse(localStorage.getItem("carrito"))
-    //    console.log(carritoRecuperado)
     let totalCantidades = 0
     let totalPrecio = 0
     if (carritoRecuperado) {
@@ -517,8 +434,6 @@ function ListenerCarrito() {
         const contCarrito = document.getElementById("span-Carrito")
         contCarrito.classList.remove("d-none")
         const botonAgregar = document.getElementById("btn-agregarCombo")
-        console.log("boton agregar")
-        console.log(botonAgregar.classList)
         botonAgregar.classList.remove("disabled")
         const precioCarrito = document.getElementById("precio-carrito")
         precioCarrito.classList.remove("d-none")
