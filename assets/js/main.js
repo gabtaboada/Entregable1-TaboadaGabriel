@@ -1,8 +1,8 @@
 const menu = [1, 2, 3]
 
 const UrlCombos = "/Entregable1-TaboadaGabriel/assets/db/combos.json"
-const UrlVerduras = "/Entregable1-TaboadaGabriel/assets/db/verduras.json"
-const UrlToppings = "/Entregable1-TaboadaGabriel/assets/db/toppings.json"
+const UrlVerduras = "../assets/db/verduras.json"
+const UrlToppings = "../assets/db/toppings.json"
 // const UrlCombos = "/assets/db/combos.json"
 // const UrlVerduras = "/assets/db/verduras.json"
 // const UrlToppings = "/assets/db/toppings.json"
