@@ -25,7 +25,8 @@ class comboPedido {
 }
 
 function obtenerCombos() {
-    fetch("."+UrlCombos)
+    fetch(UrlCombos)
+    //fetch("."+UrlCombos)
         .then(response => response.json())
         .then(data => {
             if (mensajeCarrito) {

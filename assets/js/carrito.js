@@ -1,5 +1,6 @@
 function obtenerVerduras() {
-    fetch(".."+UrlVerduras)
+    //fetch(".."+UrlVerduras)
+    fetch(UrlVerduras)
         .then(response => response.json())
         .then(data => {
             obtenerToppings(data)
@@ -8,6 +9,7 @@ function obtenerVerduras() {
         .finally(() => console.log("Peticion finalizada"))
 }
 function obtenerToppings(dataVerduras) {
+    //fetch(".."+UrlToppings)
     fetch(".."+UrlToppings)
         .then(response => response.json())
         .then(data => {
