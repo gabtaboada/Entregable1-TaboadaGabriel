@@ -28,7 +28,6 @@ function obtenerCombos() {
     fetch(UrlCombos)
         .then(response => response.json())
         .then(data => {
-            console.log("mensaje en obtener combos " + mensajeCarrito)
             if (mensajeCarrito) {
                 const pedidosGuardados = JSON.parse(localStorage.getItem("pedidos"))
                 let idMax = 0
@@ -128,7 +127,6 @@ function menuOpcion(opcion, combosArmados) {
     if (pedidosGuardados) {
         const idPedidos = pedidosGuardados.map(pedidos => pedidos.id)
         for (const id of idPedidos) {
-            console.log(id)
             idMax = id
         }
         idPedido = idMax + 1
@@ -158,15 +156,12 @@ function menuOpcion(opcion, combosArmados) {
                     }
                 });
             } else {
-                console.log("else de carrito>0")
                 borrarContenido("contenedor-subtotal")
                 renderSeleccionCombo(idPedido, combosArmados)
             }
             break
         case 2:
             renderSeleccionCombo(idPedido, combosArmados)
-            //borrarContenido("contenedor-subtotal")
-            console.log("Mostrar pedido con idPedido " + idPedido)
             break
         case 3:
             window.location.href = "./pages/buscar-pedido.html"
@@ -329,7 +324,6 @@ function renderSeleccionToppings(idPedido, idCombo, opcionesToppings, combosArma
     }
 
     const checks = document.querySelectorAll(".check-Toppings")
-    console.log(subtotal)
     listenerSubtotal(subtotal)
     checks.forEach((check) => {
         check.onchange = () => {
@@ -383,7 +377,6 @@ function mostrarConfirmacion(idPedido, idCombo, combosArmados) {
 
     if (combosTotal) {
         combosTotal.forEach(comboTot => {
-            console.log(comboTot.id)
             idMax = comboTot.id
         })
         idMax += 1
@@ -391,15 +384,12 @@ function mostrarConfirmacion(idPedido, idCombo, combosArmados) {
     }
     if (carritoRecuperado) {
         carritoRecuperado.forEach(combopedido => {
-            console.log(combopedido.id)
             idMax = combopedido.id
         })
         idMax += 1
     }
     
     const comboNuevo = new comboPedido(idMax, idPedido, idCombo, busqueda.nombre, busqueda.descripcion, adicionales, cantidadAdicionales, busqueda.imagen, 1, precioAdicionales, busqueda.precio, precioTotal)
-    console.log(comboNuevo)
-
     Swal.fire({
         title: "¿Desea agregar este combo al carrito?",
         showDenyButton: true,
@@ -512,6 +502,4 @@ function listenerSubtotal(subtotal) {
 }
 
 let mensajeCarrito = localStorage.getItem("volverCarrito")
-console.log("mensaje volver carrito " + mensajeCarrito)
-
 obtenerCombos()

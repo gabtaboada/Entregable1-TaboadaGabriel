@@ -1,30 +1,21 @@
 function obtenerVerduras() {
     fetch(UrlVerduras)
         .then(response => response.json())
-        .then(dataVerduras => {
-            return fetch(UrlToppings)
-                .then(response => response.json())
-                .then(dataToppings => {
-                    renderMenu(menu, dataVerduras, dataToppings)
-                })
-        })
+        .then(data => {
+            obtenerToppings(data)
+    })
         .catch(err => console.log("Error detectado: ", err))
         .finally(() => console.log("Peticion finalizada"))
 }
-
-
-/*
-function obtenerToppings(idPedido, comboId, combosArmados) {
+function obtenerToppings(dataVerduras) {
     fetch(UrlToppings)
         .then(response => response.json())
         .then(data => {
-            renderSeleccionToppings(idPedido, comboId, data, combosArmados)
-            console.log(data)
+            renderMenu(menu, dataVerduras, data)
         })
         .catch(err => console.log("Error detectado: ", err))
         .finally(() => console.log("Peticion finalizada"))
 }
-*/
 function renderMenu(menuArray, verduras, toppings) {
     const contenedor = document.getElementById("Menu-contenedor")
     for (const opcionElegida of menuArray) {
@@ -227,7 +218,6 @@ function RenderCarrito(verduras, toppings) {
         renderCarritoVacio()
     }
 }
-
 function eliminarCombo(id) {
     const carritoActual = JSON.parse(localStorage.getItem("carrito"))
     const nuevoCarrito = carritoActual.filter(combo => combo.id !== id)

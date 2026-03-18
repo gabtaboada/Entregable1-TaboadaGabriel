@@ -461,4 +461,3 @@ function listenerCarrito() {
 }
 renderMenu(menu)
 renderFormulario()
-
