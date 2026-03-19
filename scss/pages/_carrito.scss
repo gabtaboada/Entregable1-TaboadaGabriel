@@ -1,7 +1,4 @@
-/* PÁGINA CARRITO */
-/* ======================================= */
-/* TÍTULO DEL CARRITO */
-/* ======================================= */
+/* carrito */
 
 .titulo-carrito-header {
     text-align: center;
@@ -56,6 +53,7 @@
 }
 
 // Responsive
+/*
 @media (max-width: 768px) {
     .titulo-carrito-header {
         padding: 15px;
@@ -73,7 +71,7 @@
     .titulo-carrito-subtexto {
         font-size: 0.85rem;
     }
-}
+}*/
 .contenedor-carrito {
     width: 70%;
 }
@@ -82,7 +80,7 @@
     position: relative;
     width: 128px;
     min-width: 128px;
-    height: 172px;
+    height: 178px;
 
     img {
         width: 100%;
@@ -90,9 +88,7 @@
         object-fit: cover;
     }
 }
-// .columna-precio{
-    
-// }
+
 .btn-editar{
     background: transparent;
     border: none;
@@ -103,7 +99,7 @@
         height: 22px;
     }
 }
-/* CARD TOTAL */
+/* card total */
 .card-total {
     background-color: #fff;
     border-radius: 16px;
@@ -155,7 +151,6 @@
     }
 }
 
-/* PÁGINA CARRITO */
 .contenedor-carrito {
     width: 70%;
 }
@@ -185,7 +180,6 @@
     }
 }
 
-/* CARD TOTAL */
 .card-total {
     background-color: #fff;
     border-radius: 16px;
@@ -236,7 +230,7 @@
         background-color: #e0aa00;
     }
 }
-/* BOTÓN VACIAR CARRITO */
+/*btn vaciar caarito*/
 .card-total .btn-vaciar-carrito {
     margin-top: 8px;
     background-color: transparent;
@@ -268,9 +262,6 @@
         transform: scale(0.98);
     }
 }
-/* ====================================== */
-/* CARRITO VACÍO */
-/* ====================================== */
 
 .carrito-vacio{
     display:flex;
@@ -279,7 +270,7 @@
     justify-content:center;
     text-align:center;
     gap:10px;
-    padding:60px 20px;
+    padding:30px 20px;
     color:#6a7282;
 }
 
@@ -307,9 +298,7 @@
     font-size:0.9rem;
     color:#6a7282;
 }
-/* ======================================= */
-/* BOTONES DE CANTIDAD (+ y -) - SUTILES */
-/* ======================================= */
+
 .contenedor-cantidad{
     display: flex;
     flex-direction: row;
@@ -349,9 +338,6 @@
     text-align: center;
 }
 
-/* ======================================= */
-/* BOTÓN ELIMINAR - CON ÍCONO */
-/* ======================================= */
 
 .btn-eliminar-combo {
     background-color: transparent;
@@ -378,26 +364,5 @@
 
     &:active {
         transform: scale(0.95);
-    }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .contenedor-carrito {
-        width: 100%;
-    }
-
-    .btn-cantidad {
-        width: 24px;
-        height: 24px;
-        font-size: 0.9rem;
-    }
-
-    .btn-eliminar-combo {
-        font-size: 0.75rem;
-
-        i {
-            font-size: 0.8rem;
-        }
     }
 }

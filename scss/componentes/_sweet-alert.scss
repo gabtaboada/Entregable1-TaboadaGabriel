@@ -1,11 +1,9 @@
-/* SWEET ALERT CUSTOMIZACIÓN */
-
-// Tu código existente...
+/* SWEET ALERT  */
 .card-combo-imagen-sweet {
     position: relative;
     width: 160px;
     min-width: 128px;
-    height: 160px;
+    height: 178px;
 
     img {
         width: 100%;
@@ -55,12 +53,7 @@
     color: #99a1af;
     font-style: italic;
 }
-
-/* ========================================= */
-/* PERSONALIZACIÓN SOLO DE BOTONES SWEETALERT */
-/* ========================================= */
-
-// BOTÓN CONFIRMAR (principal - amarillo)
+// botonconfirmar
 .swal2-title{
     font-size: 1.2em;
 }
@@ -93,7 +86,6 @@
     }
 }
 
-// BOTÓN DENEGAR/SECUNDARIO (gris transparente)
 .swal2-popup .swal2-actions .swal2-deny.swal2-styled {
     background: transparent;
     color: #6c757d;
@@ -123,7 +115,7 @@
     }
 }
 
-// BOTÓN CANCELAR (rojo transparente)
+// boton cancelar
 .swal2-popup .swal2-actions .swal2-cancel.swal2-styled {
     background: transparent;
     color: #dc3545;

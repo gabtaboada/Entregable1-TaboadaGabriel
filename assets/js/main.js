@@ -1,12 +1,4 @@
 const menu = [1, 2, 3]
-
-const UrlCombos = "/Entregable1-TaboadaGabriel/assets/db/combos.json"
-const UrlVerduras = "../assets/db/verduras.json"
-const UrlToppings = "../assets/db/toppings.json"
-// const UrlCombos = "/assets/db/combos.json"
-// const UrlVerduras = "/assets/db/verduras.json"
-// const UrlToppings = "/assets/db/toppings.json"
-
 function borrarContenido(SeccionABorrar) {
     const borrarSeccion = document.getElementById(SeccionABorrar)
     if (borrarSeccion) {  // ← AGREGAR ESTA VERIFICACIÓN

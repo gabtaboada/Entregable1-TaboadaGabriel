@@ -28,7 +28,7 @@
     }
 }
 
-// Botón "Nuevo Pedido" (Verde/Success)
+// Botón Nuevo Pedido
 .btn-success {
     background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     color: white;
@@ -40,7 +40,7 @@
     }
 }
 
-// Botón "Agregar Combo" (Amarillo/Warning)
+// Botón Agregar Combo
 .btn-warning {
     background: #FCBF02;
     color: #1e2939;
@@ -68,7 +68,7 @@
     }
 }
 
-// Botón "Ver Estado del Pedido" (Oscuro/Dark)
+// Botón Ver Estado del Pedido
 .btn-dark {
     background: linear-gradient(135deg, #1e2939 0%, #364153 100%);
     color: white;
@@ -80,7 +80,7 @@
     }
 }
 
-// Botón secundario (Continuar)
+// Botón secundario 
 .btn-secondary {
     background: #6c757d;
     color: white;
@@ -125,9 +125,7 @@
     align-items: center;
     justify-content: center;
 }
-// Botón "Continuar" mejorado
-// Botón "Continuar" - versión sutil
-// Botón "Continuar" - versión minimalista
+
 .btn-secondary {
     background: transparent;
     color: #6c757d;
@@ -146,28 +144,5 @@
         border-color: #6c757d;
         transform: translateY(-1px);
         box-shadow: 0 5px 12px rgba(108, 117, 125, 0.25);
-    }
-}
-// RESPONSIVE
-@media (max-width: 768px) {
-    .btn {
-        padding: 10px 18px;
-        font-size: 0.85rem;
-    }
-
-    #Menu-contenedor {
-        flex-direction: column;
-        width: 100%;
-        gap: 10px;
-
-        .btn {
-            width: 100%;
-        }
-    }
-}
-@media (max-width: 480px) {
-    .btn {
-        padding: 8px 16px;
-        font-size: 0.8rem;
     }
 }

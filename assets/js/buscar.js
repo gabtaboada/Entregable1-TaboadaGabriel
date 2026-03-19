@@ -7,7 +7,6 @@ function renderMenu(menuArray) {
                 card.innerHTML = `<button id="${opcionElegida}" class="m-2 btn btn-success">Nuevo Pedido</button>`
                 break
             case 2:
-
                 card.innerHTML = `<button id="btn-agregarCombo" class="m-2 btn btn-warning">Agregar combo</button>`
                 break
             case 3:
@@ -113,41 +112,67 @@ function listenerCarrito() {
     }
 }
 function renderBusqueda() {
-    const contenedor = document.getElementById("formularioBusqueda")
-    const card = document.createElement("div")
-    card.className = "formulario-seccion"
-    card.innerHTML =
-                    `<div class="row">
-                        <div class="col-12 mb-3">
-                            <label for="nombre" class="form-label"># Número de pedido
-                                <span class="required">*</span>
-                            </label>
-                            <input type="text" class="form-control" id="idPedido" required
-                                                            placeholder="Ej: 123456">
-                            <div class="invalid-feedback" id="msj-idPedido">Por favor ingresá el número de pedido</div>
+    const pedidos = JSON.parse(localStorage.getItem("pedidos"))
+    if(pedidos){
+        const contenedor = document.getElementById("formularioBusqueda")
+        const card = document.createElement("div")
+        card.className = "formulario-seccion"
+        card.innerHTML =
+                        `<div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="nombre" class="form-label"># Número de pedido
+                                    <span class="required">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="idPedido" required
+                                                                placeholder="Ej: 123456">
+                                <div class="invalid-feedback" id="msj-idPedido">Por favor ingresá el número de pedido</div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- boton -->
-                    <div class="mt-4">
-                        <button type="button" class="btn btn-confirmar-pedido" id="btn-buscar" value="confirmar">
-                            <i class="fas fa-check-circle"></i>Buscar
-                        </button>
-                    </div> `
-    contenedor.appendChild(card)
-    const boton = document.getElementById("btn-buscar")
-    boton.onclick = () => {
-        const idPedido = document.getElementById("idPedido").value
-        buscarPedido(idPedido)
-    }
-    const inputPedido = document.getElementById("idPedido");
-    const formulario = document.getElementById("formularioBusqueda")
-    formulario.addEventListener("submit", (e) => {
-        e.preventDefault(); // Evita que se recargue la pagina
-        const idPedido = document.getElementById("idPedido").value
-        buscarPedido(idPedido);
-    });
-}
+                        <!-- boton -->
+                        <div class="mt-4">
+                            <button type="button" class="btn btn-confirmar-pedido" id="btn-buscar" value="confirmar">
+                                <i class="fas fa-check-circle"></i>Buscar
+                            </button>
+                        </div> `
+        contenedor.appendChild(card)
+        const boton = document.getElementById("btn-buscar")
+        boton.onclick = () => {
+            const idPedido = document.getElementById("idPedido").value
+            buscarPedido(idPedido)
+        }
+        const inputPedido = document.getElementById("idPedido");
+        const formulario = document.getElementById("formularioBusqueda")
+        formulario.addEventListener("submit", (e) => {
+            e.preventDefault(); // Evita que se recargue la pagina
+            const idPedido = document.getElementById("idPedido").value
+            buscarPedido(idPedido)
+        })      
+    }else{
+        renderBusquedaVacia()
+    }    
 
+}
+function renderBusquedaVacia() {
+    console.log("entra al admin vacio")
+    const contenedor = document.getElementById("formulario-envio")
+    contenedor.innerHTML = ""
+    const card = document.createElement("div")
+    card.id = "busqueda-vacio"
+    card.className = "carrito-vacio "
+    card.innerHTML = `
+                        <div class="carrito-vacio-icono">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+
+                        <h3>Tu base de datos está vacía</h3>
+                        <p>Agrega un combo para empezar tu pedido</p>
+
+                        <a href="../index.html" class="btn btn-warning mt-2">
+                            <i class="fas fa-arrow-left"></i> Ir al menú
+                        </a>
+                    `
+    contenedor.appendChild(card)
+}
 function buscarPedido(idPedido) {
     // estoy simulando que trae este dato de una base de datos. 
     const pedidos = JSON.parse(localStorage.getItem("pedidos"))

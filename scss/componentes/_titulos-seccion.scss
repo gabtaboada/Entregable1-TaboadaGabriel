@@ -12,11 +12,9 @@
     background: linear-gradient(135deg, #fffbea 0%, #fff9db 100%);
     border-left: 4px solid #FCBF02;
     border-radius: 8px;
-    //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);    
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
                 0 2px 4px rgba(252, 191, 2, 0.2);
     
-    // Efecto hover (opcional)
     transition: all 0.3s ease;
     &:hover {
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15),
@@ -39,14 +37,12 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
                 0 2px 4px rgba(252, 191, 2, 0.2);
     transition: all 0.3s ease;          
-    //border: 1px solid #e5e7eb;
     &:hover {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12),
                     0 2px 5px rgba(0, 0, 0, 0.08);
         transform: translateY(-1px);
         background-color: #ffffff;
     }
-    // Resaltar el precio
     &::after {
         margin-left: 4px;
     }
@@ -62,16 +58,4 @@
     border-radius: 6px;
     border-left: 3px solid #fcdb02;
     margin-bottom: 8px;
-}
-// Responsive
-@media (max-width: 768px) {
-    .titulo-seccion {
-        font-size: 1rem;
-        padding: 10px 16px;
-    }
-
-    .precio-info {
-        font-size: 0.85rem;
-        padding: 6px 12px;
-    }
 }

@@ -1,4 +1,3 @@
-// const menu = [1, 2, 3]
 let mensajeCarrito = localStorage.getItem("volverCarrito")
 class Pedido {
     constructor(id, estado, nombre, apellido, telefono, mail, direccion, altura, piso, depto, codigoPostal, medioPago, precio) {
@@ -39,7 +38,7 @@ function renderMenu(menuArray) {
         boton.onclick = () => {
             menuOpcion(opcionElegida)
         }
-    }//)
+    }
     /* ICONO CARRITO */
     const contenedorCarrito = document.getElementById("Menu-carrito")
     const cardCarrito = document.createElement("div")

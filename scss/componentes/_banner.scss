@@ -13,12 +13,25 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: url('../img/banner-burger.webp'); // Cambia por tu imagen
+        background-image: url('../img/banner-burger.webp'); 
         background-size: cover;
         background-position: center;
         opacity: 0.4;
         z-index: 1;
     }
+    &.banner-carrito::before {
+        background-image: url('../img/banner-carrito.webp');
+    }
+
+    &.banner-buscar::before {
+        background-image: url('../img/banner-local.webp');
+    }   
+    &.banner-admin::before {
+        background-image: url('../img/banner-admin.webp');
+    }   
+    &.banner-finalizar::before {
+        background-image: url('../img/banner-finalizar.webp');
+    }             
 }
 
 .banner-content {
@@ -59,38 +72,4 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .banner-hero {
-        height: 250px;
-    }
-
-    .banner-title {
-        font-size: 2rem;
-    }
-
-    .banner-subtitle {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .banner-hero {
-        height: 200px;
-    }
-
-    .banner-title {
-        font-size: 1.5rem;
-    }
-
-    .banner-subtitle {
-        font-size: 0.9rem;
-    }
-
-    .banner-badge {
-        font-size: 0.75rem;
-        padding: 6px 15px;
-    }
 }

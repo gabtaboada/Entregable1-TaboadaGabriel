@@ -1,41 +1,67 @@
 function renderAdmin() {
     const pedidos = JSON.parse(localStorage.getItem("pedidos"))
-    const contenedor = document.getElementById("contenedor-pedidos")
-    contenedor.innerHTML = ""
-    const header = document.createElement("div")
-    header.className = "card-pedido card-pedido-header d-flex flex-row"
-    header.innerHTML = `
-        <span class="pedido-id">N° Pedido</span>
-        <span class="nombre">Cliente</span>
-        <span class="precio  me-3">Importe</span>
-        <span class="estado">Estado</span>
-    `
-    contenedor.appendChild(header)
-
-    pedidos.forEach(pedido => {
-        const card = document.createElement("div")
-        card.className = "card-pedido d-flex flex-row "
-        card.innerHTML = `
-            <span class="pedido-nombre">${pedido.id}</span>
-            <span class="pedido-nombre">${pedido.nombre} ${pedido.apellido}</span>
-            <span class="pedido-precio me-3">$ ${pedido.precio}</span>
-            <button class="btn-editar " id=${pedido.id} ><span class="pedido-estado estado-${pedido.estado === 'En preparación' ? 'preparacion' : pedido.estado.toLowerCase()}">${pedido.estado}</span>
-            </button> 
+    if(pedidos){
+        const contenedor = document.getElementById("contenedor-pedidos")
+        contenedor.innerHTML = ""
+        const header = document.createElement("div")
+        header.className = "card-pedido card-pedido-header d-flex flex-row"
+        header.innerHTML = `
+            <span class="pedido-id">N° Pedido</span>
+            <span class="nombre">Cliente</span>
+            <span class="precio  me-3">Importe</span>
+            <span class="estado">Estado</span>
         `
-        contenedor.appendChild(card)
-        const botonEditar = document.querySelectorAll(".btn-editar")
-        botonEditar.forEach(e => {
-            e.onclick = () => {
-                    editarEstado(e.id,pedidos)
-                }
+        contenedor.appendChild(header)
+
+        pedidos.forEach(pedido => {
+            const card = document.createElement("div")
+            card.className = "card-pedido d-flex flex-row "
+            card.innerHTML = `
+                <span class="pedido-nombre">${pedido.id}</span>
+                <span class="pedido-nombre">${pedido.nombre} ${pedido.apellido}</span>
+                <span class="pedido-precio me-3">$ ${pedido.precio}</span>
+                <button class="btn-editar " id=${pedido.id} ><span class="pedido-estado estado-${pedido.estado === 'En preparación' ? 'preparacion' : pedido.estado.toLowerCase()}">${pedido.estado}</span>
+                </button> 
+            `
+            contenedor.appendChild(card)
+            const botonEditar = document.querySelectorAll(".btn-editar")
+            botonEditar.forEach(e => {
+                e.onclick = () => {
+                        editarEstado(e.id,pedidos)
+                    }
+            })
         })
-    })
+    }else{
+        renderAdminVacio()
+    }
+
 
 }
+function renderAdminVacio() {
+    console.log("entra al admin vacio")
+    const contenedor = document.getElementById("contenedor-pedidos")
+    contenedor.innerHTML = ""
 
+    const card = document.createElement("div")
+    card.id = "admin-vacio"
+    card.className = "carrito-vacio "
+    card.innerHTML = `
+                        <div class="carrito-vacio-icono">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+
+                        <h3>Tu base de datos está vacía</h3>
+                        <p>Agrega un combo para empezar tu pedido</p>
+
+                        <a href="../index.html" class="btn btn-warning mt-2">
+                            <i class="fas fa-arrow-left"></i> Ir al menú
+                        </a>
+                    `
+    contenedor.appendChild(card)
+
+}
 function editarEstado(id, pedidos) {
     const combo = pedidos.find(combo => combo.id == id)
-    console.log(combo)
     Swal.fire({
         title: `Editar estado <strong>#${combo.id}</strong>`,
         html: `
@@ -99,7 +125,6 @@ function editarEstado(id, pedidos) {
 function listenerEstado(id,pedidos){
     const combo = pedidos.find(combo => combo.id == id)
     const contenedorBoton = document.getElementById(id)
-    console.log(contenedorBoton)
     contenedorBoton.innerHTML=""
     contenedorBoton.innerHTML=`
                                 <span class="pedido-estado estado-${combo.estado === 'En preparación' ? 'preparacion' : combo.estado.toLowerCase()}">${combo.estado}</span>

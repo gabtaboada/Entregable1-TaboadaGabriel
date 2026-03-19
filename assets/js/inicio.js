@@ -2,7 +2,9 @@ let carrito = []
 
 let precioVerdura = 0
 let precioTopping = 0
-
+const UrlCombos = "./assets/db/combos.json"
+const UrlVerduras = "./assets/db/verduras.json"
+const UrlToppings = "./assets/db/toppings.json"
 //////  Creo una clase comboPedido que voy a guardar cada combo que se hacen en un pedido.
 //////  en un pedido puede haber varios combos. por este motivo hago la propiedad idPedido
 //////  que hace referencia al numero de pedido.
@@ -26,7 +28,6 @@ class comboPedido {
 
 function obtenerCombos() {
     fetch(UrlCombos)
-    //fetch("."+UrlCombos)
         .then(response => response.json())
         .then(data => {
             if (mensajeCarrito) {
@@ -50,7 +51,6 @@ function obtenerCombos() {
 
                 }
             }
-
             renderMenu(menu, data)
         })
         .catch(err => console.log("Error detectado: ", err))
@@ -79,7 +79,6 @@ function obtenerToppings(idPedido, comboId, combosArmados, subtotal) {
 function renderMenu(menuArray, combosArmados) {
     const contenedor = document.getElementById("Menu-contenedor")
     for (const opcionElegida of menuArray) {
-
         const card = document.createElement("div")
         switch (opcionElegida) {
             case 1:
@@ -149,7 +148,6 @@ function menuOpcion(opcion, combosArmados) {
                     if (result.isConfirmed) {
                         carrito = []
                         localStorage.removeItem("carrito")
-
                         listenerCarrito()
                         borrarContenido("contenedor-subtotal")
                         renderSeleccionCombo(idPedido, combosArmados)
@@ -276,9 +274,7 @@ function renderSeleccionVerdura(idPedido, idCombo, opcionesVerduras, combosArmad
             }
         }
     })
-
     // Boton Continuar a toppings
-
     const card = document.createElement("div")
     card.innerHTML = `
                         <button id="Btn-ContinuarAtoppings" class="m-2 CombosClase btn btn-secondary">Continuar</button>`

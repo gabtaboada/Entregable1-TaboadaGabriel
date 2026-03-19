@@ -33,7 +33,6 @@ h3 {
 }
 
 /* FIN GENERALES */
-/* UTILIDADES GENERALES */
 .titulo {
   background-color: #211f1b;
   text-transform: uppercase;
@@ -56,7 +55,7 @@ h3 {
   display: none;
 }
 
-/* IMÁGENES */
+/* imagenes */
 .img-combo {
   width: 100px;
   height: 100px;
@@ -132,10 +131,6 @@ h3 {
   color: #6a7282;
 }
 
-/*
-.container{
-    position: relative;
-}*/
 /* BANNER HERO */
 .banner-hero {
   position: relative;
@@ -156,6 +151,18 @@ h3 {
   background-position: center;
   opacity: 0.4;
   z-index: 1;
+}
+.banner-hero.banner-carrito::before {
+  background-image: url("../img/banner-carrito.webp");
+}
+.banner-hero.banner-buscar::before {
+  background-image: url("../img/banner-local.webp");
+}
+.banner-hero.banner-admin::before {
+  background-image: url("../img/banner-admin.webp");
+}
+.banner-hero.banner-finalizar::before {
+  background-image: url("../img/banner-finalizar.webp");
 }
 
 .banner-content {
@@ -198,33 +205,6 @@ h3 {
   letter-spacing: 1px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .banner-hero {
-    height: 250px;
-  }
-  .banner-title {
-    font-size: 2rem;
-  }
-  .banner-subtitle {
-    font-size: 1rem;
-  }
-}
-@media (max-width: 480px) {
-  .banner-hero {
-    height: 200px;
-  }
-  .banner-title {
-    font-size: 1.5rem;
-  }
-  .banner-subtitle {
-    font-size: 0.9rem;
-  }
-  .banner-badge {
-    font-size: 0.75rem;
-    padding: 6px 15px;
-  }
-}
 /* BOTONES PRINCIPALES DEL MENÚ */
 .btn {
   padding: 12px 24px;
@@ -352,26 +332,6 @@ h3 {
   box-shadow: 0 5px 12px rgba(108, 117, 125, 0.25);
 }
 
-@media (max-width: 768px) {
-  .btn {
-    padding: 10px 18px;
-    font-size: 0.85rem;
-  }
-  #Menu-contenedor {
-    flex-direction: column;
-    width: 100%;
-    gap: 10px;
-  }
-  #Menu-contenedor .btn {
-    width: 100%;
-  }
-}
-@media (max-width: 480px) {
-  .btn {
-    padding: 8px 16px;
-    font-size: 0.8rem;
-  }
-}
 /* TÍTULOS Y PRECIOS DE SECCIÓN */
 .titulo-seccion {
   font-size: 1.1rem;
@@ -428,16 +388,6 @@ h3 {
   margin-bottom: 8px;
 }
 
-@media (max-width: 768px) {
-  .titulo-seccion {
-    font-size: 1rem;
-    padding: 10px 16px;
-  }
-  .precio-info {
-    font-size: 0.85rem;
-    padding: 6px 12px;
-  }
-}
 /* CARDS DE COMBOS */
 #ContenedorBurger {
   display: flex;
@@ -500,7 +450,7 @@ h3 {
 }
 
 .card-combo-descripcion-confirmacion {
-  font-size: 0.69rem;
+  font-size: 0.75rem;
   color: #6a7282;
   line-height: 1.4;
   display: -webkit-box;
@@ -657,23 +607,12 @@ h3 {
   transform: rotate(45deg);
 }
 
-@media (max-width: 768px) {
-  .verdura-item,
-  .Topping-item {
-    padding: 10px 12px;
-  }
-  .verdura-foto,
-  .Topping-foto {
-    width: 36px;
-    height: 36px;
-  }
-}
-/* SWEET ALERT CUSTOMIZACIÓN */
+/* SWEET ALERT  */
 .card-combo-imagen-sweet {
   position: relative;
   width: 160px;
   min-width: 128px;
-  height: 160px;
+  height: 178px;
 }
 .card-combo-imagen-sweet img {
   width: 100%;
@@ -723,9 +662,6 @@ h3 {
   font-style: italic;
 }
 
-/* ========================================= */
-/* PERSONALIZACIÓN SOLO DE BOTONES SWEETALERT */
-/* ========================================= */
 .swal2-title {
   font-size: 1.2em;
 }
@@ -808,10 +744,7 @@ h3 {
   transform: translateY(0);
 }
 
-/* PÁGINA CARRITO */
-/* ======================================= */
-/* TÍTULO DEL CARRITO */
-/* ======================================= */
+/* carrito */
 .titulo-carrito-header {
   text-align: center;
   margin-bottom: 25px;
@@ -862,21 +795,25 @@ h3 {
     transform: rotate(5deg);
   }
 }
+/*
 @media (max-width: 768px) {
-  .titulo-carrito-header {
-    padding: 15px;
-    margin-bottom: 20px;
-  }
-  .titulo-carrito-icono i {
-    font-size: 2rem;
-  }
-  .titulo-carrito-texto {
-    font-size: 1.5rem;
-  }
-  .titulo-carrito-subtexto {
-    font-size: 0.85rem;
-  }
-}
+    .titulo-carrito-header {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .titulo-carrito-icono i {
+        font-size: 2rem;
+    }
+
+    .titulo-carrito-texto {
+        font-size: 1.5rem;
+    }
+
+    .titulo-carrito-subtexto {
+        font-size: 0.85rem;
+    }
+}*/
 .contenedor-carrito {
   width: 70%;
 }
@@ -885,7 +822,7 @@ h3 {
   position: relative;
   width: 128px;
   min-width: 128px;
-  height: 172px;
+  height: 178px;
 }
 .card-combo-imagen-carrito img {
   width: 100%;
@@ -904,7 +841,7 @@ h3 {
   height: 22px;
 }
 
-/* CARD TOTAL */
+/* card total */
 .card-total {
   background-color: #fff;
   border-radius: 16px;
@@ -955,7 +892,6 @@ h3 {
   background-color: #e0aa00;
 }
 
-/* PÁGINA CARRITO */
 .contenedor-carrito {
   width: 70%;
 }
@@ -985,7 +921,6 @@ h3 {
   object-fit: cover;
 }
 
-/* CARD TOTAL */
 .card-total {
   background-color: #fff;
   border-radius: 16px;
@@ -1036,7 +971,7 @@ h3 {
   background-color: #e0aa00;
 }
 
-/* BOTÓN VACIAR CARRITO */
+/*btn vaciar caarito*/
 .card-total .btn-vaciar-carrito {
   margin-top: 8px;
   background-color: transparent;
@@ -1066,9 +1001,6 @@ h3 {
   transform: scale(0.98);
 }
 
-/* ====================================== */
-/* CARRITO VACÍO */
-/* ====================================== */
 .carrito-vacio {
   display: flex;
   flex-direction: column;
@@ -1076,7 +1008,7 @@ h3 {
   justify-content: center;
   text-align: center;
   gap: 10px;
-  padding: 60px 20px;
+  padding: 30px 20px;
   color: #6a7282;
 }
 
@@ -1105,9 +1037,6 @@ h3 {
   color: #6a7282;
 }
 
-/* ======================================= */
-/* BOTONES DE CANTIDAD (+ y -) - SUTILES */
-/* ======================================= */
 .contenedor-cantidad {
   display: flex;
   flex-direction: row;
@@ -1146,9 +1075,6 @@ h3 {
   text-align: center;
 }
 
-/* ======================================= */
-/* BOTÓN ELIMINAR - CON ÍCONO */
-/* ======================================= */
 .btn-eliminar-combo {
   background-color: transparent;
   border: none;
@@ -1174,30 +1100,13 @@ h3 {
   transform: scale(0.95);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .contenedor-carrito {
-    width: 100%;
-  }
-  .btn-cantidad {
-    width: 24px;
-    height: 24px;
-    font-size: 0.9rem;
-  }
-  .btn-eliminar-combo {
-    font-size: 0.75rem;
-  }
-  .btn-eliminar-combo i {
-    font-size: 0.8rem;
-  }
-}
-/* FORMULARIO DE DATOS DE ENVÍO */
+/* formu envio */
 .formulario-envio {
   max-width: 800px;
   margin: 40px auto;
   background: white;
   border-radius: 16px;
-  padding: 30px;
+  padding: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -1306,7 +1215,7 @@ h3 {
   font-weight: 600;
 }
 
-/* MEDIOS DE PAGO */
+/* medios de pago*/
 .metodos-pago {
   display: flex;
   flex-direction: column;
@@ -1541,6 +1450,95 @@ h3 {
 .estado-cancelado {
   background-color: #dc3545;
   color: white;
+}
+
+/*DESKTOP FIRST*/
+@media (max-width: 768px) {
+  .banner-hero {
+    height: 250px;
+  }
+  .banner-title {
+    font-size: 2rem;
+  }
+  .banner-subtitle {
+    font-size: 1rem;
+  }
+  .btn {
+    padding: 10px 18px;
+    font-size: 0.85rem;
+  }
+  #Menu-contenedor {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+  #Menu-contenedor .btn {
+    width: 100%;
+  }
+  .verdura-item,
+  .Topping-item {
+    padding: 10px 12px;
+  }
+  .verdura-foto,
+  .Topping-foto {
+    width: 36px;
+    height: 36px;
+  }
+  .titulo-seccion {
+    font-size: 1rem;
+    padding: 10px 16px;
+  }
+  .precio-info {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+  .titulo-carrito-header {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  .titulo-carrito-icono i {
+    font-size: 2rem;
+  }
+  .titulo-carrito-texto {
+    font-size: 1.5rem;
+  }
+  .titulo-carrito-subtexto {
+    font-size: 0.85rem;
+  }
+  .contenedor-carrito {
+    width: 100%;
+  }
+  .btn-cantidad {
+    width: 24px;
+    height: 24px;
+    font-size: 0.9rem;
+  }
+  .btn-eliminar-combo {
+    font-size: 0.75rem;
+  }
+  .btn-eliminar-combo i {
+    font-size: 0.8rem;
+  }
+}
+/* 360 a 480pxmobile */
+@media (max-width: 480px) {
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+  .banner-hero {
+    height: 200px;
+  }
+  .banner-title {
+    font-size: 1.5rem;
+  }
+  .banner-subtitle {
+    font-size: 0.9rem;
+  }
+  .banner-badge {
+    font-size: 0.75rem;
+    padding: 6px 15px;
+  }
 }
 
 /*# sourceMappingURL=estilo.css.map */

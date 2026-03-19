@@ -9,7 +9,7 @@
     width: 100%;
 }
 
-// Items individuales (verduras y toppings)
+// Items individuales 
 .verdura-item,
 .Topping-item {
     display: flex;
@@ -38,7 +38,7 @@
     box-shadow: 0 4px 12px rgba(252, 191, 2, 0.3);
 }
 
-// Fotos de verduras/toppings
+// Fotos de verduras toppings
 .verdura-foto,
 .Topping-foto {
     width: 40px;
@@ -53,11 +53,10 @@
 
 .verdura-item:hover .verdura-foto,
 .Topping-item:hover .Topping-foto {
-    //border-color: #FCBF02;
     transform: scale(1.1);
 }
 
-// Nombres
+
 .verdura-nombre,
 .Topping-nombre {
     font-size: 0.85rem;
@@ -67,7 +66,7 @@
     margin-left: 5px;
 }
 
-// Contenedor derecho (precio + check)
+
 .verdura-derecha,
 .Topping-derecha {
     display: flex;
@@ -76,7 +75,6 @@
     flex-shrink: 0;
 }
 
-// Precios
 .verdura-precio,
 .Topping-precio {
     font-size: 0.82rem;
@@ -87,7 +85,7 @@
     border-radius: 20px;
 }
 
-// Checkboxes personalizados
+// Checkbox personalizados
 .verdura-check,
 .Topping-check {
     appearance: none;
@@ -101,12 +99,10 @@
     transition: all 0.2s ease;
     position: relative;
     flex-shrink: 0;
-
     &:hover {
         border-color: #FCBF02;
         box-shadow: 0 0 0 3px rgba(252, 191, 2, 0.1);
     }
-
     &:checked {
         background-color: #FCBF02;
         border-color: #FCBF02;
@@ -125,19 +121,5 @@
         border: solid #1e2939;
         border-width: 0 2px 2px 0;
         transform: rotate(45deg);
-    }
-}
-
-// Responsive
-@media (max-width: 768px) {
-    .verdura-item,
-    .Topping-item {
-        padding: 10px 12px;
-    }
-
-    .verdura-foto,
-    .Topping-foto {
-        width: 36px;
-        height: 36px;
     }
 }

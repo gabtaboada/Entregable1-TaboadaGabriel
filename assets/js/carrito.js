@@ -1,5 +1,7 @@
+const UrlVerduras = "../assets/db/verduras.json"
+const UrlToppings = "../assets/db/toppings.json"
+
 function obtenerVerduras() {
-    //fetch(".."+UrlVerduras)
     fetch(UrlVerduras)
         .then(response => response.json())
         .then(data => {
@@ -9,8 +11,7 @@ function obtenerVerduras() {
         .finally(() => console.log("Peticion finalizada"))
 }
 function obtenerToppings(dataVerduras) {
-    //fetch(".."+UrlToppings)
-    fetch(".."+UrlToppings)
+    fetch(UrlToppings)
         .then(response => response.json())
         .then(data => {
             renderMenu(menu, dataVerduras, data)
@@ -27,7 +28,6 @@ function renderMenu(menuArray, verduras, toppings) {
                 card.innerHTML = `<button id="${opcionElegida}" class="m-2 btn btn-success">Nuevo Pedido</button>`
                 break
             case 2:
-
                 card.innerHTML = `<button id="btn-agregarCombo" class="m-2 btn btn-warning">Agregar combo</button>`
                 break
             case 3:
@@ -40,7 +40,6 @@ function renderMenu(menuArray, verduras, toppings) {
         boton.onclick = () => {
             menuOpcion(opcionElegida)
         }
-
     }
     /* ICONO CARRITO */
     const contenedorCarrito = document.getElementById("Menu-carrito")
@@ -225,9 +224,9 @@ function eliminarCombo(id) {
     const nuevoCarrito = carritoActual.filter(combo => combo.id !== id)
     const total = nuevoCarrito.reduce((contador, combo) => contador + combo.precioTotal, 0)
     const cantidadCombo = nuevoCarrito.reduce((contador, combo) => contador + combo.cantidadCombo, 0)
-    // Actualizar localStorage
+    // Actualizo localStorage
     localStorage.setItem("carrito", JSON.stringify(nuevoCarrito))
-    // Verificar si el carrito quedó vacío
+    // Verifico si el carrito quedó vacío
     if (cantidadCombo == 0) {
         const cardTotal = document.getElementById("contenedorTotal")
         const cardCarrito = document.getElementById("carrito")
@@ -243,7 +242,7 @@ function eliminarCombo(id) {
         }
         renderCarritoVacio()
     } else {
-        // Actualizo totales solo si hay combos
+        // Actualizo los totales ( solo si hay combos )
         const cardSubTotal = document.getElementById("subtotal-final-listener")
         const cardTotal = document.getElementById("total-final-listener")
         const cardCantidad = document.getElementById("cantidadCombos")
@@ -252,15 +251,14 @@ function eliminarCombo(id) {
         if (cardTotal) cardTotal.innerHTML = "$ " + total
         if (cardCantidad) cardCantidad.innerHTML = cantidadCombo
 
-        // Eliminar card del combo
+        // Eliminar el card del combo
         const cardEliminar = document.getElementById("cardCombo" + id)
         if (cardEliminar){
             cardEliminar.remove()
         }
     }
-    // Actualizar el listener del carrito
     listenerCarrito()
-    // noticifacion
+
     const msj = "Carrito actualizado"
     const color = "linear-gradient(to right, #e40014, #ff6568)"
     msjToastify(msj, color)
@@ -296,7 +294,6 @@ function renderCarritoVacio() {
 
 }
 function agregarRestar(id, value) {
-    /* obtengo el carrito del storage*/
     const carritoActual = JSON.parse(localStorage.getItem("carrito"))
     /* busco el combo el cual quiero modificar las cantidades*/
     const nuevoCarrito = carritoActual.find(combo => combo.id == id)
@@ -425,7 +422,6 @@ function listenerTotal(cantidad, totalPrecio) {
         const SubtotalPrecio = document.getElementById("subtotal-final-listener")
         const cardTotal = document.getElementById("total-final-listener")
         const cardSubTotal = document.getElementById("cantidadCombos")
-
         // Verifico que existan
         if (SubtotalPrecio) {
             SubtotalPrecio.innerHTML = "$ " + totalPrecio
